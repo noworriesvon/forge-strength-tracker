@@ -328,18 +328,11 @@ body.forge-focus[data-view="heatmap"] #trainingInsights{display:none!important}
 @media print{#trainingInsights{display:none!important}}
 
 
-/* Version 14: PR Pacer, internal-load trends, tonnage milestones, consistency calendar */
-.forge-v14-panels{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:15px;margin:0 0 19px}
+/* Version 14: PR Pacer, internal-load trends, and consistency calendar */
+.forge-v14-panels{display:grid;grid-template-columns:1fr;gap:15px;margin:0 0 19px}
 .v14-dashboard-card{border:1px solid #28547c;background:linear-gradient(135deg,#102846,#081829);border-radius:16px;min-width:0;padding:18px;box-shadow:0 12px 30px #0003}
 .v14-card-title{font-size:16px;color:#f1f8ff;font-weight:850;letter-spacing:-.02em;margin:0 0 5px}
 .v14-note{color:#9bb8d7;font-size:11px;line-height:1.6;margin:6px 0 0}
-.v14-hero{display:flex;gap:12px;align-items:center;margin:14px 0 12px}
-.v14-emoji{font-size:39px;width:60px;height:60px;display:grid;place-items:center;border-radius:16px;background:#15385e;border:1px solid #2e6797}
-.v14-hero strong{font-size:23px;display:block;line-height:1.18;letter-spacing:-.025em}
-.v14-hero small{font-size:11px;color:#98b8d9}
-.v14-progress-track{background:#061525;border:1px solid #294766;border-radius:99px;height:12px;overflow:hidden;margin:9px 0}
-.v14-progress-fill{background:linear-gradient(90deg,#1381ff,#1fe0bb);height:100%;width:0;transition:width .22s;border-radius:99px}
-.v14-milestone-details{display:flex;justify-content:space-between;gap:8px;align-items:center;font-size:11px;color:#b8d6ef;flex-wrap:wrap}
 .v14-heat-scroll{overflow-x:auto;max-width:100%;margin:13px 0 9px;padding-bottom:7px;scrollbar-color:#2a658f #0a2238}
 .v14-heatmap{display:grid;grid-template-rows:repeat(7,12px);grid-template-columns:repeat(53,12px);grid-auto-flow:column;gap:3px;width:max-content;max-width:none}
 /* Version 15: fixed Jan–Dec calendar with month labels and year picker */
@@ -544,12 +537,7 @@ body.forge-focus[data-view="community"]{--view-accent:#6ee7c2;--view-accent-soft
     <div class="stat"><span class="label">Exercises Tracked</span><strong id="statExercises">0</strong><small>Unique exercise names</small></div>
     <div class="stat"><span class="label">Personal Records</span><strong id="statPRs">0</strong><small>Best estimated 1RM per exercise</small></div>
   </section>
-  <section id="v14DashboardExtras" class="forge-v14-panels" aria-label="Lifetime tonnage and completed workout consistency">
-    <article class="v14-dashboard-card" id="v14TonnageCard">
-      <h3 class="v14-card-title">🏅 Lifetime Tonnage Milestones</h3>
-      <p class="v14-note">A fun comparison based on all logged weight × reps, converted to pounds.</p>
-      <div id="v14TonnageContent"><p class="v14-note">Log a weighted set to begin.</p></div>
-    </article>
+  <section id="v14DashboardExtras" class="forge-v14-panels" aria-label="Completed workout consistency">
     <article class="v14-dashboard-card" id="v14ConsistencyCard">
       <h3 class="v14-card-title">▦ Training Consistency · Calendar Year</h3>
       <p class="v14-note">January 1 → December 31, left to right. Each column represents seven consecutive days. Only sessions marked complete count; colors show the dominant eligible 1RM loading zone.</p>
@@ -2206,14 +2194,7 @@ function initializeFocusNavigation(){
 }
 
 
-/* Forge performance calculations: 1–10 rep PR Pacer, tonnage milestones, and consistency calendar. */
-const FORGE_MILESTONES=[
- {weight:10000,name:"African Elephant",icon:"🐘"},
- {weight:50000,name:"Bradley Fighting Vehicle",icon:"🚜"},
- {weight:100000,name:"Boeing 737",icon:"✈️"},
- {weight:300000,name:"Blue Whale",icon:"🐋"},
- {weight:1000000,name:"Million Pound Club",icon:"🏆"}
-];
+/* Forge performance calculations: 1–10 rep PR Pacer and consistency calendar. */
 function forgeFormat(n,digits=0){return Number(n).toLocaleString(undefined,{maximumFractionDigits:digits});}
 function forgeWeightedSets(){
  const sessions=[];
@@ -2272,25 +2253,6 @@ function forgeRefreshAdvancedPacers(card,ex,dayId){
   const set=ex.sets[Number(pacer.dataset.pacerIndex)];if(set)forgeUpdatePacer(pacer,ex,set,false,dayId);
  });
 }
-function forgeTonnage(){
- const host=$('v14TonnageContent');if(!host)return;
- const pounds=forgeWeightedSets().reduce((n,s)=>n+toLbs(s.volume),0);
- let current=null,next=null;
- FORGE_MILESTONES.forEach(m=>{if(pounds>=m.weight)current=m;else if(!next)next=m});
- const start=current?.weight||0;
- const pct=next?Math.max(0,Math.min(100,(pounds-start)/(next.weight-start)*100)):100;
- host.replaceChildren();
- const hero=reportNode('div','v14-hero');
- hero.append(reportNode('span','v14-emoji',current?.icon||'🏋️'));
- const desc=reportNode('div');desc.append(reportNode('strong','',current?.name||'Your first milestone awaits'),reportNode('small','',current?`Achieved at ${forgeFormat(current.weight)} lb cumulative volume`:'Start logging sets to build your lifetime volume'));hero.append(desc);host.append(hero);
- host.append(reportNode('div','v14-milestone-details',`${forgeFormat(pounds)} lb total logged training volume`));
- const track=reportNode('div','v14-progress-track'),fill=reportNode('div','v14-progress-fill');fill.style.width=pct.toFixed(2)+'%';track.append(fill);host.append(track);
- const labels=reportNode('div','v14-milestone-details');
- labels.append(reportNode('span','',next?`${forgeFormat(pct,1)}% from ${current?forgeFormat(start):'0'} lb toward the next milestone`:'Highest milestone unlocked!'));
- labels.append(reportNode('strong','',next?`${next.icon} ${next.name} · ${forgeFormat(next.weight)} lb`:'🏆 Million Pound Club'));
- host.append(labels);
- host.append(reportNode('p','v14-note','These are illustrative weight comparisons, not precise object specifications. Volume sums all positive logged weights × reps, including unfinished sessions.'));
-}
 function forgeConsistency(){
  const host=$('v14ConsistencyGrid'),summary=$('v14ConsistencySummary'),yearSelect=$('v15CalendarYear'),monthBar=$('v15CalendarMonths');
  if(!host||!summary||!yearSelect||!monthBar)return;
@@ -2346,9 +2308,9 @@ function forgeConsistency(){
  summary.textContent=`${selectedYear}: ${completedDays} active ${completedDays===1?'day':'days'} · ${workoutCount} completed ${workoutCount===1?'session':'sessions'}. Dates run from January 1 through December 31. Click “Mark session complete” in Log Workout to count a day.`;
 }
 
-function forgeRenderV14(){forgeTonnage();forgeConsistency();}
+function forgeRenderV14(){forgeConsistency();}
 function forgeInitCollapsers(){
- for(const id of ['v14TonnageCard','v14ConsistencyCard']){
+ for(const id of ['v14ConsistencyCard']){
   const panel=$(id);if(!panel||panel.querySelector('.v14-collapse-button'))continue;
   const head=panel.querySelector('.v14-card-title');if(!head)continue;
   const btn=document.createElement('button');btn.type='button';btn.className='v14-collapse-button';btn.textContent='− Minimize';btn.setAttribute('aria-expanded','true');btn.setAttribute('aria-label','Minimize or expand '+head.textContent.trim());
