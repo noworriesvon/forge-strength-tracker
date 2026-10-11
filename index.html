@@ -431,6 +431,13 @@ body.forge-focus[data-view]:not([data-view="dashboard"]) #v14DashboardExtras{dis
 @media(max-width:650px){.f19-panel{padding:13px}.f19-photo-preview{grid-template-columns:1fr}.f19-photo-figure img{height:245px}}
 @media print{.f19-photo-figure img{max-height:95mm;height:80mm!important}.f19-photo-preview{grid-template-columns:1fr 1fr!important}.f19-report-table table{font-size:8px!important}.f19-photo-figure{page-break-inside:avoid!important}}
 </style>
+<style>
+body.forge-focus[data-view="community"]{--view-accent:#6ee7c2;--view-accent-soft:#31cda52b;--view-accent-deep:#123f3b}
+.community-page{display:grid;gap:18px}.community-hero{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;padding:23px;border:1px solid #2e6a62;border-radius:17px;background:#0b2528}.community-hero-copy{max-width:720px}.community-kicker{color:#6ee7c2;font-size:10px;font-weight:900;letter-spacing:.15em}.community-hero h2{font-size:clamp(24px,3vw,36px);margin:7px 0}.community-hero p{color:#b7d5d1;margin:0;line-height:1.65}.community-prototype-badge{flex:none;border:1px solid #897236;background:#3b3016;color:#ffe29a;border-radius:99px;padding:7px 11px;font-size:10px;font-weight:850;letter-spacing:.08em}.community-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;border:1px solid #284d59;background:#0a1c2d;border-radius:14px;padding:12px}.community-filters{display:flex;gap:7px;flex-wrap:wrap}.community-filter{border:1px solid #315b6c;background:#0d2538;color:#bdd4e5;border-radius:99px;padding:7px 12px;font-size:11px;font-weight:750}.community-filter.active{border-color:#5de7c1;background:#15463f;color:#e4fff7}.community-sort{display:flex;align-items:center;gap:8px;color:#9fbbce;font-size:11px}.community-sort select{background:#071725;border:1px solid #31536d;color:#edf7ff;border-radius:8px;padding:7px 9px}.community-layout{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:17px;align-items:start}.community-feed{display:grid;gap:13px}.community-post{border:1px solid #244b62;border-radius:16px;background:#091b2c;overflow:hidden}.community-post-head{display:flex;align-items:center;gap:11px;padding:15px 16px 11px}.community-avatar{width:43px;height:43px;flex:none;border-radius:13px;display:grid;place-items:center;background:#183f53;border:1px solid #3b728b;color:#dff7ff;font-weight:900}.community-author{min-width:0;flex:1}.community-author strong{display:block}.community-author small{display:block;color:#91afc3;margin-top:2px}.community-public{color:#75e7c8;border:1px solid #287d69;background:#0d3a34;border-radius:99px;padding:4px 7px;font-size:9px;font-weight:850}.community-post-body{padding:2px 16px 16px}.community-post-body h3{font-size:20px;margin:5px 0 6px}.community-post-body p{color:#acc7d9;line-height:1.6;margin:0 0 13px}.community-achievement{display:flex;align-items:center;gap:13px;border:1px solid #705f2d;background:#332a14;border-radius:12px;padding:13px;margin:11px 0}.community-achievement-mark{width:43px;height:43px;display:grid;place-items:center;border-radius:50%;background:#725b1e;color:#ffe49b;font-weight:950}.community-achievement small{display:block;color:#d8c88d}.community-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:12px 0}.community-metric{border:1px solid #27475f;background:#0d2438;border-radius:10px;padding:10px}.community-metric small{display:block;color:#88a9bf;font-size:9px;text-transform:uppercase;letter-spacing:.06em}.community-metric strong{display:block;margin-top:4px;color:#e8f7ff}.community-tags{display:flex;gap:6px;flex-wrap:wrap}.community-tag{background:#142e42;color:#a9c9df;border-radius:99px;padding:5px 8px;font-size:9px}.community-actions{display:flex;align-items:center;gap:8px;border-top:1px solid #1d3a50;padding:11px 16px}.community-action{border:0;background:transparent;color:#9db9cc;padding:6px 8px;border-radius:8px;font-size:11px}.community-action:hover,.community-action.active{background:#15384a;color:#7de9cb}.community-side{display:grid;gap:13px}.community-side-card{border:1px solid #284b61;background:#0a1c2d;border-radius:14px;padding:15px}.community-side-card h3{margin:0 0 12px}.community-athlete{display:flex;align-items:center;gap:9px;padding:9px 0;border-bottom:1px solid #1e3a4e}.community-athlete:last-child{border:0}.community-athlete .community-avatar{width:35px;height:35px;border-radius:10px;font-size:11px}.community-athlete-copy{flex:1;min-width:0}.community-athlete-copy strong,.community-athlete-copy small{display:block}.community-athlete-copy small{color:#8eacbf;font-size:10px}.community-follow{border:1px solid #38677b;background:#102d40;color:#d9effa;border-radius:8px;padding:5px 8px;font-size:10px}.community-follow.active{border-color:#3abf9c;background:#16463f;color:#cafff0}.community-topic{display:flex;justify-content:space-between;gap:10px;padding:8px 0;color:#b6cedd;font-size:11px}.community-topic strong{color:#6ee7c2}.community-empty{padding:30px;text-align:center;border:1px dashed #31556b;border-radius:14px;color:#9bb7c9}
+@media(max-width:980px){.community-layout{grid-template-columns:1fr}.community-side{grid-template-columns:1fr 1fr}}
+@media(max-width:650px){.community-hero{align-items:flex-start;flex-direction:column}.community-side{grid-template-columns:1fr}.community-metrics{grid-template-columns:1fr}.community-toolbar{align-items:flex-start;flex-direction:column}.community-sort{width:100%;justify-content:space-between}}
+@media print{#community{display:none!important}}
+</style>
 <!-- Version 16: calendar date automatically updates weekday session names, while preserving custom names. -->
 </head>
 <body>
@@ -438,7 +445,7 @@ body.forge-focus[data-view]:not([data-view="dashboard"]) #v14DashboardExtras{dis
 <aside class="sidebar">
   <div class="brand"><div class="brand-icon" aria-hidden="true">╋</div><div><h1>FORGE</h1><small>Strength Tracker</small></div></div>
   <nav class="nav" aria-label="Main navigation">
-    <a class="active" href="#home"><span>⌂</span>Dashboard</a><a href="#workoutStudio" id="navLogWorkout" data-studio-mode="log"><span>▦</span>Log Workout</a><a href="#workoutStudio" id="navDesignWorkout" data-studio-mode="design"><span>✎</span>Design Workout</a><a href="#exerciseBank"><span>▤</span>Exercise Bank</a><a href="#training" id="navAdvancedWeeks"><span>▦</span>All Weeks</a><a href="#exerciseExplorer" id="navExerciseExplorer"><span>⌕</span>Exercise History</a><a href="#history"><span>▥</span>Workout History</a><a href="#savedWorkouts" id="savedWorkoutsNavLink"><span>▣</span>Saved Workouts <small id="savedWorkoutNavCount" class="saved-nav-count">0</small></a><div id="savedWorkoutNavList" class="saved-nav-list" aria-label="Saved workouts"></div><a href="#dashboard"><span>▥</span>Strength Analytics</a><a href="#reportCenter" id="navProgressReports"><span>▣</span>Progress Reports</a><a href="#muscle-map"><span>♧</span>Muscle Heatmap</a><a href="#history"><span>♜</span>Personal Records</a><a href="#backup"><span>☁</span>Backup & Restore</a><a href="#settings"><span>⚙</span>Settings</a>
+    <a class="active" href="#home"><span>⌂</span>Dashboard</a><a href="#community" id="navCommunity"><span>◎</span>Community</a><a href="#workoutStudio" id="navLogWorkout" data-studio-mode="log"><span>▦</span>Log Workout</a><a href="#workoutStudio" id="navDesignWorkout" data-studio-mode="design"><span>✎</span>Design Workout</a><a href="#exerciseBank"><span>▤</span>Exercise Bank</a><a href="#training" id="navAdvancedWeeks"><span>▦</span>All Weeks</a><a href="#exerciseExplorer" id="navExerciseExplorer"><span>⌕</span>Exercise History</a><a href="#history"><span>▥</span>Workout History</a><a href="#savedWorkouts" id="savedWorkoutsNavLink"><span>▣</span>Saved Workouts <small id="savedWorkoutNavCount" class="saved-nav-count">0</small></a><div id="savedWorkoutNavList" class="saved-nav-list" aria-label="Saved workouts"></div><a href="#dashboard"><span>▥</span>Strength Analytics</a><a href="#reportCenter" id="navProgressReports"><span>▣</span>Progress Reports</a><a href="#muscle-map"><span>♧</span>Muscle Heatmap</a><a href="#history"><span>♜</span>Personal Records</a><a href="#backup"><span>☁</span>Backup & Restore</a><a href="#settings"><span>⚙</span>Settings</a>
   </nav>
   <div class="motto"><div class="mountain">⌁</div><strong>BETTER<br>THAN YESTERDAY</strong><p>“Progress isn't a destination,<br>it's a habit.”</p></div>
 </aside>
@@ -450,6 +457,46 @@ body.forge-focus[data-view]:not([data-view="dashboard"]) #v14DashboardExtras{dis
     <div class="focus-banner-copy"><div class="focus-breadcrumb"><span>FORGE / <span id="focusGroup">OVERVIEW</span></span><span class="focus-now"><span class="focus-pulse"></span> YOU ARE HERE</span></div>
       <h1 id="focusTitle">Dashboard</h1><p id="focusDescription">Your training at a glance. Open a section on the left to focus on one task.</p></div>
     <button type="button" class="focus-home-btn" id="focusGoHome" aria-label="Return to dashboard">⌂ &nbsp; Dashboard</button>
+  </section>
+
+  <section id="community" class="community-page" aria-labelledby="communityTitle">
+    <div class="community-hero">
+      <div class="community-hero-copy"><div class="community-kicker">FORGE COMMUNITY</div><h2 id="communityTitle">Train together. Progress together.</h2><p>Discover public workouts, celebrate athlete milestones, and find new routines from people building strength around the world.</p></div>
+      <span class="community-prototype-badge">SAMPLE DATA · PROTOTYPE</span>
+    </div>
+    <div class="community-toolbar">
+      <div class="community-filters" role="group" aria-label="Filter community feed">
+        <button class="community-filter active" type="button" data-community-filter="all">All activity</button>
+        <button class="community-filter" type="button" data-community-filter="workout">Workouts</button>
+        <button class="community-filter" type="button" data-community-filter="achievement">Achievements</button>
+      </div>
+      <label class="community-sort">Sort feed <select id="communitySort"><option value="recent">Most recent</option><option value="popular">Most supported</option></select></label>
+    </div>
+    <div class="community-layout">
+      <div class="community-feed" id="communityFeed">
+        <article class="community-post" data-community-kind="workout" data-community-popularity="128" data-community-order="3">
+          <div class="community-post-head"><div class="community-avatar">MT</div><div class="community-author"><strong>Maya Torres</strong><small>@mayalifts · 18 minutes ago</small></div><span class="community-public">PUBLIC</span></div>
+          <div class="community-post-body"><h3>Pull strength session</h3><p>Five solid sets of weighted pull-ups, followed by rows and rear-deltoid work. Grip finally felt locked in today.</p><div class="community-metrics"><div class="community-metric"><small>Top set</small><strong>+45 lb × 5</strong></div><div class="community-metric"><small>Exercises</small><strong>5 movements</strong></div><div class="community-metric"><small>Volume</small><strong>12,480 lb</strong></div></div><div class="community-tags"><span class="community-tag">Pull-Up</span><span class="community-tag">Back</span><span class="community-tag">Strength</span></div></div>
+          <div class="community-actions"><button class="community-action community-like" type="button" data-count="128" aria-pressed="false">Support · 128</button><button class="community-action community-save" type="button" aria-pressed="false">Save workout</button><button class="community-action" type="button" disabled title="Comments are planned for a later phase">Comments coming later</button></div>
+        </article>
+        <article class="community-post" data-community-kind="achievement" data-community-popularity="246" data-community-order="2">
+          <div class="community-post-head"><div class="community-avatar">AB</div><div class="community-author"><strong>Andre Blake</strong><small>@andrebuilds · 1 hour ago</small></div><span class="community-public">PUBLIC</span></div>
+          <div class="community-post-body"><div class="community-achievement"><div class="community-achievement-mark">PR</div><div><small>NEW ACHIEVEMENT</small><h3>500 lb Deadlift Club</h3></div></div><p>After sixteen weeks of focused posterior-chain work, Andre recorded a new tested deadlift maximum.</p><div class="community-metrics"><div class="community-metric"><small>New max</small><strong>500 lb</strong></div><div class="community-metric"><small>Improvement</small><strong>+25 lb</strong></div><div class="community-metric"><small>Bodyweight</small><strong>198 lb</strong></div></div><div class="community-tags"><span class="community-tag">Deadlift</span><span class="community-tag">Personal Record</span></div></div>
+          <div class="community-actions"><button class="community-action community-like" type="button" data-count="246" aria-pressed="false">Celebrate · 246</button><button class="community-action community-save" type="button" aria-pressed="false">Bookmark</button></div>
+        </article>
+        <article class="community-post" data-community-kind="workout" data-community-popularity="84" data-community-order="1">
+          <div class="community-post-head"><div class="community-avatar">LK</div><div class="community-author"><strong>Lena Kim</strong><small>@lenatrains · 3 hours ago</small></div><span class="community-public">PUBLIC</span></div>
+          <div class="community-post-body"><h3>Lower A · tempo focus</h3><p>Kept every squat controlled with a three-second descent. Sharing the structure for anyone running a lower-frequency strength split.</p><div class="community-metrics"><div class="community-metric"><small>Top squat</small><strong>225 lb × 6</strong></div><div class="community-metric"><small>Duration</small><strong>68 minutes</strong></div><div class="community-metric"><small>Total sets</small><strong>18 sets</strong></div></div><div class="community-tags"><span class="community-tag">Squat</span><span class="community-tag">Lower Body</span><span class="community-tag">Tempo</span></div></div>
+          <div class="community-actions"><button class="community-action community-like" type="button" data-count="84" aria-pressed="false">Support · 84</button><button class="community-action community-save" type="button" aria-pressed="false">Save workout</button></div>
+        </article>
+        <div id="communityEmpty" class="community-empty hidden">No sample posts match this filter.</div>
+      </div>
+      <aside class="community-side">
+        <section class="community-side-card"><h3>Athletes to discover</h3><div class="community-athlete"><div class="community-avatar">JN</div><div class="community-athlete-copy"><strong>Jordan Nash</strong><small>Powerlifting · 42 posts</small></div><button class="community-follow" type="button" aria-pressed="false">Follow</button></div><div class="community-athlete"><div class="community-avatar">SK</div><div class="community-athlete-copy"><strong>Samira Khan</strong><small>Calisthenics · 31 posts</small></div><button class="community-follow" type="button" aria-pressed="false">Follow</button></div><div class="community-athlete"><div class="community-avatar">ER</div><div class="community-athlete-copy"><strong>Eli Romero</strong><small>Bodybuilding · 27 posts</small></div><button class="community-follow" type="button" aria-pressed="false">Follow</button></div></section>
+        <section class="community-side-card"><h3>Trending this week</h3><div class="community-topic"><span>#BenchPress</span><strong>318 posts</strong></div><div class="community-topic"><span>#FirstPullUp</span><strong>204 posts</strong></div><div class="community-topic"><span>#LegDay</span><strong>187 posts</strong></div><div class="community-topic"><span>#NewPR</span><strong>163 posts</strong></div></section>
+        <section class="community-side-card"><h3>Your sharing controls</h3><p class="fineprint">Future publishing will be private by default. You will preview exactly which workout fields become public before sharing.</p><button class="btn small" type="button" disabled>Publishing arrives in Phase 2</button></section>
+      </aside>
+    </div>
   </section>
 
   <section id="home" class="welcome"><div><div class="eyebrow">YOUR TRAINING DASHBOARD</div><h2 id="welcomeHeading">Welcome Back, Athlete!</h2><p>Your strength journey continues. Stay consistent!</p></div><div class="welcome-actions"><div class="week-chip"><span style="font-size:21px">▦</span><div><strong id="weekCountLabel">Your training</strong><small>Log workouts to build your stats</small></div></div><button class="btn primary" id="addWeekTopBtn">＋ Log Workout</button><button class="btn green" id="exportCsvBtn">⇩ Export CSV</button></div></section>
@@ -1867,11 +1914,36 @@ function studioInit(){
 }
 
 
+function initializeCommunityPrototype(){
+ const feed=$("communityFeed"),sort=$("communitySort");if(!feed||!sort)return;
+ const posts=[...feed.querySelectorAll(".community-post")];
+ const apply=()=>{
+  const active=feed.dataset.filter||"all";
+  posts.sort((a,b)=>Number(b.dataset[sort.value==="popular"?"communityPopularity":"communityOrder"])-Number(a.dataset[sort.value==="popular"?"communityPopularity":"communityOrder"])).forEach(post=>{post.hidden=active!=="all"&&post.dataset.communityKind!==active;feed.insertBefore(post,$("communityEmpty"))});
+  $("communityEmpty").classList.toggle("hidden",posts.some(post=>!post.hidden));
+ };
+ document.querySelectorAll(".community-filter").forEach(button=>button.addEventListener("click",()=>{
+  document.querySelectorAll(".community-filter").forEach(item=>item.classList.toggle("active",item===button));feed.dataset.filter=button.dataset.communityFilter;apply();
+ }));
+ sort.addEventListener("change",apply);
+ document.querySelectorAll(".community-like").forEach(button=>button.addEventListener("click",()=>{
+  const active=button.getAttribute("aria-pressed")!=="true",count=Number(button.dataset.count||0)+(active?1:0);button.setAttribute("aria-pressed",String(active));button.classList.toggle("active",active);button.textContent=`${button.closest('[data-community-kind="achievement"]')?"Celebrate":"Support"} · ${count}`;
+ }));
+ document.querySelectorAll(".community-save").forEach(button=>{const idleLabel=button.textContent;button.addEventListener("click",()=>{
+  const active=button.getAttribute("aria-pressed")!=="true";button.setAttribute("aria-pressed",String(active));button.classList.toggle("active",active);button.textContent=active?"Saved":idleLabel;
+ })});
+ document.querySelectorAll(".community-follow").forEach(button=>button.addEventListener("click",()=>{
+  const active=button.getAttribute("aria-pressed")!=="true";button.setAttribute("aria-pressed",String(active));button.classList.toggle("active",active);button.textContent=active?"Following":"Follow";
+ }));
+ apply();
+}
+
 /* Version 12: one focus section at a time; legacy DOM stays in place for analytics and saves. */
 let focusReady=false;
 let focusView="dashboard";
 const focusRoutes={
  dashboard:{title:"Your Dashboard",group:"OVERVIEW",icon:"⌂",desc:"Your most important training numbers in one place. Collapse any dashboard card to see only what matters."},
+ community:{title:"Community",group:"CONNECT",icon:"◎",desc:"Preview the future public feed for shared workouts, athlete milestones, and community discovery."},
  log:{title:"Log a Workout",group:"TRAIN",icon:"▦",desc:"Choose your week and day, load or add exercises, then record your working sets. Save automatically."},
  design:{title:"Design a Workout",group:"BUILD",icon:"✎",desc:"Create a reusable workout plan here. Save it once, then recall it whenever you train."},
  bank:{title:"Exercise Bank",group:"BUILD",icon:"▤",desc:"Search and select exercises, add a custom movement, or send an exercise directly to a training day."},
@@ -1886,7 +1958,7 @@ const focusRoutes={
  backup:{title:"Backup & Export",group:"YOUR DATA",icon:"☁",desc:"Download a safe copy of your workouts, restore a backup, or export a training spreadsheet."},
  settings:{title:"Profile & Settings",group:"YOUR DATA",icon:"⚙",desc:"Update your name, body weight, actual one-rep maxes, units and tracking preferences."}
 };
-const focusIDs={home:"dashboard",workoutStudio:"log",exerciseBank:"bank",training:"weeks",exerciseExplorer:"explorer",history:"history",savedWorkouts:"saved",dashboard:"analytics",reportCenter:"reports","muscle-map":"heatmap",backup:"backup",settings:"settings"};
+const focusIDs={home:"dashboard",community:"community",workoutStudio:"log",exerciseBank:"bank",training:"weeks",exerciseExplorer:"explorer",history:"history",savedWorkouts:"saved",dashboard:"analytics",reportCenter:"reports","muscle-map":"heatmap",backup:"backup",settings:"settings"};
 function focusDestination(link){
  if(link.dataset.studioMode)return link.dataset.studioMode;
  if(link.id==="savedWorkoutsNavLink")return "saved";
@@ -1902,10 +1974,10 @@ function setFocusView(view,opts={}){
  $("focusMark").textContent=route.icon;$("focusGroup").textContent=route.group;$("focusTitle").textContent=route.title;
  $("focusDescription").textContent=route.desc;
  $("focusGoHome").hidden=view==="dashboard";
- const titles={dashboard:"Dashboard",log:"Log Workout",design:"Design Workout",bank:"Exercise Bank",weeks:"All Weeks",explorer:"Exercise History",history:"Workout History",saved:"Saved Workouts",analytics:"Strength Analytics",reports:"Progress Reports",heatmap:"Muscle Heatmap",records:"Personal Records",backup:"Backup & Restore",settings:"Settings"};
+ const titles={dashboard:"Dashboard",community:"Community",log:"Log Workout",design:"Design Workout",bank:"Exercise Bank",weeks:"All Weeks",explorer:"Exercise History",history:"Workout History",saved:"Saved Workouts",analytics:"Strength Analytics",reports:"Progress Reports",heatmap:"Muscle Heatmap",records:"Personal Records",backup:"Backup & Restore",settings:"Settings"};
  $("focusNowCrumb")&&($("focusNowCrumb").textContent=titles[view]);
- const on={home:view==="dashboard",workoutStudio:view==="log"||view==="design",exerciseBank:view==="bank",savedWorkouts:view==="saved",training:view==="weeks",analysisSection:view==="analytics",reportCenter:view==="reports",exerciseExplorer:view==="explorer",history:view==="history",backup:view==="backup",stats:view==="dashboard","content-grid":["dashboard","analytics","heatmap","records","settings"].includes(view)};
- for(const id of ["home","workoutStudio","exerciseBank","savedWorkouts","training","analysisSection","reportCenter","exerciseExplorer","history","backup"]){const node=$(id);if(node)node.classList.toggle("forge-page-hidden",!on[id]);}
+ const on={home:view==="dashboard",community:view==="community",workoutStudio:view==="log"||view==="design",exerciseBank:view==="bank",savedWorkouts:view==="saved",training:view==="weeks",analysisSection:view==="analytics",reportCenter:view==="reports",exerciseExplorer:view==="explorer",history:view==="history",backup:view==="backup",stats:view==="dashboard","content-grid":["dashboard","analytics","heatmap","records","settings"].includes(view)};
+ for(const id of ["home","community","workoutStudio","exerciseBank","savedWorkouts","training","analysisSection","reportCenter","exerciseExplorer","history","backup"]){const node=$(id);if(node)node.classList.toggle("forge-page-hidden",!on[id]);}
  for(const cls of ["stats","content-grid"]){const node=document.querySelector(".main > ."+cls);if(node)node.classList.toggle("forge-page-hidden",!on[cls]);}
  const grid=document.querySelector(".main > .content-grid");if(grid)grid.dataset.focusLayout=["dashboard","analytics","heatmap","records","settings"].includes(view)?view:"dashboard";
  if(view==="weeks")$("training").open=true;
@@ -2278,7 +2350,7 @@ async function init(){
   }catch(e){console.warn("Could not preserve old RIR storage snapshot",e)}}
   if(saved){try{const normalized=normalizeData(saved);state.profile=normalized.profile;state.weeks=normalized.weeks;state.templates=normalized.templates;state.customExercises=normalized.customExercises;state.chartSelection=normalized.chartSelection;state.actualMaxHistory=normalized.actualMaxHistory;state.barbellCustom=normalized.barbellCustom;state.scoringFormula=normalized.scoringFormula;if(!state.weeks.length)state.weeks.push(newWeek("Week 1"));}catch(e){showNotice("Saved data was invalid; starting a new log. If you have a backup, restore it.");state.weeks=[newWeek("Week 1")]}}
   else state.weeks=[newWeek("Week 1")];
-  syncProfileToUI();render();initializeF19();studioInit();renderSidePanels();setupReportCenter();initExerciseExplorer();initializeTrainingInsights();$("v15CalendarYear").addEventListener("change",forgeConsistency);forgeRenderV14();forgeInitCollapsers();if(saved && (Number(saved.version||2)<5||migratedLocalData))saveData(true);if(migratedLocalData)showToast("Local workout data is being migrated to your private Firestore account.");
+  syncProfileToUI();render();initializeF19();studioInit();renderSidePanels();setupReportCenter();initExerciseExplorer();initializeTrainingInsights();initializeCommunityPrototype();$("v15CalendarYear").addEventListener("change",forgeConsistency);forgeRenderV14();forgeInitCollapsers();if(saved && (Number(saved.version||2)<5||migratedLocalData))saveData(true);if(migratedLocalData)showToast("Local workout data is being migrated to your private Firestore account.");
   $("addWeekBtn").addEventListener("click",()=>addWeek(false));$("addWeekTopBtn").addEventListener("click",()=>studioSelectMode("log",true));$("copyPreviousWeekBtn").addEventListener("click",()=>addWeek(true));
  $("bankTargetWeek").addEventListener("change",renderBankTargets);$("bankSearch").addEventListener("input",renderExerciseBank);$("bankCategory").addEventListener("change",renderExerciseBank);
  $("bankAddBtn").addEventListener("click",()=>{if(!selectedBankExercise){showToast("Select an exercise from the bank first.");return}bankAdd(selectedBankExercise)});
