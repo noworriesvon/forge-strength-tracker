@@ -1979,10 +1979,11 @@ function publicTime(value){
 function publicPostHtml(post){
  const exercises=Array.isArray(post.exercises)?post.exercises:[],tags=(Array.isArray(post.tags)?post.tags:[]).slice(0,5),avatar={displayName:post.authorName,avatarUrl:post.avatarUrl};
  const top=exercises.flatMap(ex=>(ex.sets||[]).map(set=>({name:ex.name,weight:Number(set.weight),reps:Number(set.reps)}))).filter(set=>set.weight>0&&set.reps>0).sort((a,b)=>b.weight-a.weight)[0];
+ const supported=post.supportedByCurrentUser===true,supportsReady=post.supportsReady!==false;
  return `<article class="community-post" data-community-kind="workout" data-community-popularity="${Number(post.supportCount)||0}" data-community-time="${post.publishedAt?.seconds||0}">
   <div class="community-post-head">${publicAvatar(avatar)}<div class="community-author"><strong>${socialEscape(post.authorName||"Forge Athlete")}</strong><small>@${socialEscape(post.handle||"athlete")} · ${socialEscape(publicTime(post.publishedAt))}</small></div><span class="community-public">PUBLIC</span></div>
   <div class="community-post-body"><h3>${socialEscape(post.title||"Shared workout")}</h3>${post.caption?`<p>${socialEscape(post.caption)}</p>`:""}<div class="community-metrics"><div class="community-metric"><small>Top set</small><strong>${top?`${socialEscape(top.weight)} ${socialEscape(post.unit||"lb")} × ${socialEscape(top.reps)}`:"Not shared"}</strong></div><div class="community-metric"><small>Exercises</small><strong>${Number(post.exerciseCount)||exercises.length} movements</strong></div><div class="community-metric"><small>Volume</small><strong>${Number(post.volume||0).toLocaleString()} ${socialEscape(post.unit||"lb")}</strong></div></div><div class="community-tags">${tags.map(tag=>`<span class="community-tag">${socialEscape(tag)}</span>`).join("")}</div></div>
-  <div class="community-actions"><span class="community-action">Support · ${Number(post.supportCount)||0}</span>${post.ownerId===currentUser?.uid?`<span class="community-action active">Your public workout</span><button class="community-action community-remove-post" type="button" data-post-id="${socialEscape(post.id)}">Remove public post</button>`:""}</div>
+  <div class="community-actions"><button class="community-action community-support${supported?" active":""}" type="button" data-post-id="${socialEscape(post.id)}" aria-pressed="${supported}" ${supportsReady&&!post.supportBusy?"":'disabled title="Support is temporarily unavailable"'}>${supported?"Supported":"Support"} · ${Number(post.supportCount)||0}</button>${post.ownerId===currentUser?.uid?`<span class="community-action active">Your public workout</span><button class="community-action community-remove-post" type="button" data-post-id="${socialEscape(post.id)}">Remove public post</button>`:""}</div>
  </article>`;
 }
 function renderCommunityFeed(){
@@ -1992,7 +1993,14 @@ function renderCommunityFeed(){
 }
 async function loadCommunityFeed(){
  $("communityFeed").innerHTML='<div class="community-empty">Loading public workouts…</div>';
- try{const snapshot=await getDocs(query(collection(db,"publicWorkouts"),orderBy("publishedAt","desc"),limit(50)));communityPosts=snapshot.docs.map(item=>({id:item.id,...item.data()}));renderCommunityFeed()}
+ try{
+  const snapshot=await getDocs(query(collection(db,"publicWorkouts"),orderBy("publishedAt","desc"),limit(50)));communityPosts=snapshot.docs.map(item=>({id:item.id,...item.data(),supportCount:0,supportedByCurrentUser:false,supportsReady:true}));
+  await Promise.all(communityPosts.map(async post=>{
+   try{const supports=await getDocs(collection(db,"publicWorkouts",post.id,"supports"));post.supportCount=supports.size;post.supportedByCurrentUser=supports.docs.some(item=>item.id===currentUser.uid)}
+   catch(error){console.error(error);post.supportsReady=false}
+  }));
+  renderCommunityFeed();
+ }
  catch(error){console.error(error);$("communityFeed").innerHTML='<div class="community-empty">The community feed could not load. Check the publicWorkouts security rules.</div>'}
 }
 async function loadCommunityProfiles(){
@@ -2032,13 +2040,29 @@ async function publishPendingWorkout(){
 }
 async function unpublishWorkout(day){
  if(!confirm(`Remove ${day.name||"this workout"} from the public community? Your private workout will stay intact.`))return;
- try{await deleteDoc(publicPostRef(day));publishedWorkoutIds.delete(sourceWorkoutKey(day));render();studioRender();await loadCommunityFeed();showToast("Workout is private again.")}
+ try{await deletePublicPost(publicPostRef(day));publishedWorkoutIds.delete(sourceWorkoutKey(day));render();studioRender();await loadCommunityFeed();showToast("Workout is private again.")}
  catch(error){console.error(error);showNotice("The public workout could not be removed. Check your Firestore security rules.")}
+}
+async function deletePublicPost(postRef){
+ try{const supports=await getDocs(collection(postRef,"supports"));await Promise.all(supports.docs.map(item=>deleteDoc(item.ref)))}
+ catch(error){console.warn("Support records could not be cleared before removing the post.",error)}
+ await deleteDoc(postRef);
+}
+async function togglePublicPostSupport(postId){
+ const post=communityPosts.find(item=>item.id===postId);if(!post||post.supportBusy||post.supportsReady===false)return;
+ const wasSupported=post.supportedByCurrentUser===true;post.supportBusy=true;renderCommunityFeed();
+ try{
+  const supportRef=doc(db,"publicWorkouts",postId,"supports",currentUser.uid);
+  if(wasSupported)await deleteDoc(supportRef);else await setDoc(supportRef,{userId:currentUser.uid,createdAt:serverTimestamp()});
+  post.supportedByCurrentUser=!wasSupported;post.supportCount=Math.max(0,(Number(post.supportCount)||0)+(wasSupported?-1:1));
+  showToast(wasSupported?"Support removed.":"Workout supported.");
+ }catch(error){console.error(error);showNotice("Support could not be updated. Publish the updated Firestore rules, then try again.")}
+ finally{post.supportBusy=false;renderCommunityFeed()}
 }
 async function removePublicPostById(postId){
  const post=communityPosts.find(item=>item.id===postId);if(!post||post.ownerId!==currentUser.uid)return;
  if(!confirm(`Remove “${post.title||"this workout"}” from the public community? Your private training data will not be deleted.`))return;
- try{await deleteDoc(doc(db,"publicWorkouts",postId));await Promise.all([loadOwnPublishedWorkouts(),loadCommunityFeed()]);render();studioRender();showToast("Public post removed.")}
+ try{await deletePublicPost(doc(db,"publicWorkouts",postId));await Promise.all([loadOwnPublishedWorkouts(),loadCommunityFeed()]);render();studioRender();showToast("Public post removed.")}
  catch(error){console.error(error);showNotice("The public post could not be removed. Check your Firestore security rules.")}
 }
 async function initializeSocialMvp(){
@@ -2046,7 +2070,7 @@ async function initializeSocialMvp(){
  const feed=$("communityFeed");feed.dataset.filter="all";
  document.querySelectorAll(".community-filter").forEach(button=>button.addEventListener("click",()=>{document.querySelectorAll(".community-filter").forEach(item=>item.classList.toggle("active",item===button));feed.dataset.filter=button.dataset.communityFilter;renderCommunityFeed()}));
  $("communitySort").addEventListener("change",renderCommunityFeed);
- feed.addEventListener("click",event=>{const button=event.target.closest(".community-remove-post");if(button)void removePublicPostById(button.dataset.postId)});
+ feed.addEventListener("click",event=>{const removeButton=event.target.closest(".community-remove-post"),supportButton=event.target.closest(".community-support");if(removeButton)void removePublicPostById(removeButton.dataset.postId);else if(supportButton)void togglePublicPostSupport(supportButton.dataset.postId)});
  await Promise.all([loadPublicProfile(),loadOwnPublishedWorkouts(),loadCommunityFeed(),loadCommunityProfiles()]);render();studioRender();
 }
 
