@@ -523,7 +523,7 @@ body.forge-focus[data-view="community"]{--view-accent:#6ee7c2;--view-accent-soft
         <div class="forge-v18-subtotal session" role="status"><span>Workout session volume · all exercises</span><strong id="forgeStudioSessionTotal">0 lb·reps</strong></div>
         <div class="forge-v18-subtotal week"><span>Training week volume · all days</span><strong id="forgeStudioWeekTotal">0 lb·reps</strong></div>
       </div>
-      <div class="ws-primary-action"><div><strong>✓ Your session saves automatically</strong><div class="ws-muted">Your log feeds weekly charts, history, and muscle trends.</div></div><button id="studioFinish" class="btn green" type="button">✓ Mark session complete</button></div>
+      <div class="ws-primary-action"><div><strong>✓ Your session saves automatically</strong><div class="ws-muted">Your log feeds weekly charts, history, and muscle trends.</div></div><div class="actions"><button id="studioPublish" class="btn" type="button">◎ Publish workout</button><button id="studioFinish" class="btn green" type="button">✓ Mark session complete</button></div></div>
     </div>
     <div id="studioDesign" class="workspace-content hidden" role="tabpanel" aria-labelledby="studioDesignTab">
       <div class="ws-step"><div class="ws-step-title"><span class="ws-step-index">1</span><div><h3>Name your workout</h3><p>This is a reusable routine, not a training session. It won't affect your charts until you log it.</p></div></div>
@@ -1829,6 +1829,7 @@ function studioRenderSelects(){
  const hasDay=Boolean(day);["studioDayName","studioDate","studioNotes","studioLoadBtn","studioAddExerciseBtn","studioFinish"].forEach(id=>$(id).disabled=!hasDay);
  $("studioDayName").value=day?.name||"";$("studioDate").value=day?.date||"";$("studioNotes").value=day?.notes||"";
  $("studioFinish").textContent=day?.completed?"↺ Reopen session":"✓ Mark session complete";
+ const isPublic=Boolean(day&&currentUser&&publishedWorkoutIds.has(sourceWorkoutKey(day)));$("studioPublish").disabled=!day||(!day.completed&&!isPublic);$("studioPublish").textContent=isPublic?"✓ Public · Unpublish":"◎ Publish workout";$("studioPublish").classList.toggle("green",isPublic);$("studioPublish").title=!day?.completed&&!isPublic?"Mark this session complete before publishing.":"";
  const chosen=$("studioLoadTemplate").value;$("studioLoadTemplate").replaceChildren();$("studioLoadTemplate").append(new Option("Choose a saved workout…",""));state.templates.forEach(t=>$("studioLoadTemplate").append(new Option(t.name,t.id)));$("studioLoadTemplate").value=state.templates.some(t=>t.id===chosen)?chosen:"";
 }
 function studioMakeSetLine(ex,set,idx,redraw,write,includeIntensity){
@@ -1918,6 +1919,7 @@ function studioInit(){
  $("studioLoadBtn").addEventListener("click",studioLoadTemplate);
  $("studioAddExerciseBtn").addEventListener("click",()=>{const name=cleanText($("studioAddExercise").value,100);const {day}=studioSelected();if(!name||!day){showToast("Choose a day and enter an exercise name.");return}day.exercises.push(newExercise(name,3));day.completed=false;$("studioAddExercise").value="";render();saveData();studioRender()});
  $("studioAddExercise").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();$("studioAddExerciseBtn").click()}});
+ $("studioPublish").addEventListener("click",()=>{const {week,day}=studioSelected();if(!week||!day)return;publishedWorkoutIds.has(sourceWorkoutKey(day))?unpublishWorkout(day):openPublishDialog(week,day)});
  $("studioFinish").addEventListener("click",()=>{const {day}=studioSelected();if(!day)return;if(!day.exercises.length){showToast("Add exercises before completing a workout.");return}if(!day.completed&&!day.exercises.some(ex=>ex.sets.some(s=>Number(s.weight)>0&&Number(s.reps)>0))){showToast("Enter a working weight and reps before marking the session complete.");return}day.completed=!day.completed;render();saveData();studioRender();showToast(day.completed?"Workout marked complete. Great work!":"Session reopened for edits.")});
  $("studioTemplateName").addEventListener("input",()=>{studioDraft.name=cleanText($("studioTemplateName").value,80);studioSaveDraft()});
  $("studioEditTemplate").addEventListener("change",()=>{if(studioDraft.exercises.length&&!confirm("Switch designs? Your current unfinished draft will be replaced (saved workouts stay unchanged).")){studioRenderDraft();return}studioEditTemplate($("studioEditTemplate").value)});
@@ -2021,13 +2023,13 @@ async function publishPendingWorkout(){
  const confirmButton=$("confirmPublishBtn");confirmButton.disabled=true;confirmButton.textContent="Publishing…";
  try{
   const tags=[...new Set(exercises.map(exercise=>exercise.name).filter(Boolean))].slice(0,5),payload={type:"workout",ownerId:currentUser.uid,sourceKey:sourceWorkoutKey(day),authorName:publicProfile.displayName,handle:publicProfile.handle,avatarUrl:publicProfile.avatarUrl||"",trainingStyle:publicProfile.trainingStyle||"",title,caption,workoutDate:shareDate?day.date||"":"",exercises,exerciseCount:exercises.length,totalSets:exercises.reduce((sum,exercise)=>sum+exercise.sets.length,0),volume:shareWeights?forgeSessionVolume(day):0,unit:state.profile.unit,tags,supportCount:0,publishedAt:serverTimestamp(),updatedAt:serverTimestamp()};
-  await setDoc(publicPostRef(day),payload,{merge:true});publishedWorkoutIds.add(sourceWorkoutKey(day));$("publishDialog").close();pendingPublish=null;render();await loadCommunityFeed();showToast("Workout published to the community.");
+  await setDoc(publicPostRef(day),payload,{merge:true});publishedWorkoutIds.add(sourceWorkoutKey(day));$("publishDialog").close();pendingPublish=null;render();studioRender();await loadCommunityFeed();showToast("Workout published to the community.");
  }catch(error){console.error(error);showNotice("The workout could not be published. Check your Firestore security rules.")}
  finally{confirmButton.disabled=false;confirmButton.textContent="Publish workout"}
 }
 async function unpublishWorkout(day){
  if(!confirm(`Remove ${day.name||"this workout"} from the public community? Your private workout will stay intact.`))return;
- try{await deleteDoc(publicPostRef(day));publishedWorkoutIds.delete(sourceWorkoutKey(day));render();await loadCommunityFeed();showToast("Workout is private again.")}
+ try{await deleteDoc(publicPostRef(day));publishedWorkoutIds.delete(sourceWorkoutKey(day));render();studioRender();await loadCommunityFeed();showToast("Workout is private again.")}
  catch(error){console.error(error);showNotice("The public workout could not be removed. Check your Firestore security rules.")}
 }
 async function initializeSocialMvp(){
@@ -2035,7 +2037,7 @@ async function initializeSocialMvp(){
  const feed=$("communityFeed");feed.dataset.filter="all";
  document.querySelectorAll(".community-filter").forEach(button=>button.addEventListener("click",()=>{document.querySelectorAll(".community-filter").forEach(item=>item.classList.toggle("active",item===button));feed.dataset.filter=button.dataset.communityFilter;renderCommunityFeed()}));
  $("communitySort").addEventListener("change",renderCommunityFeed);
- await Promise.all([loadPublicProfile(),loadOwnPublishedWorkouts(),loadCommunityFeed(),loadCommunityProfiles()]);render();
+ await Promise.all([loadPublicProfile(),loadOwnPublishedWorkouts(),loadCommunityFeed(),loadCommunityProfiles()]);render();studioRender();
 }
 
 /* Version 12: one focus section at a time; legacy DOM stays in place for analytics and saves. */
