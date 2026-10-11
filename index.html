@@ -8,7 +8,7 @@
 <style>
 :root{--bg:#050c18;--panel:#0a192b;--panel2:#10243c;--line:#1b3a5b;--text:#eff6ff;--muted:#9ab5d5;--blue:#087cff;--teal:#00d3b0;--purple:#8057ff;--green:#00d89a;--gold:#ffbf3f;--orange:#ff8748;--pink:#ff426e;--shadow:0 14px 36px #0005}
 *{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:18px}body{margin:0;background:radial-gradient(ellipse at 65% -10%,#07598545,transparent 38%),linear-gradient(135deg,#050b16,#071426 58%,#050b16);color:var(--text);font:14px/1.45 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}button,input,select,textarea{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--teal);outline-offset:2px}.hidden{display:none!important}
-.auth-gate{position:fixed;inset:0;z-index:1000;display:grid;place-items:center;padding:22px;background:radial-gradient(circle at 50% 20%,#0b4d7966,transparent 34%),#030914ee;backdrop-filter:blur(10px)}.auth-gate[hidden]{display:none}.auth-card{width:min(430px,100%);padding:30px;border:1px solid #285779;border-radius:20px;background:linear-gradient(145deg,#0c243c,#071525);box-shadow:0 24px 80px #000a;text-align:center}.auth-mark{width:66px;height:66px;margin:0 auto 16px;display:grid;place-items:center;border-radius:18px;background:linear-gradient(145deg,#0987ff,#3a58ff);font-size:34px;font-weight:900}.auth-card h2{margin:0 0 8px;font-size:26px}.auth-card p{margin:0 0 20px;color:#acc6e2}.google-sign-in{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;padding:12px 16px;background:#fff!important;border-color:#d9e2ec!important;color:#243447!important;font-weight:800}.google-sign-in:hover{filter:brightness(.96)}.auth-error{min-height:20px;margin:14px 0 0!important;color:#ff9aae!important;font-size:12px}.auth-user{max-width:210px;overflow:hidden;text-overflow:ellipsis;color:#b9d4ed;font-size:11px;white-space:nowrap}
+.auth-gate{position:fixed;inset:0;z-index:1000;display:grid;place-items:center;padding:22px;background:radial-gradient(circle at 50% 20%,#0b4d7966,transparent 34%),#030914ee;backdrop-filter:blur(10px)}.auth-gate[hidden]{display:none}.auth-card{width:min(430px,100%);padding:30px;border:1px solid #285779;border-radius:20px;background:linear-gradient(145deg,#0c243c,#071525);box-shadow:0 24px 80px #000a;text-align:center}.auth-mark{width:66px;height:66px;margin:0 auto 16px;display:grid;place-items:center;border-radius:18px;background:linear-gradient(145deg,#0987ff,#3a58ff);font-size:34px;font-weight:900}.auth-card h2{margin:0 0 8px;font-size:26px}.auth-card p{margin:0 0 20px;color:#acc6e2}.google-sign-in{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;padding:12px 16px;background:#fff!important;border-color:#d9e2ec!important;color:#243447!important;font-weight:800}.google-sign-in:hover{filter:brightness(.96)}#previewAppBtn{width:100%;margin-top:10px}.auth-error{min-height:20px;margin:14px 0 0!important;color:#ff9aae!important;font-size:12px}.auth-user{max-width:210px;overflow:hidden;text-overflow:ellipsis;color:#b9d4ed;font-size:11px;white-space:nowrap}
 .shell{min-height:100vh;display:grid;grid-template-columns:264px minmax(0,1fr)}.sidebar{background:linear-gradient(180deg,#071a30,#061222 75%);border-right:1px solid #173859;padding:20px 14px;display:flex;flex-direction:column;gap:25px;position:sticky;top:0;height:100vh;overflow:auto}.brand{display:flex;align-items:center;gap:12px;padding:0 7px}.brand-icon{width:56px;height:56px;border-radius:16px;display:grid;place-items:center;background:linear-gradient(145deg,#0987ff,#3a58ff);box-shadow:0 8px 24px #087cff45;color:#fff;font-size:29px;font-weight:900}.brand h1{font-size:25px;line-height:1;margin:0;letter-spacing:-.04em}.brand small{font-size:11px;color:#b1c7e5;letter-spacing:.1em;text-transform:uppercase}.nav{display:grid;gap:7px}.nav a{display:flex;align-items:center;gap:13px;text-decoration:none;color:#d5e5fb;padding:12px 13px;border:1px solid transparent;border-radius:11px;font-size:14px}.nav a span{width:24px;text-align:center;font-size:19px;color:#a7c5f3}.nav a:hover{background:#102c4b;border-color:#204a72}.nav a.active{background:linear-gradient(100deg,#087cff,#0754b9);border-color:#258aff;color:#fff;box-shadow:0 7px 20px #006aff2b}.motto{margin-top:auto;text-align:center;padding:20px 8px 4px;color:#a8c4e6}.motto .mountain{font-size:56px;color:#3c76b9;line-height:1}.motto strong{display:block;letter-spacing:.14em;font-size:17px;margin:7px 0}.motto p{font-style:italic;font-size:12px;line-height:1.8}
 .main{min-width:0;padding:0 22px 20px}.topbar{height:70px;border-bottom:1px solid #183654;display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:18px}.crumbs{color:#b4cce8;letter-spacing:.02em}.crumbs b{color:#5a9eff;padding:0 12px}.top-actions,.actions{display:flex;align-items:center;gap:9px;flex-wrap:wrap}.status{color:#68edc5;font-size:12px;white-space:nowrap}.btn{background:linear-gradient(180deg,#183453,#10243b);border:1px solid #2a4c70;color:#eaf4ff;border-radius:10px;padding:9px 13px;font-weight:650;transition:.18s}.btn:hover{transform:translateY(-1px);filter:brightness(1.16);border-color:#4b8bc0}.btn.primary{background:linear-gradient(110deg,#087cff,#155fe8);border-color:#2e91ff;color:white;box-shadow:0 7px 18px #087cff35}.btn.green{background:linear-gradient(110deg,#00a984,#00c79a);border-color:#11d7ae;color:white}.btn.purple{background:linear-gradient(110deg,#7544ee,#653ed1);border-color:#8d6aff;color:white}.btn.danger{background:linear-gradient(110deg,#f72b5c,#df1747);border-color:#ff5577;color:white}.btn.small{font-size:12px;padding:7px 9px}
 .welcome{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;padding:7px 4px 20px}.welcome h2{font-size:clamp(25px,2.6vw,34px);letter-spacing:-.04em;line-height:1.12;margin:0 0 7px}.welcome p{color:#bbcee5;margin:0}.welcome-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.week-chip{border:1px solid #244d75;border-radius:12px;padding:8px 13px;background:#0b1e33;display:flex;gap:10px;align-items:center}.week-chip strong{display:block}.week-chip small{display:block;color:var(--muted);font-size:10px}.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px;margin-bottom:17px}.stat{position:relative;overflow:hidden;padding:17px 17px 15px 20px;border-radius:14px;background:linear-gradient(135deg,#0d2541,#09182a);border:1px solid #1d456b;min-width:0;box-shadow:0 7px 20px #0002}.stat:before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--blue)}.stat:nth-child(2){background:linear-gradient(135deg,#073337,#091b2b);border-color:#087e7d}.stat:nth-child(2):before{background:var(--teal)}.stat:nth-child(3){background:linear-gradient(135deg,#211b4c,#0b192d);border-color:#4939a4}.stat:nth-child(3):before{background:var(--purple)}.stat:nth-child(4){background:linear-gradient(135deg,#302819,#111c29);border-color:#80591c}.stat:nth-child(4):before{background:var(--gold)}.stat .label{color:#b8cde7;font-size:12px}.stat strong{display:block;font-size:clamp(23px,2.2vw,30px);letter-spacing:-.04em;margin:5px 0;overflow-wrap:anywhere}.stat small{font-size:11px;color:#92b0d1}
@@ -511,7 +511,7 @@ body.forge-focus[data-view="community"]{--view-accent:#6ee7c2;--view-accent-soft
       </div>
       <div class="ws-step"><div class="ws-step-title"><span class="ws-step-index">2</span><div><h3>Choose exercises</h3><p>Load a saved routine or add exercises individually; neither choice requires retyping a workout.</p></div></div>
         <div class="ws-row"><div class="field"><label for="studioLoadTemplate">Saved workouts</label><select id="studioLoadTemplate"></select></div><button class="btn primary" id="studioLoadBtn" type="button">↻ Load saved workout</button></div>
-        <div class="ws-divider"></div><div class="ws-row"><div class="field"><label for="studioAddExercise">Add from exercise bank or type your own</label><input id="studioAddExercise" type="text" list="exerciseNameChoices" placeholder="Search or type an exercise" maxlength="100"></div><button class="btn green" id="studioAddExerciseBtn" type="button">＋ Add exercise</button></div>
+        <div class="ws-divider"></div><div class="ws-row"><div class="field"><label for="studioAddExercise">Add from exercise bank or type your own</label><input id="studioAddExercise" type="text" list="exerciseNameChoices" placeholder="Search or type an exercise" maxlength="100"></div><div class="field"><label for="studioAddExerciseCategory">Body part (custom exercises)</label><select id="studioAddExerciseCategory"><option value="">Choose body part</option><option>Chest</option><option>Back</option><option>Legs</option><option>Shoulders</option><option>Arms</option><option>Core &amp; Conditioning</option><option>Full Body</option></select></div><button class="btn green" id="studioAddExerciseBtn" type="button">＋ Add exercise</button></div>
       </div>
       <div class="ws-step" id="workoutNotepadStep"><div class="ws-step-title"><span class="ws-step-index">✎</span><div><h3>Workout Notepad</h3><p>Paste or type a workout in simple shorthand, review how it was understood, then add it to the selected day.</p></div></div>
         <div class="notepad-layout"><div><label for="workoutNotepad" class="ws-card-heading">Freehand workout</label><textarea id="workoutNotepad" class="notepad-input" maxlength="12000" spellcheck="false" placeholder="# Push Day&#10;Date: 2026-10-11&#10;&#10;Bench Press&#10;135 x 10&#10;185 x 5 @8&#10;&#10;Incline Dumbbell Press: 50 x 10 x 3"></textarea><p class="ws-muted notepad-guide">Use one exercise per line, followed by weight × reps. Add “× sets” to repeat a set and “@8” for RPE. Use 0 or BW for bodyweight. A line beginning with # becomes the session name.</p><div class="notepad-actions"><button class="btn primary" id="parseWorkoutNotepad" type="button">Review workout</button><button class="btn small" id="clearWorkoutNotepad" type="button">Clear</button></div></div><div><div id="workoutNotepadPreview" class="notepad-preview" aria-live="polite"><div class="notepad-empty">Your parsed exercises and sets will appear here before anything is added.</div></div><div class="notepad-actions"><button class="btn green" id="importWorkoutNotepad" type="button" disabled>＋ Add reviewed workout</button></div></div></div>
@@ -527,7 +527,7 @@ body.forge-focus[data-view="community"]{--view-accent:#6ee7c2;--view-accent-soft
         <div class="ws-row"><div class="field"><label for="studioTemplateName">Workout name</label><input type="text" id="studioTemplateName" maxlength="80" placeholder="e.g. Chest Day, Upper A, Leg Day"></div><div class="field"><label for="studioEditTemplate">Edit an existing saved workout (optional)</label><select id="studioEditTemplate"></select></div></div>
       </div>
       <div class="ws-step"><div class="ws-step-title"><span class="ws-step-index">2</span><div><h3>Build your exercise list</h3><p>Add from the bank or enter a custom exercise. Arrange sets and target numbers before saving.</p></div></div>
-        <div class="ws-row"><div class="field"><label for="studioDesignExercise">Exercise bank / custom exercise</label><input id="studioDesignExercise" list="exerciseNameChoices" maxlength="100" placeholder="Search bench press, row, squat…"></div><button class="btn green" type="button" id="studioDesignAddBtn">＋ Add to workout</button></div>
+        <div class="ws-row"><div class="field"><label for="studioDesignExercise">Exercise bank / custom exercise</label><input id="studioDesignExercise" list="exerciseNameChoices" maxlength="100" placeholder="Search bench press, row, squat…"></div><div class="field"><label for="studioDesignExerciseCategory">Body part (custom exercises)</label><select id="studioDesignExerciseCategory"><option value="">Choose body part</option><option>Chest</option><option>Back</option><option>Legs</option><option>Shoulders</option><option>Arms</option><option>Core &amp; Conditioning</option><option>Full Body</option></select></div><button class="btn green" type="button" id="studioDesignAddBtn">＋ Add to workout</button></div>
         <div id="studioDraftExercises" class="ws-exercise-list" style="margin-top:15px"></div>
       </div>
       <div class="ws-primary-action"><div><strong id="studioDraftHeading">Ready to save your routine?</strong><div class="ws-muted">Save here, then recall it into any week and day in Log Workout.</div><span id="studioDraftStatus" class="ws-draft-status"></span></div><div class="ws-footer-actions"><button class="btn" type="button" id="studioClearDraft">Clear builder</button><button class="btn primary" type="button" id="studioSaveTemplate">▣ Save named workout</button></div></div>
@@ -639,8 +639,8 @@ body.forge-focus[data-view="community"]{--view-accent:#6ee7c2;--view-accent-soft
   <section class="panel" id="exerciseBank" style="margin-top:25px">
    <div class="panel-head"><h2>▦ Exercise Bank</h2><span class="fineprint">Drag into a workout day or select + add</span></div>
    <div class="library-bar">
-    <div><div class="bank-controls"><input type="search" id="bankSearch" aria-label="Search exercises" placeholder="Search bench, squats, rows…"><select id="bankCategory" aria-label="Filter exercise category"><option value="all">All muscles</option></select></div><div id="exerciseBankList" class="library-list"></div><p class="bank-hint">Tip: drag a chip onto an expanded workout day, or choose a destination and click Add.</p></div>
-    <div class="template-controls"><h3 style="margin:0">Add an exercise</h3><div class="template-row"><select id="bankTargetWeek" aria-label="Destination week"></select><select id="bankTargetDay" aria-label="Destination day"></select></div><div class="template-row"><button class="btn green" id="bankAddBtn" type="button">＋ Add selected exercise</button><span class="fineprint" id="bankPickedName">Choose an exercise</span></div><div class="template-row"><input id="customExerciseInput" type="text" maxlength="100" placeholder="Create a custom exercise" aria-label="New custom exercise"><button class="btn small voice-btn" id="customExerciseMic" type="button" aria-label="Dictate custom exercise">🎙</button><button id="createCustomExerciseBtn" class="btn small" type="button">Save to bank</button></div></div>
+    <div><div class="bank-controls"><input type="search" id="bankSearch" aria-label="Search exercises" placeholder="Search bench, squats, rows…"><select id="bankCategory" aria-label="Filter exercise category"><option value="all">All body parts</option></select></div><div id="exerciseBankList" class="library-list"></div><p class="bank-hint">Tip: drag a chip onto an expanded workout day, or choose a destination and click Add.</p></div>
+    <div class="template-controls"><h3 style="margin:0">Add an exercise</h3><div class="template-row"><select id="bankTargetWeek" aria-label="Destination week"></select><select id="bankTargetDay" aria-label="Destination day"></select></div><div class="template-row"><button class="btn green" id="bankAddBtn" type="button">＋ Add selected exercise</button><span class="fineprint" id="bankPickedName">Choose an exercise</span></div><div class="template-row"><input id="customExerciseInput" type="text" maxlength="100" placeholder="Create a custom exercise" aria-label="New custom exercise"><select id="customExerciseCategory" aria-label="Custom exercise body part"><option value="">Choose body part</option><option>Chest</option><option>Back</option><option>Legs</option><option>Shoulders</option><option>Arms</option><option>Core &amp; Conditioning</option><option>Full Body</option></select><button class="btn small voice-btn" id="customExerciseMic" type="button" aria-label="Dictate custom exercise">🎙</button><button id="createCustomExerciseBtn" class="btn small" type="button">Save to bank</button></div></div>
    </div>
   </section>
   <section class="panel saved-workouts-panel" id="savedWorkouts" aria-labelledby="savedWorkoutsHeading">
@@ -721,6 +721,7 @@ body.forge-focus[data-view="community"]{--view-accent:#6ee7c2;--view-accent-soft
     <h2 id="authTitle">Sign in to FORGE</h2>
     <p>Your workouts are private and securely scoped to your Google account.</p>
     <button id="googleSignInBtn" class="btn google-sign-in" type="button"><span aria-hidden="true">G</span> Continue with Google</button>
+    <button id="previewAppBtn" class="btn" type="button" hidden>Preview app in Cursor</button>
     <p id="authError" class="auth-error" role="alert"></p>
   </div>
 </div>
@@ -759,6 +760,7 @@ googleProvider.setCustomParameters({prompt:"select_account"});
 let currentUser = null;
 let publicProfile = null;
 let pendingPublish = null;
+let previewMode = false;
 const publishedWorkoutIds = new Set();
 
 "use strict";
@@ -766,31 +768,44 @@ const publishedWorkoutIds = new Set();
 const STORAGE_KEY = "forgeStrengthTracker.v2";
 const LEGACY_KEY = "strengthTrackerData";
 const $ = (id) => document.getElementById(id);
+function isLocalPreviewHost(){
+  return location.hostname==="localhost"||location.hostname==="127.0.0.1"||/Cursor|Electron/i.test(navigator.userAgent);
+}
+function previewUser(){
+  return {uid:"cursor-preview",displayName:"Cursor Preview",email:"preview@localhost",photoURL:""};
+}
 function showAuthGate(message=""){
   $("authGate").hidden=false;
   $("authError").textContent=message;
   $("saveStatus").textContent="Sign in required";
+  $("previewAppBtn").hidden=!isLocalPreviewHost();
 }
 function showAuthenticatedUser(user){
   currentUser=user;
   $("authGate").hidden=true;
-  $("authUser").textContent=user.displayName||user.email||"Google account";
-  $("authUser").title=user.email||"";
+  $("authUser").textContent=previewMode?"Cursor preview":(user.displayName||user.email||"Google account");
+  $("authUser").title=previewMode?"Local preview · not signed into Firebase":(user.email||"");
   $("signOutBtn").hidden=false;
 }
 function waitForAuthenticatedUser(){
   return new Promise((resolve,reject)=>{
+    if(isLocalPreviewHost())$("previewAppBtn").hidden=false;
     const embeddedPreview=/Cursor|Electron/i.test(navigator.userAgent);
     let finished=false;
+    const finish=(user)=>{if(finished)return;finished=true;unsubscribe();showAuthenticatedUser(user);resolve(user)};
     const unsubscribe=onAuthStateChanged(auth,user=>{
-      if(!user){showAuthGate(embeddedPreview?"Google sign-in cannot complete inside Cursor Preview. Open http://localhost:8000/index.html in Chrome or Edge.":"");return}
-      showAuthenticatedUser(user);
-      if(!finished){finished=true;unsubscribe();resolve(user)}
+      if(previewMode||finished)return;
+      if(!user){showAuthGate(embeddedPreview?"Google sign-in cannot complete inside Cursor Preview. Use Preview app in Cursor, or open this page in Chrome or Edge.":"");return}
+      finish(user);
     },error=>{showAuthGate("Authentication could not be initialized.");reject(error)});
+    $("previewAppBtn").onclick=()=>{
+      if(!isLocalPreviewHost())return;
+      previewMode=true;finish(previewUser());
+    };
     $("googleSignInBtn").onclick=async()=>{
       const signInButton=$("googleSignInBtn");signInButton.disabled=true;$("authError").textContent="";
       if(embeddedPreview){
-        $("authError").textContent="Open http://localhost:8000/index.html in Chrome or Edge to sign in.";
+        $("authError").textContent="Use Preview app in Cursor, or open http://localhost:8000/index.html in Chrome or Edge to sign in with Google.";
         signInButton.disabled=false;
         return;
       }
@@ -811,24 +826,25 @@ function userWorkoutDocument(){
 }
 $("signOutBtn").addEventListener("click",async()=>{
   $("signOutBtn").disabled=true;
+  if(previewMode){location.reload();return}
   try{await signOut(auth);location.reload()}catch(error){$("signOutBtn").disabled=false;showNotice("Could not sign out. Please try again.");console.error(error)}
 });
-const state = { profile:{userName:"",actualMaxes:{},age:"",sex:"",bw:"",unit:"lb",compareMode:"first-last",programName:""}, weeks:[],templates:[],customExercises:[],chartSelection:[], actualMaxHistory:[], barbellCustom:[], scoringFormula:"wilks2", nextId:1 };
+const state = { profile:{userName:"",actualMaxes:{},age:"",sex:"",bw:"",unit:"lb",compareMode:"first-last",programName:""}, weeks:[],templates:[],customExercises:[],customExerciseCategories:{},chartSelection:[], actualMaxHistory:[], barbellCustom:[], scoringFormula:"wilks2", nextId:1 };
 let chart = null, saveTimer = null, toastTimer = null, analyticsTimer = null, isRendering = false;
 let saveQueue = Promise.resolve();
 const muscleGroups = ["chest","back","shoulders","biceps","triceps","core","quads","hamstrings","glutes","calves","forearms"];
 const groupNames = {chest:"Chest",back:"Back",shoulders:"Shoulders",biceps:"Biceps",triceps:"Triceps",core:"Core",quads:"Quads",hamstrings:"Hamstrings",glutes:"Glutes",calves:"Calves",forearms:"Forearms"};
 const defaultMap = [
-  {keys:["bench press","bench","push-up","push up","pushup","dip","chest press","pec fly"],groups:["chest","triceps","shoulders"]},
+  {keys:["bench press","bench","push-up","push up","pushup","dip","chest press","fly","cable crossover","pec deck"],groups:["chest","triceps","shoulders"]},
   {keys:["squat","leg press","hack squat","lunge","split squat","step-up","step up"],groups:["quads","glutes","core"]},
-  {keys:["deadlift","romanian deadlift","rdl","good morning","leg curl","hamstring curl"],groups:["hamstrings","glutes","back","core"]},
+  {keys:["deadlift","romanian deadlift","rdl","good morning","leg curl","hamstring curl","hip thrust","glute bridge"],groups:["hamstrings","glutes","back","core"]},
   {keys:["row","pull-up","pull up","pullup","chin-up","chin up","lat pulldown","pulldown"],groups:["back","biceps"]},
-  {keys:["overhead press","military press","shoulder press","lateral raise","front raise","rear delt"],groups:["shoulders"]},
+  {keys:["overhead press","military press","shoulder press","lateral raise","front raise","rear delt","reverse pec deck","face pull","upright row","shrug"],groups:["shoulders"]},
   {keys:["curl","chin-up","chin up"],groups:["biceps"]},
-  {keys:["triceps extension","pushdown","push down","skullcrusher","skull crusher"],groups:["triceps"]},
+  {keys:["triceps extension","rope extension","pushdown","push down","skullcrusher","skull crusher","kickback"],groups:["triceps"]},
   {keys:["calf raise","calf press","calves"],groups:["calves"]},
-  {keys:["crunch","plank","sit-up","sit up","ab wheel","hanging leg raise"],groups:["core"]},
-  {keys:["wrist curl","farmer carry","farmers carry"],groups:["forearms"]}
+  {keys:["crunch","plank","sit-up","sit up","ab wheel","hanging leg raise","hanging knee","pallof","russian twist"],groups:["core"]},
+  {keys:["wrist curl","farmer carry","farmers carry","farmer's carry","suitcase carry"],groups:["forearms","core"]}
 ];
 function uid(prefix="id"){return prefix+"_"+(state.nextId++)+"_"+Math.random().toString(36).slice(2,7)}
 function cleanText(value,max=120){return String(value??"").replace(/[\u0000-\u001f\u007f]/g,"").trim().slice(0,max)}
@@ -899,7 +915,7 @@ function bestWeeklyBarbell(){
 }
 function normalizeMaxes(value){
   const out={}; if(!value || typeof value!=="object" || Array.isArray(value)) return out;
-  Object.entries(value).slice(0,300).forEach(([key,val])=>{const name=cleanText(key,100).toLocaleLowerCase();const n=number(val,0,100000);if(name&&n!==null&&n>0)out[name]=n;});
+  Object.entries(value).slice(0,300).forEach(([key,val])=>{const name=normalizedName(canonicalExerciseName(key));const n=number(val,0,100000);if(name&&n!==null&&n>0)out[name]=Math.max(out[name]||0,n);});
   return out;
 }
 function actualMaxFor(ex){
@@ -920,14 +936,31 @@ function normalizedRpe(set){
 }
 function cloneExercise(ex){return {id:uid("ex"),name:ex.name,sets:ex.sets.map(copySetValues)}}
 const EXERCISE_BANK = [
- ["Barbell Bench Press","Chest"],["Dumbbell Bench Press","Chest"],["Incline Bench Press","Chest"],["Incline Dumbbell Press","Chest"],["Chest Fly","Chest"],["Cable Crossover","Chest"],["Push-Up","Chest"],["Chest Dip","Chest"],
- ["Back Squat","Legs"],["Front Squat","Legs"],["Goblet Squat","Legs"],["Leg Press","Legs"],["Bulgarian Split Squat","Legs"],["Walking Lunge","Legs"],["Leg Extension","Legs"],["Romanian Deadlift","Legs"],["Leg Curl","Legs"],["Standing Calf Raise","Legs"],["Hip Thrust","Legs"],
- ["Conventional Deadlift","Back"],["Sumo Deadlift","Back"],["Barbell Row","Back"],["Dumbbell Row","Back"],["Seated Cable Row","Back"],["Lat Pulldown","Back"],["Pull-Up","Back"],["Chin-Up","Back"],["Face Pull","Back"],["T-Bar Row","Back"],
- ["Overhead Press","Shoulders"],["Dumbbell Shoulder Press","Shoulders"],["Lateral Raise","Shoulders"],["Front Raise","Shoulders"],["Rear Delt Fly","Shoulders"],["Arnold Press","Shoulders"],
- ["Barbell Curl","Arms"],["Dumbbell Curl","Arms"],["Hammer Curl","Arms"],["Preacher Curl","Arms"],["Triceps Pushdown","Arms"],["Skull Crusher","Arms"],["Overhead Triceps Extension","Arms"],["Close-Grip Bench Press","Arms"],
- ["Plank","Core"],["Cable Crunch","Core"],["Hanging Leg Raise","Core"],["Ab Wheel Rollout","Core"],["Russian Twist","Core"],
- ["Farmer Carry","Full Body"],["Kettlebell Swing","Full Body"],["Power Clean","Full Body"],["Thruster","Full Body"]
+ ["Barbell Bench Press","Chest"],["Incline Bench Press","Chest"],["Decline Bench Press","Chest"],["Dumbbell Bench Press","Chest"],["Incline Dumbbell Bench Press","Chest"],["Close-Grip Bench Press","Chest"],["Dumbbell Fly","Chest"],["Incline Dumbbell Fly","Chest"],["Cable Crossover","Chest"],["Pec Deck Machine","Chest"],["Dip","Chest"],["Weighted Dip","Chest"],["Push-Up","Chest"],["Weighted Push-Up","Chest"],
+ ["Barbell Bent-Over Row","Back"],["Pendlay Row","Back"],["T-Bar Row","Back"],["Single-Arm Dumbbell Row","Back"],["Chest-Supported Row","Back"],["Seated Cable Row","Back"],["Lat Pulldown","Back"],["Close-Grip Lat Pulldown","Back"],["Pull-Up","Back"],["Weighted Pull-Up","Back"],["Chin-Up","Back"],["Weighted Chin-Up","Back"],["Straight-Arm Pulldown","Back"],["Back Extension","Back"],
+ ["Back Squat","Legs"],["Front Squat","Legs"],["Zercher Squat","Legs"],["Goblet Squat","Legs"],["Bulgarian Split Squat","Legs"],["Walking Lunge","Legs"],["Reverse Lunge","Legs"],["Leg Press","Legs"],["Hack Squat","Legs"],["Conventional Deadlift","Legs"],["Sumo Deadlift","Legs"],["Romanian Deadlift","Legs"],["Stiff-Legged Deadlift","Legs"],["Trap Bar Deadlift","Legs"],["Barbell Hip Thrust","Legs"],["Glute Bridge","Legs"],["Leg Extension","Legs"],["Lying Leg Curl","Legs"],["Seated Leg Curl","Legs"],["Standing Calf Raise","Legs"],["Seated Calf Raise","Legs"],
+ ["Overhead Press","Shoulders"],["Seated Dumbbell Press","Shoulders"],["Arnold Press","Shoulders"],["Push Press","Shoulders"],["Machine Shoulder Press","Shoulders"],["Lateral Raise","Shoulders"],["Cable Lateral Raise","Shoulders"],["Front Raise","Shoulders"],["Reverse Pec Deck","Shoulders"],["Face Pull","Shoulders"],["Upright Row","Shoulders"],["Barbell Shrug","Shoulders"],["Dumbbell Shrug","Shoulders"],
+ ["Barbell Bicep Curl","Arms"],["EZ-Bar Curl","Arms"],["Dumbbell Alternate Curl","Arms"],["Hammer Curl","Arms"],["Preacher Curl","Arms"],["Incline Dumbbell Curl","Arms"],["Cable Bicep Curl","Arms"],["Triceps Pushdown","Arms"],["Triceps Rope Extension","Arms"],["Overhead Triceps Extension","Arms"],["Skull Crusher","Arms"],["Dumbbell Triceps Extension","Arms"],["Triceps Kickback","Arms"],
+ ["Crunch","Core & Conditioning"],["Hanging Leg Raise","Core & Conditioning"],["Hanging Knee Tuck","Core & Conditioning"],["Ab Wheel Rollout","Core & Conditioning"],["Cable Crunch","Core & Conditioning"],["Russian Twist","Core & Conditioning"],["Plank","Core & Conditioning"],["Pallof Press","Core & Conditioning"],["Kettlebell Swing","Core & Conditioning"],["Farmer's Carry","Core & Conditioning"],["Suitcase Carry","Core & Conditioning"],["Assault Bike","Core & Conditioning"],["Rowing Machine","Core & Conditioning"],["400m Track Intervals","Core & Conditioning"],["Stair Climber","Core & Conditioning"],
+ ["Power Clean","Full Body"],["Thruster","Full Body"]
 ];
+const EXERCISE_CATEGORIES=["Chest","Back","Legs","Shoulders","Arms","Core & Conditioning","Full Body"];
+const EXERCISE_CATEGORY_MUSCLES={
+ "Chest":["chest","triceps","shoulders"],"Back":["back","biceps"],"Legs":["quads","hamstrings","glutes","calves"],"Shoulders":["shoulders"],
+ "Arms":["biceps","triceps","forearms"],"Core & Conditioning":["core"],"Full Body":["back","shoulders","core","quads","hamstrings","glutes"]
+};
+const EXERCISE_ALIASES={
+ "bench":"Barbell Bench Press","bench press":"Barbell Bench Press","incline bench":"Incline Bench Press","incline barbell bench press":"Incline Bench Press","decline bench":"Decline Bench Press","decline barbell bench press":"Decline Bench Press","incline dumbbell":"Incline Dumbbell Bench Press","incline dumbbell press":"Incline Dumbbell Bench Press","close grip bench press":"Close-Grip Bench Press",
+ "barbell back squat":"Back Squat","squat":"Back Squat","barbell front squat":"Front Squat","front squat":"Front Squat","deadlift":"Conventional Deadlift","romanian deadlift (rdl)":"Romanian Deadlift","rdl":"Romanian Deadlift","hip thrust":"Barbell Hip Thrust",
+ "barbell row":"Barbell Bent-Over Row","dumbbell row":"Single-Arm Dumbbell Row","single arm dumbbell row":"Single-Arm Dumbbell Row","back extensions":"Back Extension",
+ "dumbbell flyes":"Dumbbell Fly","incline dumbbell flyes":"Incline Dumbbell Fly","cable crossovers":"Cable Crossover","chest dip":"Dip","dips":"Dip","weighted dips":"Weighted Dip",
+ "push-ups":"Push-Up","push ups":"Push-Up","pushups":"Push-Up","weighted push-ups":"Weighted Push-Up","pull-ups":"Pull-Up","pull ups":"Pull-Up","pullups":"Pull-Up","weighted pull-ups":"Weighted Pull-Up","lat pulldowns":"Lat Pulldown",
+ "chin-ups":"Chin-Up","chin ups":"Chin-Up","chinups":"Chin-Up","weighted chin-ups":"Weighted Chin-Up","walking lunges":"Walking Lunge","reverse lunges":"Reverse Lunge",
+ "leg extensions":"Leg Extension","lying leg curls":"Lying Leg Curl","seated leg curls":"Seated Leg Curl","standing calf raises":"Standing Calf Raise","seated calf raises":"Seated Calf Raise",
+ "overhead press (ohp)":"Overhead Press","ohp":"Overhead Press","dumbbell shoulder press":"Seated Dumbbell Press","lateral raises":"Lateral Raise","cable lateral raises":"Cable Lateral Raise","front raises":"Front Raise","face pulls":"Face Pull","barbell shrugs":"Barbell Shrug","dumbbell shrugs":"Dumbbell Shrug",
+ "barbell curl":"Barbell Bicep Curl","dumbbell curl":"Dumbbell Alternate Curl","hammer curls":"Hammer Curl","preacher curls":"Preacher Curl","incline dumbbell curls":"Incline Dumbbell Curl","cable bicep curls":"Cable Bicep Curl","skull crushers":"Skull Crusher","triceps kickbacks":"Triceps Kickback",
+ "crunches":"Crunch","hanging leg raises":"Hanging Leg Raise","hanging knee tucks":"Hanging Knee Tuck","ab wheel rollouts":"Ab Wheel Rollout","cable crunches":"Cable Crunch","russian twists":"Russian Twist","kettlebell swings":"Kettlebell Swing","farmer carry":"Farmer's Carry","farmers carry":"Farmer's Carry"
+};
 let activeSavedWorkoutId = null;
 let selectedBankExercise="";
 let speaking=null;
@@ -938,14 +971,35 @@ function shiftDate(date,days){const d=new Date(date+"T12:00:00");if(Number.isNaN
 function weekExercises(week){return (week.days||[]).flatMap(day=>day.exercises)}
 function forEachExercise(callback){state.weeks.forEach((w,wi)=>(w.days||[]).forEach((d,di)=>d.exercises.forEach((ex,ei)=>callback(ex,w,d,wi,di,ei))))}
 function weekName(w,wi){return w.name||`Week ${wi+1}`}
-function allExerciseNames(){return [...new Set([...EXERCISE_BANK.map(e=>e[0]),...state.customExercises,...state.weeks.flatMap(weekExercises).map(ex=>ex.name).filter(Boolean)])].sort((a,b)=>a.localeCompare(b))}
 function normalizedName(n){return cleanText(n,100).toLocaleLowerCase()}
+function canonicalExerciseName(name){const cleaned=cleanText(name,100),alias=EXERCISE_ALIASES[normalizedName(cleaned)],canonical=alias||cleaned;return EXERCISE_BANK.find(([bankName])=>normalizedName(bankName)===normalizedName(canonical))?.[0]||canonical}
+function inferredExerciseCategory(name){
+ const muscles=getMuscles(name);if(muscles.includes("chest"))return "Chest";if(muscles.includes("back"))return "Back";
+ if(muscles.some(group=>["quads","hamstrings","glutes","calves"].includes(group)))return "Legs";if(muscles.includes("shoulders"))return "Shoulders";
+ if(muscles.some(group=>["biceps","triceps","forearms"].includes(group)))return "Arms";if(muscles.includes("core"))return "Core & Conditioning";return "";
+}
+function exerciseCategory(name){
+ const canonical=canonicalExerciseName(name),bank=EXERCISE_BANK.find(([bankName])=>normalizedName(bankName)===normalizedName(canonical));
+ return bank?.[1]||state.customExerciseCategories[normalizedName(canonical)]||inferredExerciseCategory(canonical)||"Uncategorized";
+}
+function registerCustomExercise(name,category){
+ const canonical=canonicalExerciseName(name),bank=EXERCISE_BANK.some(([bankName])=>normalizedName(bankName)===normalizedName(canonical));if(!canonical||bank)return canonical;
+ if(!state.customExercises.some(item=>normalizedName(item)===normalizedName(canonical)))state.customExercises.push(canonical);
+ state.customExerciseCategories[normalizedName(canonical)]=EXERCISE_CATEGORIES.includes(category)?category:inferredExerciseCategory(canonical)||"Uncategorized";return canonical;
+}
+function categorizedExerciseName(rawName,selectedCategory=""){
+ const name=canonicalExerciseName(rawName),key=normalizedName(name);if(!key)return null;
+ if(EXERCISE_BANK.some(([bankName])=>normalizedName(bankName)===key))return name;
+ const category=state.customExerciseCategories[key]||selectedCategory;if(!EXERCISE_CATEGORIES.includes(category))return null;
+ return registerCustomExercise(name,category);
+}
+function allExerciseNames(){return [...new Map([...EXERCISE_BANK.map(e=>e[0]),...state.customExercises,...state.weeks.flatMap(weekExercises).map(ex=>canonicalExerciseName(ex.name)).filter(Boolean)].map(name=>[normalizedName(name),name])).values()].sort((a,b)=>a.localeCompare(b))}
 function findChartName(key){return allExerciseNames().find(n=>normalizedName(n)===key)||key}
 function addExerciseToDay(name,week,day){const ex=newExercise(name,3);day.exercises.push(ex);week.expanded=true;day.expanded=true;render();saveData();return ex}
 function chosenBankTarget(){const w=state.weeks.find(w=>w.id===$("bankTargetWeek").value),d=w?.days.find(d=>d.id===$("bankTargetDay").value);return {week:w,day:d}}
 function bankAdd(name){const {week,day}=chosenBankTarget();if(!week||!day){showToast("Create a workout week and day first.");return}addExerciseToDay(name,week,day);showToast(`${name} added to ${week.name} · ${day.name}`)}
 function renderBankTargets(){const weekSelect=$("bankTargetWeek"),daySelect=$("bankTargetDay");const previousWeek=weekSelect.value,previousDay=daySelect.value;weekSelect.replaceChildren();state.weeks.forEach((w,i)=>{const o=document.createElement("option");o.value=w.id;o.textContent=weekName(w,i);weekSelect.append(o)});weekSelect.value=state.weeks.some(w=>w.id===previousWeek)?previousWeek:state.weeks[state.weeks.length-1]?.id||"";const w=state.weeks.find(w=>w.id===weekSelect.value);daySelect.replaceChildren();(w?.days||[]).forEach((d,i)=>{const o=document.createElement("option");o.value=d.id;o.textContent=d.name||`Day ${i+1}`;daySelect.append(o)});if(w?.days.some(d=>d.id===previousDay))daySelect.value=previousDay}
-function renderExerciseBank(){const root=$("exerciseBankList");if(!root)return;const term=$("bankSearch").value.trim().toLowerCase(),cat=$("bankCategory").value;root.replaceChildren();const all=[...EXERCISE_BANK,...state.customExercises.map(n=>[n,"Custom"])].filter(([n,c])=>n.toLowerCase().includes(term)&&(cat==="all"||cat===c));all.sort((a,b)=>a[0].localeCompare(b[0]));all.forEach(([name,category])=>{const chip=document.createElement("button");chip.type="button";chip.className="bank-chip";chip.draggable=true;chip.textContent=name;const sub=document.createElement("small");sub.textContent=category;chip.append(sub);chip.title="Select to add, or drag onto a workout day";chip.setAttribute("aria-pressed",String(selectedBankExercise===name));if(selectedBankExercise===name)chip.style.borderColor="#18e2bd";chip.addEventListener("click",()=>{selectedBankExercise=name;$("bankPickedName").textContent=name;renderExerciseBank()});chip.addEventListener("dragstart",e=>{e.dataTransfer.setData("text/plain",name);e.dataTransfer.effectAllowed="copy"});root.append(chip)});if(!all.length){const msg=document.createElement("span");msg.className="fineprint";msg.textContent="No matching exercises. Add a custom exercise to the bank.";root.append(msg)}}
+function renderExerciseBank(){const root=$("exerciseBankList");if(!root)return;const term=$("bankSearch").value.trim().toLowerCase(),cat=$("bankCategory").value;root.replaceChildren();const builtInKeys=new Set(EXERCISE_BANK.map(([name])=>normalizedName(name))),all=[...EXERCISE_BANK,...state.customExercises.map(canonicalExerciseName).filter(name=>!builtInKeys.has(normalizedName(name))).map(name=>[name,exerciseCategory(name)])].filter(([n,c])=>n.toLowerCase().includes(term)&&(cat==="all"||cat===c));all.sort((a,b)=>a[0].localeCompare(b[0]));all.forEach(([name,category])=>{const chip=document.createElement("button");chip.type="button";chip.className="bank-chip";chip.draggable=true;chip.textContent=name;const sub=document.createElement("small");sub.textContent=category;chip.append(sub);chip.title="Select to add, or drag onto a workout day";chip.setAttribute("aria-pressed",String(selectedBankExercise===name));if(selectedBankExercise===name)chip.style.borderColor="#18e2bd";chip.addEventListener("click",()=>{selectedBankExercise=name;$("bankPickedName").textContent=name;renderExerciseBank()});chip.addEventListener("dragstart",e=>{e.dataTransfer.setData("text/plain",name);e.dataTransfer.effectAllowed="copy"});root.append(chip)});if(!all.length){const msg=document.createElement("span");msg.className="fineprint";msg.textContent="No matching exercises. Add a custom exercise and choose its body part.";root.append(msg)}}
 function refreshChartPicker(){const root=$("chartExerciseSelector");if(!root)return;const recorded=[...new Map(allRecords().map(r=>[r.key,r.name])).values()].sort((a,b)=>a.localeCompare(b));root.replaceChildren();for(const name of recorded){const key=normalizedName(name),selected=state.chartSelection.includes(key);const b=document.createElement("button");b.type="button";b.className="chart-picker"+(selected?" selected":"");b.textContent=(selected?"✓ ":"＋ ")+name;b.setAttribute("aria-pressed",String(selected));b.disabled=!selected&&state.chartSelection.length>=5;b.addEventListener("click",()=>{if(selected)state.chartSelection=state.chartSelection.filter(n=>n!==key);else if(state.chartSelection.length<5)state.chartSelection.push(key);saveData();calculateProgress()});root.append(b)}if(!recorded.length){const hint=document.createElement("span");hint.className="fineprint";hint.textContent="Log your first exercise to make it available for the chart.";root.append(hint)}$("chartSelectionCount").textContent=`${state.chartSelection.length} / 5 exercises selected`}
 function startDictation(target,btn,kind="text",onFinished=null){
  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
@@ -1019,14 +1073,19 @@ function safeReadStored(){
   return null;
 }
 function workoutData(){
-  return {version:5,profile:state.profile,weeks:state.weeks,templates:state.templates,customExercises:state.customExercises,chartSelection:state.chartSelection,actualMaxHistory:state.actualMaxHistory,barbellCustom:state.barbellCustom,scoringFormula:state.scoringFormula};
+  return {version:6,profile:state.profile,weeks:state.weeks,templates:state.templates,customExercises:state.customExercises,customExerciseCategories:state.customExerciseCategories,chartSelection:state.chartSelection,actualMaxHistory:state.actualMaxHistory,barbellCustom:state.barbellCustom,scoringFormula:state.scoringFormula};
 }
 function saveWorkout(){
+  if(previewMode){
+    try{localStorage.setItem(STORAGE_KEY,JSON.stringify(workoutData()))}catch(error){console.warn(error)}
+    return Promise.resolve();
+  }
   const payload={...workoutData(),updatedAt:serverTimestamp()};
   saveQueue=saveQueue.catch(()=>{}).then(()=>setDoc(userWorkoutDocument(),payload));
   return saveQueue;
 }
 async function loadWorkouts(){
+  if(previewMode)return safeReadStored();
   const snapshot=await getDoc(userWorkoutDocument());
   return snapshot.exists()?snapshot.data():null;
 }
@@ -1036,8 +1095,8 @@ function normalizedStoredId(value,prefix){
 function normalizeData(raw){
  if(!raw||typeof raw!=="object"||!Array.isArray(raw.weeks))throw new Error("Backup format is invalid.");
  const p=raw.profile||{};
- const normalized={profile:{userName:cleanText(p.userName,60),actualMaxes:normalizeMaxes(p.actualMaxes),age:number(p.age,13,120)??"",sex:["male","female"].includes(p.sex)?p.sex:"",bw:number(p.bw,1,1500)??"",unit:p.unit==="kg"?"kg":"lb",compareMode:["first-last","adjacent","four"].includes(p.compareMode)?p.compareMode:"first-last",programName:cleanText(p.programName,80)},weeks:[],templates:[],customExercises:[],chartSelection:[],actualMaxHistory:[],barbellCustom:[],scoringFormula:raw.scoringFormula==="original"?"original":"wilks2",nextId:1};
- const normalizeExercise=ex=>({id:normalizedStoredId(ex.id,"ex"),name:cleanText(ex.name,100),sets:(Array.isArray(ex.sets)?ex.sets:[]).slice(0,20).map(s=>({id:normalizedStoredId(s.id,"set"),weight:s.weight===""?"":number(s.weight,0,100000)??"",reps:s.reps===""?"":number(s.reps,0,1000)??"",rpe:normalizedRpe(s)}))});
+ const normalized={profile:{userName:cleanText(p.userName,60),actualMaxes:normalizeMaxes(p.actualMaxes),age:number(p.age,13,120)??"",sex:["male","female"].includes(p.sex)?p.sex:"",bw:number(p.bw,1,1500)??"",unit:p.unit==="kg"?"kg":"lb",compareMode:["first-last","adjacent","four"].includes(p.compareMode)?p.compareMode:"first-last",programName:cleanText(p.programName,80)},weeks:[],templates:[],customExercises:[],customExerciseCategories:{},chartSelection:[],actualMaxHistory:[],barbellCustom:[],scoringFormula:raw.scoringFormula==="original"?"original":"wilks2",nextId:1};
+ const normalizeExercise=ex=>({id:normalizedStoredId(ex.id,"ex"),name:canonicalExerciseName(ex.name),sets:(Array.isArray(ex.sets)?ex.sets:[]).slice(0,20).map(s=>({id:normalizedStoredId(s.id,"set"),weight:s.weight===""?"":number(s.weight,0,100000)??"",reps:s.reps===""?"":number(s.reps,0,1000)??"",rpe:normalizedRpe(s)}))});
  raw.weeks.slice(0,500).forEach((w,wi)=>{
   const oldBw=w.bodyweight;
   const bwValue=oldBw&&typeof oldBw==="object"?number(oldBw.value,1,1500):null;
@@ -1046,11 +1105,12 @@ function normalizeData(raw){
   oldDays.slice(0,35).forEach((d,di)=>{const day={id:normalizedStoredId(d.id,"day"),name:cleanText(d.name,40)||`Day ${di+1}`,date:/^\d{4}-\d{2}-\d{2}$/.test(d.date||"")?d.date:"",notes:cleanText(d.notes,2000),expanded:d.expanded!==false,completed:!!d.completed,exercises:[]};(Array.isArray(d.exercises)?d.exercises:[]).slice(0,200).forEach(ex=>{const ne=normalizeExercise(ex);if(!ne.sets.length)ne.sets.push(newSet());day.exercises.push(ne)});week.days.push(day)});
   if(!week.days.length)week.days.push(newDay("Monday"));normalized.weeks.push(week);
  });
- normalized.customExercises=[...new Set((Array.isArray(raw.customExercises)?raw.customExercises:[]).slice(0,500).map(n=>cleanText(n,100)).filter(Boolean))];
+ const rawCategories=raw.customExerciseCategories&&typeof raw.customExerciseCategories==="object"&&!Array.isArray(raw.customExerciseCategories)?raw.customExerciseCategories:{},bankKeys=new Set(EXERCISE_BANK.map(([name])=>normalizedName(name)));
+ (Array.isArray(raw.customExercises)?raw.customExercises:[]).slice(0,500).forEach(value=>{const original=cleanText(value,100),name=canonicalExerciseName(original),key=normalizedName(name);if(!key||bankKeys.has(key)||normalized.customExercises.some(item=>normalizedName(item)===key))return;normalized.customExercises.push(name);const category=rawCategories[normalizedName(original)]||rawCategories[key];normalized.customExerciseCategories[key]=EXERCISE_CATEGORIES.includes(category)?category:inferredExerciseCategory(name)||"Uncategorized"});
  (Array.isArray(raw.templates)?raw.templates:[]).slice(0,100).forEach(t=>{const name=cleanText(t.name,80);if(!name)return;normalized.templates.push({id:normalizedStoredId(t.id,"template"),name,sourcePublicPostId:cleanText(t.sourcePublicPostId,160),exercises:(Array.isArray(t.exercises)?t.exercises:[]).slice(0,80).map(normalizeExercise)})});
- normalized.actualMaxHistory=(Array.isArray(raw.actualMaxHistory)?raw.actualMaxHistory:[]).slice(0,10000).map(r=>({id:normalizedStoredId(r.id,"test"),key:normalizedName(r.key||r.name),name:cleanText(r.name||r.key,100),date:r.date,weightLb:number(r.weightLb,.1,100000)})).filter(r=>r.key&&/^\d{4}-\d{2}-\d{2}$/.test(r.date||'')&&r.weightLb);
- normalized.barbellCustom=[...new Set((Array.isArray(raw.barbellCustom)?raw.barbellCustom:[]).map(n=>normalizedName(n)).filter(Boolean))].slice(0,500);
- normalized.chartSelection=[...new Set((Array.isArray(raw.chartSelection)?raw.chartSelection:[]).map(n=>normalizedName(n)).filter(Boolean))].slice(0,5);
+ normalized.actualMaxHistory=(Array.isArray(raw.actualMaxHistory)?raw.actualMaxHistory:[]).slice(0,10000).map(r=>{const name=canonicalExerciseName(r.name||r.key);return {id:normalizedStoredId(r.id,"test"),key:normalizedName(name),name,date:r.date,weightLb:number(r.weightLb,.1,100000)}}).filter(r=>r.key&&/^\d{4}-\d{2}-\d{2}$/.test(r.date||'')&&r.weightLb);
+ normalized.barbellCustom=[...new Set((Array.isArray(raw.barbellCustom)?raw.barbellCustom:[]).map(n=>normalizedName(canonicalExerciseName(n))).filter(Boolean))].slice(0,500);
+ normalized.chartSelection=[...new Set((Array.isArray(raw.chartSelection)?raw.chartSelection:[]).map(n=>normalizedName(canonicalExerciseName(n))).filter(Boolean))].slice(0,5);
  return normalized;
 }
 function weekDayFromDate(date){if(!date||!/^\d{4}-\d{2}-\d{2}$/.test(date))return "Monday";const d=new Date(date+"T12:00:00");return Number.isFinite(d.getTime())?["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"][d.getDay()]:"Monday"}
@@ -1077,7 +1137,7 @@ function scheduleAnalyticsUpdate(){
 function saveData(immediate=false){
   if(isRendering)return;
   clearTimeout(saveTimer);
-  const write=async()=>{saveTimer=null;try{await saveWorkout();$("saveStatus").textContent="✓ Saved to cloud";}catch(e){$("saveStatus").textContent="Cloud save failed";showNotice("Firestore could not save your data. Check your connection and Firestore security rules, then export a JSON backup.");console.error(e)}};
+  const write=async()=>{saveTimer=null;try{await saveWorkout();$("saveStatus").textContent=previewMode?"✓ Preview only · not saved to Firebase":"✓ Saved to cloud";}catch(e){$("saveStatus").textContent="Cloud save failed";showNotice("Firestore could not save your data. Check your connection and Firestore security rules, then export a JSON backup.");console.error(e)}};
   if(immediate){$("saveStatus").textContent="Saving…";void write()}else{ $("saveStatus").textContent="Saving…";saveTimer=setTimeout(write,250)}
   forgeRefreshVolumeUI();
   scheduleAnalyticsUpdate();
@@ -1395,9 +1455,9 @@ function selectedComparison(entries){
 }
 function escapeCsv(value){const s=String(value??"");return /[",\r\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s}
 function downloadBlob(blob,name){const url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000)}
-function exportBackup(){const data={app:"Forge Strength Tracker",version:5,exportedAt:new Date().toISOString(),profile:state.profile,weeks:state.weeks,templates:state.templates,customExercises:state.customExercises,chartSelection:state.chartSelection,actualMaxHistory:state.actualMaxHistory,barbellCustom:state.barbellCustom,scoringFormula:state.scoringFormula};downloadBlob(new Blob([JSON.stringify(data,null,2)],{type:"application/json"}),`forge-strength-backup-${new Date().toISOString().slice(0,10)}.json`);showToast("Backup exported. Keep it somewhere safe.")}
+function exportBackup(){const data={app:"Forge Strength Tracker",version:6,exportedAt:new Date().toISOString(),profile:state.profile,weeks:state.weeks,templates:state.templates,customExercises:state.customExercises,customExerciseCategories:state.customExerciseCategories,chartSelection:state.chartSelection,actualMaxHistory:state.actualMaxHistory,barbellCustom:state.barbellCustom,scoringFormula:state.scoringFormula};downloadBlob(new Blob([JSON.stringify(data,null,2)],{type:"application/json"}),`forge-strength-backup-${new Date().toISOString().slice(0,10)}.json`);showToast("Backup exported. Keep it somewhere safe.")}
 function restoreBackup(file){
-  if(!file)return;const reader=new FileReader();reader.onload=()=>{try{const raw=JSON.parse(String(reader.result));const data=normalizeData(raw);if(!confirm(`Restore ${data.weeks.length} week(s)? This replaces the current tracker data. Export a backup first if you want to keep it.`))return;state.profile=data.profile;state.weeks=data.weeks;state.templates=data.templates;state.customExercises=data.customExercises;state.chartSelection=data.chartSelection;state.actualMaxHistory=data.actualMaxHistory;state.barbellCustom=data.barbellCustom;state.scoringFormula=data.scoringFormula;syncProfileToUI();render();saveData(true);calculateProgress();showToast("Backup restored.")}catch(e){showNotice("Could not restore this file: "+(e.message||"invalid JSON"));}finally{$("importFile").value=""}};reader.onerror=()=>showNotice("The selected backup file could not be read.");reader.readAsText(file);
+  if(!file)return;const reader=new FileReader();reader.onload=()=>{try{const raw=JSON.parse(String(reader.result));const data=normalizeData(raw);if(!confirm(`Restore ${data.weeks.length} week(s)? This replaces the current tracker data. Export a backup first if you want to keep it.`))return;state.profile=data.profile;state.weeks=data.weeks;state.templates=data.templates;state.customExercises=data.customExercises;state.customExerciseCategories=data.customExerciseCategories;state.chartSelection=data.chartSelection;state.actualMaxHistory=data.actualMaxHistory;state.barbellCustom=data.barbellCustom;state.scoringFormula=data.scoringFormula;syncProfileToUI();render();saveData(true);calculateProgress();showToast("Backup restored.")}catch(e){showNotice("Could not restore this file: "+(e.message||"invalid JSON"));}finally{$("importFile").value=""}};reader.onerror=()=>showNotice("The selected backup file could not be read.");reader.readAsText(file);
 }
 function exportCsv(){
  const rows=[["Week", "Week name", "Day", "Date", "Exercise", "Set", "Weight ("+state.profile.unit+")", "Reps", "Set volume ("+state.profile.unit+"·reps)", "Exercise session volume", "Workout session volume", "Training week volume", "Estimated 1RM (lb)", "RPE"]];
@@ -1424,8 +1484,10 @@ function updateHeatmap(muscleData){
   });
 }
 function getMuscles(name){
-  const normalized=name.toLowerCase();const found=new Set();
+  const normalized=name.toLowerCase(),key=normalizedName(canonicalExerciseName(name)),found=new Set();
   defaultMap.forEach(rule=>{if(rule.keys.some(k=>normalized.includes(k)))rule.groups.forEach(g=>found.add(g))});
+  const assigned=EXERCISE_BANK.find(([bankName])=>normalizedName(bankName)===key)?.[1]||state.customExerciseCategories[key];
+  (EXERCISE_CATEGORY_MUSCLES[assigned]||[]).forEach(group=>found.add(group));
   return [...found];
 }
 function makeMetric(title,value,detail,cls=""){
@@ -1805,11 +1867,6 @@ let studioMode="log";
 let studioWeekId=null,studioDayId=null,editingTemplateId=null;
 let studioDraft={name:"",exercises:[]};
 let workoutNotepadDraft=null;
-const WORKOUT_NOTEPAD_ALIASES={
- "bench":"Barbell Bench Press","bench press":"Barbell Bench Press","incline bench":"Incline Bench Press","incline dumbbell":"Incline Dumbbell Press",
- "squat":"Back Squat","deadlift":"Conventional Deadlift","rdl":"Romanian Deadlift","ohp":"Overhead Press","overhead press":"Overhead Press",
- "lat pulldowns":"Lat Pulldown","pullups":"Pull-Up","pull ups":"Pull-Up","chinups":"Chin-Up","chin ups":"Chin-Up","pushups":"Push-Up","push ups":"Push-Up"
-};
 const draftKey="forgeStrengthTracker.designDraft.v1";
 function studioSaveDraft(){try{localStorage.setItem(draftKey,JSON.stringify({name:studioDraft.name,exercises:studioDraft.exercises,editingTemplateId,editingTemplateName:state.templates.find(t=>t.id===editingTemplateId)?.name||null}))}catch(e){console.warn("Draft could not be saved",e)}}
 function studioRestoreDraft(){try{const raw=JSON.parse(localStorage.getItem(draftKey)||"null");if(raw&&Array.isArray(raw.exercises)){studioDraft.name=cleanText(raw.name,80);studioDraft.exercises=raw.exercises.slice(0,80).map(ex=>({id:uid("ex"),name:cleanText(ex.name,100),sets:(Array.isArray(ex.sets)?ex.sets:[]).slice(0,20).map(set=>newSet(set.weight??"",set.reps??10,normalizedRpe(set)))}));editingTemplateId=state.templates.some(t=>t.id===raw.editingTemplateId)?raw.editingTemplateId:state.templates.find(t=>raw.editingTemplateName&&normalizedName(t.name)===normalizedName(raw.editingTemplateName))?.id||null}}catch(e){console.warn("Could not restore draft",e)}}
@@ -1853,11 +1910,13 @@ function studioExerciseCard(ex,index,{design,write,redraw}){
  const top=document.createElement("div");top.className="ws-exercise-top";
  const nameWrap=document.createElement("div");nameWrap.className="field";nameWrap.style.flex="1";
  const name=makeInput("text",ex.name,`Exercise ${index+1} name`,{list:"exerciseNameChoices",maxlength:100,placeholder:"Exercise name"});
- name.addEventListener("change",()=>{ex.name=cleanText(name.value,100);card.querySelectorAll(".ws-set-pacer").forEach((el,i)=>forgeUpdatePacer(el,ex,ex.sets[i],design));write()});
+ name.addEventListener("change",()=>{ex.name=canonicalExerciseName(name.value);card.querySelectorAll(".ws-set-pacer").forEach((el,i)=>forgeUpdatePacer(el,ex,ex.sets[i],design));write();redraw()});
  nameWrap.append(Object.assign(document.createElement("label"),{textContent:`Exercise ${index+1}`}),name);
+ const categorySelect=document.createElement("select"),bankCategory=EXERCISE_BANK.find(([bankName])=>normalizedName(bankName)===normalizedName(ex.name))?.[1];categorySelect.setAttribute("aria-label",`Body part for ${ex.name||"exercise"}`);categorySelect.append(new Option("Choose body part",""));EXERCISE_CATEGORIES.forEach(item=>categorySelect.append(new Option(item,item)));categorySelect.value=EXERCISE_CATEGORIES.includes(exerciseCategory(ex.name))?exerciseCategory(ex.name):"";categorySelect.disabled=!!bankCategory;categorySelect.addEventListener("change",()=>{if(categorySelect.value){ex.name=registerCustomExercise(ex.name,categorySelect.value);write();renderExerciseBank()}});
+ const categoryWrap=field("Body part",categorySelect);categoryWrap.style.minWidth="175px";
  const actionWrap=document.createElement("div");actionWrap.className="actions";
  actionWrap.append(button("Remove exercise","small danger",()=>{const items=design?studioDraft.exercises:studioSelected().day?.exercises;if(!items)return;items.splice(index,1);redraw();write()}));
- top.append(nameWrap,actionWrap);card.append(top);
+ top.append(nameWrap,categoryWrap,actionWrap);card.append(top);
  const exerciseSubtotal=forgeVolLine(design?'Planned exercise volume':'Exercise volume · logged sets',forgeExerciseVolume(ex));
  const exerciseSubtotalValue=exerciseSubtotal.querySelector('strong');exerciseSubtotalValue.dataset.forgeStudioExercise=ex.id;
  card.append(exerciseSubtotal);
@@ -1904,10 +1963,9 @@ function studioSaveTemplate(){studioDraft.name=cleanText($("studioTemplateName")
 }
 function studioEditTemplate(id){const t=state.templates.find(t=>t.id===id);if(!t){editingTemplateId=null;studioDraft={name:"",exercises:[]}}else{editingTemplateId=t.id;studioDraft={name:t.name,exercises:t.exercises.map(cloneExercise)}}studioSaveDraft();studioSelectMode("design",true);studioRenderDraft()}
 function notepadExerciseInfo(rawName){
- const entered=cleanText(String(rawName||"").replace(/:$/,""),100),key=normalizedName(entered);
- const exact=allExerciseNames().find(name=>normalizedName(name)===key),alias=WORKOUT_NOTEPAD_ALIASES[key],name=exact||alias||entered;
- const bank=EXERCISE_BANK.find(([bankName])=>normalizedName(bankName)===normalizedName(name)),muscles=getMuscles(name);
- return {name,known:!!(bank||exact||alias||muscles.length),category:bank?.[1]||muscles.map(group=>groupNames[group]).join(", ")||"Custom"};
+ const entered=cleanText(String(rawName||"").replace(/:$/,""),100),name=canonicalExerciseName(entered),key=normalizedName(name);
+ const bank=EXERCISE_BANK.find(([bankName])=>normalizedName(bankName)===key),savedCustom=state.customExercises.some(item=>normalizedName(item)===key);
+ return {name,isCustom:!bank&&!savedCustom,category:bank?.[1]||state.customExerciseCategories[key]||inferredExerciseCategory(name)};
 }
 function notepadSetValues(weightValue,repsValue,countValue=1,rpeValue=""){
  const weight=/^(?:bw|bodyweight)$/i.test(String(weightValue))?0:number(String(weightValue).replace(/^\+/,""),0,100000),reps=number(repsValue,1,1000),count=number(countValue,1,20),rpe=rpeValue===""?"":number(rpeValue,1,10);
@@ -1929,7 +1987,7 @@ function parseNotepadSetList(value){
 function notepadInlineExercise(line){
  const colon=line.match(/^(.{1,100}?):\s*(.+)$/);
  if(colon){const sets=parseNotepadSetList(colon[2]);if(sets)return {info:notepadExerciseInfo(colon[1]),sets}}
- const candidates=[...allExerciseNames().map(name=>[name,name]),...Object.entries(WORKOUT_NOTEPAD_ALIASES)].sort((a,b)=>b[0].length-a[0].length);
+ const candidates=[...allExerciseNames().map(name=>[name,name]),...Object.entries(EXERCISE_ALIASES)].sort((a,b)=>b[0].length-a[0].length);
  const lower=line.toLowerCase();
  for(const [label] of candidates){
   const prefix=label.toLowerCase();if(!lower.startsWith(prefix))continue;
@@ -1949,19 +2007,19 @@ function parseWorkoutNotepad(value){
   const sets=parseNotepadSetList(line);
   if(sets){if(!current)draft.warnings.push(`Line ${index+1}: set ignored because no exercise appears above it.`);else current.sets.push(...sets);return}
   const inline=notepadInlineExercise(line);
-  if(inline){current={...inline.info,sets:inline.sets};draft.exercises.push(current);if(!current.known)draft.warnings.push(`“${current.name}” will be added as a custom exercise.`);return}
+  if(inline){current={...inline.info,sets:inline.sets};draft.exercises.push(current);if(current.isCustom)draft.warnings.push(`Choose a body part for “${current.name}” before adding it.`);return}
   if(/\d\s*(?:x|×)|(?:x|×)\s*\d/i.test(line)){draft.warnings.push(`Line ${index+1}: could not understand “${cleanText(line,120)}”.`);return}
-  const info=notepadExerciseInfo(line);current={...info,sets:[]};draft.exercises.push(current);if(!info.known)draft.warnings.push(`“${info.name}” will be added as a custom exercise.`);
+  const info=notepadExerciseInfo(line);current={...info,sets:[]};draft.exercises.push(current);if(info.isCustom)draft.warnings.push(`Choose a body part for “${info.name}” before adding it.`);
  });
  draft.exercises.forEach(exercise=>{if(!exercise.sets.length)draft.warnings.push(`“${exercise.name}” has no parsed sets; one blank set will be added.`)});
  return draft;
 }
 function renderWorkoutNotepadPreview(draft=null){
- const host=$("workoutNotepadPreview"),importButton=$("importWorkoutNotepad");host.replaceChildren();importButton.disabled=!draft?.exercises.length;
+ const host=$("workoutNotepadPreview"),importButton=$("importWorkoutNotepad");host.replaceChildren();importButton.disabled=!draft?.exercises.length||draft.exercises.some(exercise=>exercise.isCustom&&!EXERCISE_CATEGORIES.includes(exercise.category));
  if(!draft?.exercises.length){const empty=document.createElement("div");empty.className="notepad-empty";empty.textContent=draft?"No exercises were recognized. Follow the example format and review again.":"Your parsed exercises and sets will appear here before anything is added.";host.append(empty);return}
  const title=document.createElement("h4");title.textContent="Review parsed workout";host.append(title);
  const meta=document.createElement("div");meta.className="notepad-preview-meta";meta.textContent=[draft.sessionName&&`Session: ${draft.sessionName}`,draft.date&&`Date: ${draft.date}`,`${draft.exercises.length} exercise${draft.exercises.length===1?"":"s"}`].filter(Boolean).join(" · ");host.append(meta);
- draft.exercises.forEach(exercise=>{const block=document.createElement("div");block.className="notepad-preview-exercise";const name=document.createElement("strong");name.textContent=exercise.name;const category=document.createElement("small");category.textContent=`Category: ${exercise.category}`;const sets=document.createElement("small");sets.textContent=exercise.sets.length?exercise.sets.map((set,i)=>`Set ${i+1}: ${set.weight===0?"BW":set.weight+" "+state.profile.unit} × ${set.reps}${set.rpe!==""?" @"+set.rpe:""}`).join(" · "):"One blank set";block.append(name,category,sets);host.append(block)});
+ draft.exercises.forEach(exercise=>{const block=document.createElement("div");block.className="notepad-preview-exercise";const name=document.createElement("strong");name.textContent=exercise.name;const category=document.createElement("small");category.textContent=`Body part: ${exercise.category||"Choose below"}`;const sets=document.createElement("small");sets.textContent=exercise.sets.length?exercise.sets.map((set,i)=>`Set ${i+1}: ${set.weight===0?"BW":set.weight+" "+state.profile.unit} × ${set.reps}${set.rpe!==""?" @"+set.rpe:""}`).join(" · "):"One blank set";block.append(name,category,sets);if(exercise.isCustom){const select=document.createElement("select");select.setAttribute("aria-label",`Body part for ${exercise.name}`);select.append(new Option("Choose body part",""));EXERCISE_CATEGORIES.forEach(item=>select.append(new Option(item,item)));select.value=EXERCISE_CATEGORIES.includes(exercise.category)?exercise.category:"";select.addEventListener("change",()=>{exercise.category=select.value;renderWorkoutNotepadPreview(draft)});block.append(select)}host.append(block)});
  draft.warnings.forEach(message=>{const warning=document.createElement("div");warning.className="notepad-warning";warning.textContent="⚠ "+message;host.append(warning)});
 }
 function reviewWorkoutNotepad(){
@@ -1974,12 +2032,13 @@ function clearWorkoutNotepad(){
 function importWorkoutNotepad(){
  const {week,day}=studioSelected();if(!week||!day){showToast("Choose a training week and day first.");return}
  if(!workoutNotepadDraft?.exercises.length){showToast("Review the notepad workout first.");return}
+ if(workoutNotepadDraft.exercises.some(exercise=>exercise.isCustom&&!EXERCISE_CATEGORIES.includes(exercise.category))){showToast("Choose a body part for every custom exercise.");return}
  if(day.exercises.length&&!confirm(`Add ${workoutNotepadDraft.exercises.length} parsed exercise(s) to ${day.name}? Existing exercises will remain.`))return;
  if(workoutNotepadDraft.date)setWorkoutSessionDate(day,workoutNotepadDraft.date);
  if(workoutNotepadDraft.sessionName)day.name=workoutNotepadDraft.sessionName;
  workoutNotepadDraft.exercises.forEach(parsed=>{
   const exercise={id:uid("ex"),name:parsed.name,sets:parsed.sets.length?parsed.sets.slice(0,20).map(set=>newSet(set.weight,set.reps,set.rpe)):[newSet()]};day.exercises.push(exercise);
-  if(!parsed.known&&!state.customExercises.some(name=>normalizedName(name)===normalizedName(parsed.name)))state.customExercises.push(parsed.name);
+  if(parsed.isCustom)registerCustomExercise(parsed.name,parsed.category);
  });
  day.completed=false;week.expanded=true;day.expanded=true;const count=workoutNotepadDraft.exercises.length;clearWorkoutNotepad();render();saveData(true);studioRender();showToast(`${count} parsed exercise${count===1?"":"s"} added to ${day.name}.`);
 }
@@ -1998,7 +2057,7 @@ function studioInit(){
   });
  }
  $("studioLoadBtn").addEventListener("click",studioLoadTemplate);
- $("studioAddExerciseBtn").addEventListener("click",()=>{const name=cleanText($("studioAddExercise").value,100);const {day}=studioSelected();if(!name||!day){showToast("Choose a day and enter an exercise name.");return}day.exercises.push(newExercise(name,3));day.completed=false;$("studioAddExercise").value="";render();saveData();studioRender()});
+ $("studioAddExerciseBtn").addEventListener("click",()=>{const rawName=cleanText($("studioAddExercise").value,100),name=categorizedExerciseName(rawName,$("studioAddExerciseCategory").value),{day}=studioSelected();if(!rawName||!day){showToast("Choose a day and enter an exercise name.");return}if(!name){showToast("Choose a body part for this custom exercise.");return}day.exercises.push(newExercise(name,3));day.completed=false;$("studioAddExercise").value="";$("studioAddExerciseCategory").value="";render();saveData();studioRender()});
  $("studioAddExercise").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();$("studioAddExerciseBtn").click()}});
  $("parseWorkoutNotepad").addEventListener("click",reviewWorkoutNotepad);$("clearWorkoutNotepad").addEventListener("click",clearWorkoutNotepad);$("importWorkoutNotepad").addEventListener("click",importWorkoutNotepad);
  $("workoutNotepad").addEventListener("input",()=>{if(!workoutNotepadDraft)return;workoutNotepadDraft=null;renderWorkoutNotepadPreview()});
@@ -2006,7 +2065,7 @@ function studioInit(){
  $("studioFinish").addEventListener("click",()=>{const {day}=studioSelected();if(!day)return;if(!day.exercises.length){showToast("Add exercises before completing a workout.");return}if(!day.completed&&!day.exercises.some(ex=>ex.sets.some(s=>Number(s.weight)>0&&Number(s.reps)>0))){showToast("Enter a working weight and reps before marking the session complete.");return}day.completed=!day.completed;render();saveData();studioRender();showToast(day.completed?"Workout marked complete. Great work!":"Session reopened for edits.")});
  $("studioTemplateName").addEventListener("input",()=>{studioDraft.name=cleanText($("studioTemplateName").value,80);studioSaveDraft()});
  $("studioEditTemplate").addEventListener("change",()=>{if(studioDraft.exercises.length&&!confirm("Switch designs? Your current unfinished draft will be replaced (saved workouts stay unchanged).")){studioRenderDraft();return}studioEditTemplate($("studioEditTemplate").value)});
- $("studioDesignAddBtn").addEventListener("click",()=>{const name=cleanText($("studioDesignExercise").value,100);if(!name){showToast("Choose or type an exercise.");return}studioDraft.exercises.push(newExercise(name,3));$("studioDesignExercise").value="";studioSaveDraft();studioRenderDraft()});
+ $("studioDesignAddBtn").addEventListener("click",()=>{const rawName=cleanText($("studioDesignExercise").value,100),name=categorizedExerciseName(rawName,$("studioDesignExerciseCategory").value);if(!rawName){showToast("Choose or type an exercise.");return}if(!name){showToast("Choose a body part for this custom exercise.");return}studioDraft.exercises.push(newExercise(name,3));$("studioDesignExercise").value="";$("studioDesignExerciseCategory").value="";studioSaveDraft();saveData();studioRenderDraft()});
  $("studioDesignExercise").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();$("studioDesignAddBtn").click()}});
  $("studioSaveTemplate").addEventListener("click",studioSaveTemplate);
  $("studioClearDraft").addEventListener("click",()=>{if(studioDraft.exercises.length&&!confirm("Clear this unsaved workout design? Your saved library won't be changed."))return;studioEditTemplate(null)});
@@ -2488,7 +2547,7 @@ function initializeF19(){
  $('f19MaxDate').value=dayDate();$('f19Formula').value=state.scoringFormula;
  $('f19Formula').addEventListener('change',()=>{state.scoringFormula=$('f19Formula').value==='original'?'original':'wilks2';saveData();renderF19Analytics()});
  $('f19SaveMax').addEventListener('click',()=>{const name=cleanText($('f19MaxExercise').value,100);if(!isBarbellExercise(name)){showToast('Choose a barbell exercise or classify a custom exercise first.');return}if(!upsertActualMax(name,$('f19MaxWeight').value,$('f19MaxDate').value)){showToast('Choose a valid date and maximum weight.');return}$('f19MaxWeight').value='';saveData();renderF19Analytics();render();showToast('Dated 1RM saved.');});
- $('f19MarkBarbell').addEventListener('click',()=>{const name=cleanText($('f19BarbellType').value,100),key=normalizedName(name);if(!key){showToast('Enter the custom barbell exercise name first.');return}if(bodyweightFamily(name)){showToast('Bodyweight exercise families use separate performance records.');return}if(!state.barbellCustom.includes(key))state.barbellCustom.push(key);if(!allExerciseNames().some(n=>normalizedName(n)===key))state.customExercises.push(name);$('f19MaxExercise').value=name;saveData();renderF19Analytics();renderExerciseSuggestions();showToast('Exercise classified as barbell.');});
+ $('f19MarkBarbell').addEventListener('click',()=>{const name=canonicalExerciseName($('f19BarbellType').value),key=normalizedName(name);if(!key){showToast('Enter the custom barbell exercise name first.');return}if(bodyweightFamily(name)){showToast('Bodyweight exercise families use separate performance records.');return}if(!state.barbellCustom.includes(key))state.barbellCustom.push(key);if(!allExerciseNames().some(n=>normalizedName(n)===key))registerCustomExercise(name,inferredExerciseCategory(name));$('f19MaxExercise').value=name;saveData();renderF19Analytics();renderExerciseSuggestions();showToast('Exercise classified as barbell.');});
  renderF19Analytics();
 }
 function f19ReportStrength(root,model){
@@ -2541,13 +2600,13 @@ function f19ReportPhotos(root){
 }
 async function init(){
   const user=await waitForAuthenticatedUser();
-  $("saveStatus").textContent="Loading cloud data…";
+  $("saveStatus").textContent=previewMode?"Loading preview…":"Loading cloud data…";
   const localSaved=safeReadStored();
   let saved=null,migratedLocalData=false;
   try{
     saved=await loadWorkouts();
-    if(!saved&&localSaved&&confirm(`Import the workout data saved in this browser into ${user.email||"your signed-in account"}?`)){saved=localSaved;migratedLocalData=true}
-    $("saveStatus").textContent=saved?"✓ Cloud data loaded":"Ready";
+    if(!previewMode&&!saved&&localSaved&&confirm(`Import the workout data saved in this browser into ${user.email||"your signed-in account"}?`)){saved=localSaved;migratedLocalData=true}
+    $("saveStatus").textContent=previewMode?"✓ Cursor preview":saved?"✓ Cloud data loaded":"Ready";
   }catch(e){
     saved=localSaved;
     $("saveStatus").textContent="Cloud unavailable";
@@ -2559,15 +2618,15 @@ async function init(){
     const old=localStorage.getItem(STORAGE_KEY);
     if(old && !localStorage.getItem("forgeStrengthTracker.preRPE.v2"))localStorage.setItem("forgeStrengthTracker.preRPE.v2",old);
   }catch(e){console.warn("Could not preserve old RIR storage snapshot",e)}}
-  if(saved){try{const normalized=normalizeData(saved);state.profile=normalized.profile;state.weeks=normalized.weeks;state.templates=normalized.templates;state.customExercises=normalized.customExercises;state.chartSelection=normalized.chartSelection;state.actualMaxHistory=normalized.actualMaxHistory;state.barbellCustom=normalized.barbellCustom;state.scoringFormula=normalized.scoringFormula;if(!state.weeks.length)state.weeks.push(newWeek("Week 1"));}catch(e){showNotice("Saved data was invalid; starting a new log. If you have a backup, restore it.");state.weeks=[newWeek("Week 1")]}}
+  if(saved){try{const normalized=normalizeData(saved);state.profile=normalized.profile;state.weeks=normalized.weeks;state.templates=normalized.templates;state.customExercises=normalized.customExercises;state.customExerciseCategories=normalized.customExerciseCategories;state.chartSelection=normalized.chartSelection;state.actualMaxHistory=normalized.actualMaxHistory;state.barbellCustom=normalized.barbellCustom;state.scoringFormula=normalized.scoringFormula;if(!state.weeks.length)state.weeks.push(newWeek("Week 1"));}catch(e){showNotice("Saved data was invalid; starting a new log. If you have a backup, restore it.");state.weeks=[newWeek("Week 1")]}}
   else state.weeks=[newWeek("Week 1")];
-  syncProfileToUI();render();initializeF19();studioInit();renderSidePanels();setupReportCenter();initExerciseExplorer();initializeTrainingInsights();void initializeSocialMvp();$("v15CalendarYear").addEventListener("change",forgeConsistency);forgeRenderV14();forgeInitCollapsers();if(saved && (Number(saved.version||2)<5||migratedLocalData))saveData(true);if(migratedLocalData)showToast("Local workout data is being migrated to your private Firestore account.");
+  syncProfileToUI();render();initializeF19();studioInit();renderSidePanels();setupReportCenter();initExerciseExplorer();initializeTrainingInsights();void initializeSocialMvp();$("v15CalendarYear").addEventListener("change",forgeConsistency);forgeRenderV14();forgeInitCollapsers();if(saved && (Number(saved.version||2)<6||migratedLocalData))saveData(true);if(migratedLocalData)showToast("Local workout data is being migrated to your private Firestore account.");
   $("addWeekBtn").addEventListener("click",()=>addWeek(false));$("addWeekTopBtn").addEventListener("click",()=>studioSelectMode("log",true));$("copyPreviousWeekBtn").addEventListener("click",()=>addWeek(true));
  $("bankTargetWeek").addEventListener("change",renderBankTargets);$("bankSearch").addEventListener("input",renderExerciseBank);$("bankCategory").addEventListener("change",renderExerciseBank);
  $("bankAddBtn").addEventListener("click",()=>{if(!selectedBankExercise){showToast("Select an exercise from the bank first.");return}bankAdd(selectedBankExercise)});
- $("createCustomExerciseBtn").addEventListener("click",()=>{const name=cleanText($("customExerciseInput").value,100);if(!name){showToast("Enter an exercise name.");return}if(!allExerciseNames().some(n=>normalizedName(n)===normalizedName(name)))state.customExercises.push(name);selectedBankExercise=name;$("customExerciseInput").value="";renderExerciseBank();renderExerciseSuggestions();saveData();showToast(`${name} saved to your exercise bank.`)});
+ $("createCustomExerciseBtn").addEventListener("click",()=>{const rawName=cleanText($("customExerciseInput").value,100),name=categorizedExerciseName(rawName,$("customExerciseCategory").value);if(!rawName){showToast("Enter an exercise name.");return}if(!name){showToast("Choose a body part for this custom exercise.");return}selectedBankExercise=name;$("customExerciseInput").value="";$("customExerciseCategory").value="";renderExerciseBank();renderExerciseSuggestions();saveData();showToast(`${name} saved under ${exerciseCategory(name)}.`)});
  $("customExerciseMic").addEventListener("click",()=>startDictation($("customExerciseInput"),$("customExerciseMic")));
- ["all","Chest","Back","Legs","Shoulders","Arms","Core","Full Body","Custom"].forEach((cat,i)=>{if(!i)return;$("bankCategory").append(new Option(cat,cat))});
+ EXERCISE_CATEGORIES.forEach(category=>$("bankCategory").append(new Option(category,category)));
   ["userName","age","sex","bw","unit","compareMode","programName"].forEach(id=>$(id).addEventListener("change",()=>{
     if(id==="userName")$("welcomeHeading").textContent=`Welcome Back, ${cleanText($("userName").value,60)||"Athlete"}!`;
     if(id==="unit"){
