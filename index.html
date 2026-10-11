@@ -105,8 +105,9 @@
 .ws-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.ws-grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}.ws-row{display:flex;align-items:end;gap:10px;flex-wrap:wrap}.ws-row>.field{flex:1;min-width:150px}.ws-row .btn{white-space:nowrap}.ws-info{font-size:12px;color:#95b7d9;background:#0a2a42;border:1px solid #195076;border-radius:10px;padding:10px 12px}.ws-divider{height:1px;background:#1f3d5b;margin:13px 0}.ws-primary-action{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;background:#082a2e;border:1px solid #156a67;padding:16px;border-radius:13px}.ws-primary-action .btn{font-size:15px;padding:12px 19px}
 .ws-exercise{background:#0b2139;border:1px solid #295174;border-radius:13px;padding:14px;margin-top:11px}.ws-exercise-top{display:flex;gap:10px;justify-content:space-between;align-items:center;flex-wrap:wrap}.ws-exercise-name{font-size:15px;font-weight:800;color:#f1f9ff}.ws-set-row{display:grid;grid-template-columns:38px repeat(3,minmax(66px,1fr)) 67px 34px;gap:8px;align-items:center;padding:6px 0}.ws-set-header{font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:#98b8d6}.ws-set-row input{width:100%;min-width:0;padding:9px 8px;background:#051425;border:1px solid #315573;border-radius:8px;color:#f1f8ff}.ws-set-row input:focus{outline:2px solid #38c9db;outline-offset:1px}.ws-set-row .set-percent{font-size:11px}.ws-exercise-empty{padding:25px;text-align:center;border:1px dashed #366082;border-radius:11px;color:#aac4df}.ws-exercise-list{display:grid;gap:10px}.ws-exercise-buttons{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
 .ws-completion{font-size:12px;color:#73efd0}.ws-footer-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.ws-muted{color:#8fb0d1;font-size:12px}.ws-card-heading{font-size:13px;font-weight:800;color:#eaf5ff}.ws-dual-choice{display:flex;gap:10px;flex-wrap:wrap}.ws-dual-choice button{min-height:42px}.ws-draft-status{font-size:12px;color:#80e8d2}
+.notepad-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,.8fr);gap:14px}.notepad-input{width:100%;min-height:240px;resize:vertical;background:#051425;border:1px solid #315573;border-radius:11px;color:#edf7ff;padding:13px;font:13px/1.6 ui-monospace,SFMono-Regular,Consolas,monospace}.notepad-input:focus{outline:2px solid #38c9db;outline-offset:1px}.notepad-guide{margin-top:8px!important;font-size:11px!important;line-height:1.6}.notepad-preview{min-height:240px;border:1px dashed #37617f;border-radius:11px;background:#071829;padding:13px}.notepad-preview h4{margin:0 0 9px}.notepad-preview-meta{color:#78e7c9;font-size:11px;margin-bottom:9px}.notepad-preview-exercise{border-top:1px solid #1c3b54;padding:9px 0}.notepad-preview-exercise strong,.notepad-preview-exercise small{display:block}.notepad-preview-exercise small{color:#8facc1;margin-top:3px}.notepad-warning{color:#ffd17a;font-size:11px;line-height:1.5;margin-top:8px}.notepad-empty{color:#8faec7;font-size:12px;line-height:1.6}.notepad-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:11px}
 .advanced-archive{border:1px solid #24425f;border-radius:15px;background:#081626;margin:26px 0 10px;overflow:hidden}.advanced-archive>summary{padding:17px 20px;cursor:pointer;font-weight:800;color:#bdd8f4;background:#0d2035;list-style:none;display:flex;align-items:center;justify-content:space-between}.advanced-archive>summary::-webkit-details-marker{display:none}.advanced-archive>summary:after{content:'▾';font-size:18px}.advanced-archive:not([open])>summary:after{content:'▸'}.advanced-inner{padding:0 18px 20px}.saved-workouts-panel{margin-top:20px}
-@media(max-width:760px){.workspace-content{padding:12px}.workspace-top{padding:20px 15px}.workspace-top h2{font-size:24px}.ws-step{padding:14px}.ws-grid,.ws-grid.three{grid-template-columns:1fr}.ws-set-row{grid-template-columns:25px minmax(52px,1fr) minmax(48px,.7fr) 45px 48px 27px;gap:4px}.ws-set-row input{padding:8px 4px;font-size:12px}.workspace-tab{flex:1;padding:12px 9px}.ws-row>.field{min-width:130px}}
+@media(max-width:760px){.workspace-content{padding:12px}.workspace-top{padding:20px 15px}.workspace-top h2{font-size:24px}.ws-step{padding:14px}.ws-grid,.ws-grid.three,.notepad-layout{grid-template-columns:1fr}.ws-set-row{grid-template-columns:25px minmax(52px,1fr) minmax(48px,.7fr) 45px 48px 27px;gap:4px}.ws-set-row input{padding:8px 4px;font-size:12px}.workspace-tab{flex:1;padding:12px 9px}.ws-row>.field{min-width:130px}}
 
 
 /* Version 10 · Print-ready athlete progress reports */
@@ -512,6 +513,9 @@ body.forge-focus[data-view="community"]{--view-accent:#6ee7c2;--view-accent-soft
         <div class="ws-row"><div class="field"><label for="studioLoadTemplate">Saved workouts</label><select id="studioLoadTemplate"></select></div><button class="btn primary" id="studioLoadBtn" type="button">↻ Load saved workout</button></div>
         <div class="ws-divider"></div><div class="ws-row"><div class="field"><label for="studioAddExercise">Add from exercise bank or type your own</label><input id="studioAddExercise" type="text" list="exerciseNameChoices" placeholder="Search or type an exercise" maxlength="100"></div><button class="btn green" id="studioAddExerciseBtn" type="button">＋ Add exercise</button></div>
       </div>
+      <div class="ws-step" id="workoutNotepadStep"><div class="ws-step-title"><span class="ws-step-index">✎</span><div><h3>Workout Notepad</h3><p>Paste or type a workout in simple shorthand, review how it was understood, then add it to the selected day.</p></div></div>
+        <div class="notepad-layout"><div><label for="workoutNotepad" class="ws-card-heading">Freehand workout</label><textarea id="workoutNotepad" class="notepad-input" maxlength="12000" spellcheck="false" placeholder="# Push Day&#10;Date: 2026-10-11&#10;&#10;Bench Press&#10;135 x 10&#10;185 x 5 @8&#10;&#10;Incline Dumbbell Press: 50 x 10 x 3"></textarea><p class="ws-muted notepad-guide">Use one exercise per line, followed by weight × reps. Add “× sets” to repeat a set and “@8” for RPE. Use 0 or BW for bodyweight. A line beginning with # becomes the session name.</p><div class="notepad-actions"><button class="btn primary" id="parseWorkoutNotepad" type="button">Review workout</button><button class="btn small" id="clearWorkoutNotepad" type="button">Clear</button></div></div><div><div id="workoutNotepadPreview" class="notepad-preview" aria-live="polite"><div class="notepad-empty">Your parsed exercises and sets will appear here before anything is added.</div></div><div class="notepad-actions"><button class="btn green" id="importWorkoutNotepad" type="button" disabled>＋ Add reviewed workout</button></div></div></div>
+      </div>
       <div class="ws-step"><div class="ws-step-title"><span class="ws-step-index">3</span><div><h3>Record your working sets</h3><p>Enter weight, repetitions and RPE. New sets repeat your previous values. Changes save automatically.</p></div></div><div id="studioSessionExercises" class="ws-exercise-list"></div>
         <div class="forge-v18-subtotal session" role="status"><span>Workout session volume · all exercises</span><strong id="forgeStudioSessionTotal">0 lb·reps</strong></div>
         <div class="forge-v18-subtotal week"><span>Training week volume · all days</span><strong id="forgeStudioWeekTotal">0 lb·reps</strong></div>
@@ -617,12 +621,12 @@ body.forge-focus[data-view="community"]{--view-accent:#6ee7c2;--view-accent-soft
       </div>
     </div>
     <aside class="right-col">
-      <section class="panel"><h3>◎ &nbsp;Quick Stats</h3><div class="quick-stat"><span class="quick-icon">♟</span><div><small>Current Weight</small><strong id="quickWeight">180 lb</strong></div></div><div class="quick-stat"><span class="quick-icon">％</span><div><small>Training Weeks</small><strong id="quickWeeks">0</strong></div></div><div class="quick-stat"><span class="quick-icon">♙</span><div><small>Age</small><strong id="quickAge">42</strong></div></div><div class="quick-stat"><span class="quick-icon">★</span><div><small>Program</small><strong id="quickProgram">Strength training</strong></div></div></section>
+      <section class="panel"><h3>◎ &nbsp;Quick Stats</h3><div class="quick-stat"><span class="quick-icon">♟</span><div><small>Current Weight</small><strong id="quickWeight">—</strong></div></div><div class="quick-stat"><span class="quick-icon">％</span><div><small>Training Weeks</small><strong id="quickWeeks">0</strong></div></div><div class="quick-stat"><span class="quick-icon">♙</span><div><small>Age</small><strong id="quickAge">—</strong></div></div><div class="quick-stat"><span class="quick-icon">★</span><div><small>Program</small><strong id="quickProgram">—</strong></div></div></section>
       <section class="panel" id="settings"><h3>⚙ &nbsp;Profile & Settings</h3><div class="profile-grid">
         <div class="field"><label for="userName">Your name</label><input type="text" id="userName" maxlength="60" placeholder="Enter your name"></div>
-        <div class="field"><label for="age">Age</label><input type="number" id="age" min="13" max="120" value="42"></div>
-        <div class="field"><label for="sex">Wilks category</label><select id="sex"><option value="male">Male</option><option value="female">Female</option></select></div>
-        <div class="field"><label for="bw">Body weight (lb)</label><input type="number" id="bw" min="1" max="1500" step=".1" value="180"></div>
+        <div class="field"><label for="age">Age</label><input type="number" id="age" min="13" max="120" placeholder="Enter age"></div>
+        <div class="field"><label for="sex">Wilks category</label><select id="sex"><option value="">Select category</option><option value="male">Male</option><option value="female">Female</option></select></div>
+        <div class="field"><label for="bw">Body weight (lb)</label><input type="number" id="bw" min="1" max="1500" step=".1" placeholder="Enter body weight"></div>
         <div class="field"><label for="unit">Units</label><select id="unit"><option value="lb">Pounds (lb)</option><option value="kg">Kilograms (kg)</option></select></div>
         <div class="field"><label for="compareMode">Comparison</label><select id="compareMode"><option value="first-last">First vs latest</option><option value="adjacent">Latest vs previous</option><option value="four">Latest 4 weeks</option></select></div>
         <div class="field"><label for="programName">Program name</label><input type="text" id="programName" maxlength="80" placeholder="Strength Block 1"></div>
@@ -809,7 +813,7 @@ $("signOutBtn").addEventListener("click",async()=>{
   $("signOutBtn").disabled=true;
   try{await signOut(auth);location.reload()}catch(error){$("signOutBtn").disabled=false;showNotice("Could not sign out. Please try again.");console.error(error)}
 });
-const state = { profile:{userName:"",actualMaxes:{},age:42,sex:"male",bw:180,unit:"lb",compareMode:"first-last",programName:""}, weeks:[],templates:[],customExercises:[],chartSelection:[], actualMaxHistory:[], barbellCustom:[], scoringFormula:"wilks2", nextId:1 };
+const state = { profile:{userName:"",actualMaxes:{},age:"",sex:"",bw:"",unit:"lb",compareMode:"first-last",programName:""}, weeks:[],templates:[],customExercises:[],chartSelection:[], actualMaxHistory:[], barbellCustom:[], scoringFormula:"wilks2", nextId:1 };
 let chart = null, saveTimer = null, toastTimer = null, analyticsTimer = null, isRendering = false;
 let saveQueue = Promise.resolve();
 const muscleGroups = ["chest","back","shoulders","biceps","triceps","core","quads","hamstrings","glutes","calves","forearms"];
@@ -835,7 +839,7 @@ function fromLbs(n){return state.profile.unit==="kg"?n/2.2046226218:n}
 function getE1RM(weight,reps){if(!(weight>0)||!(reps>0)||reps>30)return 0;return reps===1?weight:weight*(1+reps/30)}
 // Reference: IPF Models Evaluation I (2020), Appendix 1. Scores are individual-lift adaptations.
 function calculateWilks(liftLbs,bodyLbs,sex,formula="wilks2"){
-  if(!(liftLbs>0)||!(bodyLbs>0))return null;
+  if(!(liftLbs>0)||!(bodyLbs>0)||!["male","female"].includes(sex))return null;
   const bwKg=bodyLbs/2.2046226218, liftKg=liftLbs/2.2046226218;
   const original=sex==="female"?[594.31747775582,-27.23842536447,.82112226871,-.00930733913,.00004731582,-.00000009054]:[-216.0475144,16.2606339,-.002388645,-.00113732,.00000701863,-.00000001291];
   const modern=sex==="female"?[-125.425539779509,13.7121941940668,-.0330725063103405,-.0010504000506583,.00000938773881462799,-.000000023334613884954]:[47.4617885411949,8.47206137941125,.073694103462609,-.00139583381094385,.00000707665973070743,-.0000000120804336482315];
@@ -1032,7 +1036,7 @@ function normalizedStoredId(value,prefix){
 function normalizeData(raw){
  if(!raw||typeof raw!=="object"||!Array.isArray(raw.weeks))throw new Error("Backup format is invalid.");
  const p=raw.profile||{};
- const normalized={profile:{userName:cleanText(p.userName,60),actualMaxes:normalizeMaxes(p.actualMaxes),age:number(p.age,13,120)??42,sex:p.sex==="female"?"female":"male",bw:number(p.bw,1,1500)??180,unit:p.unit==="kg"?"kg":"lb",compareMode:["first-last","adjacent","four"].includes(p.compareMode)?p.compareMode:"first-last",programName:cleanText(p.programName,80)},weeks:[],templates:[],customExercises:[],chartSelection:[],actualMaxHistory:[],barbellCustom:[],scoringFormula:raw.scoringFormula==="original"?"original":"wilks2",nextId:1};
+ const normalized={profile:{userName:cleanText(p.userName,60),actualMaxes:normalizeMaxes(p.actualMaxes),age:number(p.age,13,120)??"",sex:["male","female"].includes(p.sex)?p.sex:"",bw:number(p.bw,1,1500)??"",unit:p.unit==="kg"?"kg":"lb",compareMode:["first-last","adjacent","four"].includes(p.compareMode)?p.compareMode:"first-last",programName:cleanText(p.programName,80)},weeks:[],templates:[],customExercises:[],chartSelection:[],actualMaxHistory:[],barbellCustom:[],scoringFormula:raw.scoringFormula==="original"?"original":"wilks2",nextId:1};
  const normalizeExercise=ex=>({id:normalizedStoredId(ex.id,"ex"),name:cleanText(ex.name,100),sets:(Array.isArray(ex.sets)?ex.sets:[]).slice(0,20).map(s=>({id:normalizedStoredId(s.id,"set"),weight:s.weight===""?"":number(s.weight,0,100000)??"",reps:s.reps===""?"":number(s.reps,0,1000)??"",rpe:normalizedRpe(s)}))});
  raw.weeks.slice(0,500).forEach((w,wi)=>{
   const oldBw=w.bodyweight;
@@ -1080,8 +1084,8 @@ function saveData(immediate=false){
 }
 function syncProfileFromUI(){
   const age=number($("age").value,13,120),bw=number($("bw").value,1,1500);
-  state.profile.userName=cleanText($("userName").value,60);state.profile.age=age??42;state.profile.sex=$("sex").value==="female"?"female":"male";
-  state.profile.bw=bw??180;state.profile.unit=$("unit").value==="kg"?"kg":"lb";
+  state.profile.userName=cleanText($("userName").value,60);state.profile.age=age??"";state.profile.sex=["male","female"].includes($("sex").value)?$("sex").value:"";
+  state.profile.bw=bw??"";state.profile.unit=$("unit").value==="kg"?"kg":"lb";
   state.profile.compareMode=$("compareMode").value;state.profile.programName=cleanText($("programName").value,80);
 }
 function syncProfileToUI(){
@@ -1786,11 +1790,11 @@ function initializeTrainingInsights(){
 }
 
 function renderSidePanels(){
-  const w=$("bw")?.value||state.profile.bw||"—";const unit=state.profile.unit||"lb";
-  if($("quickWeight"))$("quickWeight").textContent=`${w} ${unit}`;
+  const w=$("bw")?.value||state.profile.bw||"",unit=state.profile.unit||"lb";
+  if($("quickWeight"))$("quickWeight").textContent=w?`${w} ${unit}`:"—";
   if($("quickAge"))$("quickAge").textContent=state.profile.age||"—";
-  if($("quickProgram"))$("quickProgram").textContent=state.profile.programName||"Strength training";
-  if($("quickWeeks"))$("quickWeeks").textContent=state.weeks.length;
+  if($("quickProgram"))$("quickProgram").textContent=state.profile.programName||"—";
+  if($("quickWeeks"))$("quickWeeks").textContent=state.weeks.filter(week=>forgeWeekVolume(week)>0).length;
   if($("weekCountLabel"))$("weekCountLabel").textContent=`${state.weeks.length} training week${state.weeks.length===1?"":"s"}`;
   const recent=$("recentWorkouts");if(recent){recent.replaceChildren();const items=state.weeks.flatMap((w,wi)=>w.days.map(d=>({w,wi,d}))).slice(-5).reverse();if(!items.length){const e=document.createElement("div");e.className="empty";e.textContent="Your workouts will appear here.";recent.append(e)}else items.forEach(({w,wi,d})=>{const row=document.createElement("div");row.className="record-row";const left=document.createElement("div");const title=document.createElement("strong");title.textContent=`${weekName(w,wi)} · ${d.name}`;const caption=document.createElement("small");caption.textContent=d.date||"Date not set";left.append(title,caption);const right=document.createElement("strong");const vol=d.exercises.reduce((sum,ex)=>sum+ex.sets.reduce((n,set)=>{const wt=number(set.weight,0,100000),reps=number(set.reps,0,1000);return n+(wt!==null&&reps!==null?wt*reps:0)},0),0);right.textContent=vol?forgeFmtVolume(vol):"Planned";right.title="Workout session volume · weight × reps";row.append(left,right);recent.append(row)})}
   const prs=$("personalRecords");if(prs){prs.replaceChildren();const bests=new Map();allRecords().forEach(r=>{if(!bests.has(r.key)||r.e1rm>bests.get(r.key).e1rm)bests.set(r.key,r)});const list=[...bests.values()].sort((a,b)=>b.e1rm-a.e1rm).slice(0,5);if(!list.length){prs.innerHTML='<div class="empty">Records appear as you log lifts.</div>'}else list.forEach(r=>{const row=document.createElement("div");row.className="record-row";const left=document.createElement("div");const name=document.createElement("strong");name.textContent=r.name;const small=document.createElement("small");small.textContent="Estimated 1RM";left.append(name,small);const right=document.createElement("strong");right.textContent=`${fromLbs(r.e1rm).toFixed(1)} ${unit}`;row.append(left,right);prs.append(row)})}
@@ -1800,6 +1804,12 @@ function renderSidePanels(){
 let studioMode="log";
 let studioWeekId=null,studioDayId=null,editingTemplateId=null;
 let studioDraft={name:"",exercises:[]};
+let workoutNotepadDraft=null;
+const WORKOUT_NOTEPAD_ALIASES={
+ "bench":"Barbell Bench Press","bench press":"Barbell Bench Press","incline bench":"Incline Bench Press","incline dumbbell":"Incline Dumbbell Press",
+ "squat":"Back Squat","deadlift":"Conventional Deadlift","rdl":"Romanian Deadlift","ohp":"Overhead Press","overhead press":"Overhead Press",
+ "lat pulldowns":"Lat Pulldown","pullups":"Pull-Up","pull ups":"Pull-Up","chinups":"Chin-Up","chin ups":"Chin-Up","pushups":"Push-Up","push ups":"Push-Up"
+};
 const draftKey="forgeStrengthTracker.designDraft.v1";
 function studioSaveDraft(){try{localStorage.setItem(draftKey,JSON.stringify({name:studioDraft.name,exercises:studioDraft.exercises,editingTemplateId,editingTemplateName:state.templates.find(t=>t.id===editingTemplateId)?.name||null}))}catch(e){console.warn("Draft could not be saved",e)}}
 function studioRestoreDraft(){try{const raw=JSON.parse(localStorage.getItem(draftKey)||"null");if(raw&&Array.isArray(raw.exercises)){studioDraft.name=cleanText(raw.name,80);studioDraft.exercises=raw.exercises.slice(0,80).map(ex=>({id:uid("ex"),name:cleanText(ex.name,100),sets:(Array.isArray(ex.sets)?ex.sets:[]).slice(0,20).map(set=>newSet(set.weight??"",set.reps??10,normalizedRpe(set)))}));editingTemplateId=state.templates.some(t=>t.id===raw.editingTemplateId)?raw.editingTemplateId:state.templates.find(t=>raw.editingTemplateName&&normalizedName(t.name)===normalizedName(raw.editingTemplateName))?.id||null}}catch(e){console.warn("Could not restore draft",e)}}
@@ -1893,6 +1903,86 @@ function studioSaveTemplate(){studioDraft.name=cleanText($("studioTemplateName")
  studioSaveDraft();render();saveData();studioRender();showToast(`Saved “${studioDraft.name}”. Find it under Saved Workouts.`)
 }
 function studioEditTemplate(id){const t=state.templates.find(t=>t.id===id);if(!t){editingTemplateId=null;studioDraft={name:"",exercises:[]}}else{editingTemplateId=t.id;studioDraft={name:t.name,exercises:t.exercises.map(cloneExercise)}}studioSaveDraft();studioSelectMode("design",true);studioRenderDraft()}
+function notepadExerciseInfo(rawName){
+ const entered=cleanText(String(rawName||"").replace(/:$/,""),100),key=normalizedName(entered);
+ const exact=allExerciseNames().find(name=>normalizedName(name)===key),alias=WORKOUT_NOTEPAD_ALIASES[key],name=exact||alias||entered;
+ const bank=EXERCISE_BANK.find(([bankName])=>normalizedName(bankName)===normalizedName(name)),muscles=getMuscles(name);
+ return {name,known:!!(bank||exact||alias||muscles.length),category:bank?.[1]||muscles.map(group=>groupNames[group]).join(", ")||"Custom"};
+}
+function notepadSetValues(weightValue,repsValue,countValue=1,rpeValue=""){
+ const weight=/^(?:bw|bodyweight)$/i.test(String(weightValue))?0:number(String(weightValue).replace(/^\+/,""),0,100000),reps=number(repsValue,1,1000),count=number(countValue,1,20),rpe=rpeValue===""?"":number(rpeValue,1,10);
+ if(weight===null||reps===null||count===null||rpe===null||!Number.isInteger(reps)||!Number.isInteger(count))return null;
+ return Array.from({length:count},()=>({weight,reps,rpe}));
+}
+function parseNotepadSetSpec(value){
+ const text=String(value||"").trim().replace(/^set\s*\d+\s*[:.)-]?\s*/i,"");
+ let match=text.match(/^(\d+)\s*sets?\s*(?:x|×)\s*(\d+)\s*reps?\s*@\s*(\+?\d+(?:\.\d+)?|bw|bodyweight)\s*(?:lb|lbs|kg|kgs)?(?:\s+rpe\s*:?\s*(\d+(?:\.\d+)?))?$/i);
+ if(match)return notepadSetValues(match[3],match[2],match[1],match[4]||"");
+ match=text.match(/^(\+?\d+(?:\.\d+)?|bw|bodyweight)\s*(?:lb|lbs|kg|kgs)?\s*(?:x|×)\s*(\d+)\s*(?:reps?)?(?:\s*(?:x|×)\s*(\d+)\s*(?:sets?)?)?(?:\s*(?:@|rpe\s*:?)\s*(\d+(?:\.\d+)?))?$/i);
+ return match?notepadSetValues(match[1],match[2],match[3]||1,match[4]||""):null;
+}
+function parseNotepadSetList(value){
+ const parts=String(value||"").split(/\s*[,;]\s*/).filter(Boolean),sets=[];if(!parts.length)return null;
+ for(const part of parts){const parsed=parseNotepadSetSpec(part);if(!parsed)return null;sets.push(...parsed)}
+ return sets.length<=100?sets:null;
+}
+function notepadInlineExercise(line){
+ const colon=line.match(/^(.{1,100}?):\s*(.+)$/);
+ if(colon){const sets=parseNotepadSetList(colon[2]);if(sets)return {info:notepadExerciseInfo(colon[1]),sets}}
+ const candidates=[...allExerciseNames().map(name=>[name,name]),...Object.entries(WORKOUT_NOTEPAD_ALIASES)].sort((a,b)=>b[0].length-a[0].length);
+ const lower=line.toLowerCase();
+ for(const [label] of candidates){
+  const prefix=label.toLowerCase();if(!lower.startsWith(prefix))continue;
+  const rest=line.slice(label.length);if(!/^\s*[:–—-]?\s+\S/.test(rest))continue;
+  const sets=parseNotepadSetList(rest.replace(/^\s*[:–—-]?\s*/,""));if(sets)return {info:notepadExerciseInfo(label),sets};
+ }
+ return null;
+}
+function parseWorkoutNotepad(value){
+ const draft={sessionName:"",date:"",exercises:[],warnings:[]};let current=null;
+ String(value||"").split(/\r?\n/).forEach((raw,index)=>{
+  let line=raw.trim();if(!line)return;
+  if(line.startsWith("#")){draft.sessionName=cleanText(line.replace(/^#+\s*/,""),40);return}
+  line=line.replace(/^\s*(?:[-*•>]|\d+[.)])\s*/,"").trim();if(!line)return;
+  const meta=line.match(/^(workout|session|title)\s*:\s*(.+)$/i);if(meta){draft.sessionName=cleanText(meta[2],40);return}
+  const date=line.match(/^date\s*:\s*(\d{4}-\d{2}-\d{2})$/i);if(date){if(Number.isNaN(new Date(date[1]+"T12:00:00").getTime()))draft.warnings.push(`Line ${index+1}: invalid date.`);else draft.date=date[1];return}
+  const sets=parseNotepadSetList(line);
+  if(sets){if(!current)draft.warnings.push(`Line ${index+1}: set ignored because no exercise appears above it.`);else current.sets.push(...sets);return}
+  const inline=notepadInlineExercise(line);
+  if(inline){current={...inline.info,sets:inline.sets};draft.exercises.push(current);if(!current.known)draft.warnings.push(`“${current.name}” will be added as a custom exercise.`);return}
+  if(/\d\s*(?:x|×)|(?:x|×)\s*\d/i.test(line)){draft.warnings.push(`Line ${index+1}: could not understand “${cleanText(line,120)}”.`);return}
+  const info=notepadExerciseInfo(line);current={...info,sets:[]};draft.exercises.push(current);if(!info.known)draft.warnings.push(`“${info.name}” will be added as a custom exercise.`);
+ });
+ draft.exercises.forEach(exercise=>{if(!exercise.sets.length)draft.warnings.push(`“${exercise.name}” has no parsed sets; one blank set will be added.`)});
+ return draft;
+}
+function renderWorkoutNotepadPreview(draft=null){
+ const host=$("workoutNotepadPreview"),importButton=$("importWorkoutNotepad");host.replaceChildren();importButton.disabled=!draft?.exercises.length;
+ if(!draft?.exercises.length){const empty=document.createElement("div");empty.className="notepad-empty";empty.textContent=draft?"No exercises were recognized. Follow the example format and review again.":"Your parsed exercises and sets will appear here before anything is added.";host.append(empty);return}
+ const title=document.createElement("h4");title.textContent="Review parsed workout";host.append(title);
+ const meta=document.createElement("div");meta.className="notepad-preview-meta";meta.textContent=[draft.sessionName&&`Session: ${draft.sessionName}`,draft.date&&`Date: ${draft.date}`,`${draft.exercises.length} exercise${draft.exercises.length===1?"":"s"}`].filter(Boolean).join(" · ");host.append(meta);
+ draft.exercises.forEach(exercise=>{const block=document.createElement("div");block.className="notepad-preview-exercise";const name=document.createElement("strong");name.textContent=exercise.name;const category=document.createElement("small");category.textContent=`Category: ${exercise.category}`;const sets=document.createElement("small");sets.textContent=exercise.sets.length?exercise.sets.map((set,i)=>`Set ${i+1}: ${set.weight===0?"BW":set.weight+" "+state.profile.unit} × ${set.reps}${set.rpe!==""?" @"+set.rpe:""}`).join(" · "):"One blank set";block.append(name,category,sets);host.append(block)});
+ draft.warnings.forEach(message=>{const warning=document.createElement("div");warning.className="notepad-warning";warning.textContent="⚠ "+message;host.append(warning)});
+}
+function reviewWorkoutNotepad(){
+ workoutNotepadDraft=parseWorkoutNotepad($("workoutNotepad").value);renderWorkoutNotepadPreview(workoutNotepadDraft);
+ if(!workoutNotepadDraft.exercises.length)showToast("No exercises were recognized. Check the format example.");
+}
+function clearWorkoutNotepad(){
+ $("workoutNotepad").value="";workoutNotepadDraft=null;renderWorkoutNotepadPreview();
+}
+function importWorkoutNotepad(){
+ const {week,day}=studioSelected();if(!week||!day){showToast("Choose a training week and day first.");return}
+ if(!workoutNotepadDraft?.exercises.length){showToast("Review the notepad workout first.");return}
+ if(day.exercises.length&&!confirm(`Add ${workoutNotepadDraft.exercises.length} parsed exercise(s) to ${day.name}? Existing exercises will remain.`))return;
+ if(workoutNotepadDraft.date)setWorkoutSessionDate(day,workoutNotepadDraft.date);
+ if(workoutNotepadDraft.sessionName)day.name=workoutNotepadDraft.sessionName;
+ workoutNotepadDraft.exercises.forEach(parsed=>{
+  const exercise={id:uid("ex"),name:parsed.name,sets:parsed.sets.length?parsed.sets.slice(0,20).map(set=>newSet(set.weight,set.reps,set.rpe)):[newSet()]};day.exercises.push(exercise);
+  if(!parsed.known&&!state.customExercises.some(name=>normalizedName(name)===normalizedName(parsed.name)))state.customExercises.push(parsed.name);
+ });
+ day.completed=false;week.expanded=true;day.expanded=true;const count=workoutNotepadDraft.exercises.length;clearWorkoutNotepad();render();saveData(true);studioRender();showToast(`${count} parsed exercise${count===1?"":"s"} added to ${day.name}.`);
+}
 function studioInit(){
  studioRestoreDraft();
  $("studioLogTab").addEventListener("click",()=>studioSelectMode("log"));$("studioDesignTab").addEventListener("click",()=>studioSelectMode("design"));
@@ -1910,6 +2000,8 @@ function studioInit(){
  $("studioLoadBtn").addEventListener("click",studioLoadTemplate);
  $("studioAddExerciseBtn").addEventListener("click",()=>{const name=cleanText($("studioAddExercise").value,100);const {day}=studioSelected();if(!name||!day){showToast("Choose a day and enter an exercise name.");return}day.exercises.push(newExercise(name,3));day.completed=false;$("studioAddExercise").value="";render();saveData();studioRender()});
  $("studioAddExercise").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();$("studioAddExerciseBtn").click()}});
+ $("parseWorkoutNotepad").addEventListener("click",reviewWorkoutNotepad);$("clearWorkoutNotepad").addEventListener("click",clearWorkoutNotepad);$("importWorkoutNotepad").addEventListener("click",importWorkoutNotepad);
+ $("workoutNotepad").addEventListener("input",()=>{if(!workoutNotepadDraft)return;workoutNotepadDraft=null;renderWorkoutNotepadPreview()});
  $("studioPublish").addEventListener("click",()=>{const {week,day}=studioSelected();if(!week||!day)return;publishedWorkoutIds.has(sourceWorkoutKey(day))?unpublishWorkout(day):openPublishDialog(week,day)});
  $("studioFinish").addEventListener("click",()=>{const {day}=studioSelected();if(!day)return;if(!day.exercises.length){showToast("Add exercises before completing a workout.");return}if(!day.completed&&!day.exercises.some(ex=>ex.sets.some(s=>Number(s.weight)>0&&Number(s.reps)>0))){showToast("Enter a working weight and reps before marking the session complete.");return}day.completed=!day.completed;render();saveData();studioRender();showToast(day.completed?"Workout marked complete. Great work!":"Session reopened for edits.")});
  $("studioTemplateName").addEventListener("input",()=>{studioDraft.name=cleanText($("studioTemplateName").value,80);studioSaveDraft()});
