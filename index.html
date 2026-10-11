@@ -1038,22 +1038,25 @@ async function loadWorkouts(){
   const snapshot=await getDoc(userWorkoutDocument());
   return snapshot.exists()?snapshot.data():null;
 }
+function normalizedStoredId(value,prefix){
+ const id=String(value||"");return /^[a-zA-Z0-9_-]{1,120}$/.test(id)?id:uid(prefix);
+}
 function normalizeData(raw){
  if(!raw||typeof raw!=="object"||!Array.isArray(raw.weeks))throw new Error("Backup format is invalid.");
  const p=raw.profile||{};
  const normalized={profile:{userName:cleanText(p.userName,60),actualMaxes:normalizeMaxes(p.actualMaxes),age:number(p.age,13,120)??42,sex:p.sex==="female"?"female":"male",bw:number(p.bw,1,1500)??180,unit:p.unit==="kg"?"kg":"lb",compareMode:["first-last","adjacent","four"].includes(p.compareMode)?p.compareMode:"first-last",programName:cleanText(p.programName,80)},weeks:[],templates:[],customExercises:[],chartSelection:[],actualMaxHistory:[],barbellCustom:[],scoringFormula:raw.scoringFormula==="original"?"original":"wilks2",nextId:1};
- const normalizeExercise=ex=>({id:uid("ex"),name:cleanText(ex.name,100),sets:(Array.isArray(ex.sets)?ex.sets:[]).slice(0,20).map(s=>({id:uid("set"),weight:s.weight===""?"":number(s.weight,0,100000)??"",reps:s.reps===""?"":number(s.reps,0,1000)??"",rpe:normalizedRpe(s)}))});
+ const normalizeExercise=ex=>({id:normalizedStoredId(ex.id,"ex"),name:cleanText(ex.name,100),sets:(Array.isArray(ex.sets)?ex.sets:[]).slice(0,20).map(s=>({id:normalizedStoredId(s.id,"set"),weight:s.weight===""?"":number(s.weight,0,100000)??"",reps:s.reps===""?"":number(s.reps,0,1000)??"",rpe:normalizedRpe(s)}))});
  raw.weeks.slice(0,500).forEach((w,wi)=>{
   const oldBw=w.bodyweight;
   const bwValue=oldBw&&typeof oldBw==="object"?number(oldBw.value,1,1500):null;
-  const week={id:uid("week"),name:cleanText(w.name,80)||`Week ${wi+1}`,expanded:w.expanded!==false,bodyweight:{value:bwValue??normalized.profile.bw,source:bwValue!==null&&["assumed","entered","carried"].includes(oldBw.source)?oldBw.source:"assumed"},days:[]};
+  const week={id:normalizedStoredId(w.id,"week"),name:cleanText(w.name,80)||`Week ${wi+1}`,expanded:w.expanded!==false,bodyweight:{value:bwValue??normalized.profile.bw,source:bwValue!==null&&["assumed","entered","carried"].includes(oldBw.source)?oldBw.source:"assumed"},days:[]};
   const oldDays=Array.isArray(w.days)?w.days:[{name:weekDayFromDate(w.date)||"Monday",date:w.date||"",notes:w.notes||"",exercises:w.exercises||[]}];
-  oldDays.slice(0,35).forEach((d,di)=>{const day={id:uid("day"),name:cleanText(d.name,40)||`Day ${di+1}`,date:/^\d{4}-\d{2}-\d{2}$/.test(d.date||"")?d.date:"",notes:cleanText(d.notes,2000),expanded:d.expanded!==false,completed:!!d.completed,exercises:[]};(Array.isArray(d.exercises)?d.exercises:[]).slice(0,200).forEach(ex=>{const ne=normalizeExercise(ex);if(!ne.sets.length)ne.sets.push(newSet());day.exercises.push(ne)});week.days.push(day)});
+  oldDays.slice(0,35).forEach((d,di)=>{const day={id:normalizedStoredId(d.id,"day"),name:cleanText(d.name,40)||`Day ${di+1}`,date:/^\d{4}-\d{2}-\d{2}$/.test(d.date||"")?d.date:"",notes:cleanText(d.notes,2000),expanded:d.expanded!==false,completed:!!d.completed,exercises:[]};(Array.isArray(d.exercises)?d.exercises:[]).slice(0,200).forEach(ex=>{const ne=normalizeExercise(ex);if(!ne.sets.length)ne.sets.push(newSet());day.exercises.push(ne)});week.days.push(day)});
   if(!week.days.length)week.days.push(newDay("Monday"));normalized.weeks.push(week);
  });
  normalized.customExercises=[...new Set((Array.isArray(raw.customExercises)?raw.customExercises:[]).slice(0,500).map(n=>cleanText(n,100)).filter(Boolean))];
- (Array.isArray(raw.templates)?raw.templates:[]).slice(0,100).forEach(t=>{const name=cleanText(t.name,80);if(!name)return;normalized.templates.push({id:uid("template"),name,exercises:(Array.isArray(t.exercises)?t.exercises:[]).slice(0,80).map(normalizeExercise)})});
- normalized.actualMaxHistory=(Array.isArray(raw.actualMaxHistory)?raw.actualMaxHistory:[]).slice(0,10000).map(r=>({id:uid('test'),key:normalizedName(r.key||r.name),name:cleanText(r.name||r.key,100),date:r.date,weightLb:number(r.weightLb,.1,100000)})).filter(r=>r.key&&/^\d{4}-\d{2}-\d{2}$/.test(r.date||'')&&r.weightLb);
+ (Array.isArray(raw.templates)?raw.templates:[]).slice(0,100).forEach(t=>{const name=cleanText(t.name,80);if(!name)return;normalized.templates.push({id:normalizedStoredId(t.id,"template"),name,exercises:(Array.isArray(t.exercises)?t.exercises:[]).slice(0,80).map(normalizeExercise)})});
+ normalized.actualMaxHistory=(Array.isArray(raw.actualMaxHistory)?raw.actualMaxHistory:[]).slice(0,10000).map(r=>({id:normalizedStoredId(r.id,"test"),key:normalizedName(r.key||r.name),name:cleanText(r.name||r.key,100),date:r.date,weightLb:number(r.weightLb,.1,100000)})).filter(r=>r.key&&/^\d{4}-\d{2}-\d{2}$/.test(r.date||'')&&r.weightLb);
  normalized.barbellCustom=[...new Set((Array.isArray(raw.barbellCustom)?raw.barbellCustom:[]).map(n=>normalizedName(n)).filter(Boolean))].slice(0,500);
  normalized.chartSelection=[...new Set((Array.isArray(raw.chartSelection)?raw.chartSelection:[]).map(n=>normalizedName(n)).filter(Boolean))].slice(0,5);
  return normalized;
@@ -1979,7 +1982,7 @@ function publicPostHtml(post){
  return `<article class="community-post" data-community-kind="workout" data-community-popularity="${Number(post.supportCount)||0}" data-community-time="${post.publishedAt?.seconds||0}">
   <div class="community-post-head">${publicAvatar(avatar)}<div class="community-author"><strong>${socialEscape(post.authorName||"Forge Athlete")}</strong><small>@${socialEscape(post.handle||"athlete")} · ${socialEscape(publicTime(post.publishedAt))}</small></div><span class="community-public">PUBLIC</span></div>
   <div class="community-post-body"><h3>${socialEscape(post.title||"Shared workout")}</h3>${post.caption?`<p>${socialEscape(post.caption)}</p>`:""}<div class="community-metrics"><div class="community-metric"><small>Top set</small><strong>${top?`${socialEscape(top.weight)} ${socialEscape(post.unit||"lb")} × ${socialEscape(top.reps)}`:"Not shared"}</strong></div><div class="community-metric"><small>Exercises</small><strong>${Number(post.exerciseCount)||exercises.length} movements</strong></div><div class="community-metric"><small>Volume</small><strong>${Number(post.volume||0).toLocaleString()} ${socialEscape(post.unit||"lb")}</strong></div></div><div class="community-tags">${tags.map(tag=>`<span class="community-tag">${socialEscape(tag)}</span>`).join("")}</div></div>
-  <div class="community-actions"><span class="community-action">Support · ${Number(post.supportCount)||0}</span>${post.ownerId===currentUser?.uid?'<span class="community-action active">Your public workout</span>':""}</div>
+  <div class="community-actions"><span class="community-action">Support · ${Number(post.supportCount)||0}</span>${post.ownerId===currentUser?.uid?`<span class="community-action active">Your public workout</span><button class="community-action community-remove-post" type="button" data-post-id="${socialEscape(post.id)}">Remove public post</button>`:""}</div>
  </article>`;
 }
 function renderCommunityFeed(){
@@ -2032,11 +2035,18 @@ async function unpublishWorkout(day){
  try{await deleteDoc(publicPostRef(day));publishedWorkoutIds.delete(sourceWorkoutKey(day));render();studioRender();await loadCommunityFeed();showToast("Workout is private again.")}
  catch(error){console.error(error);showNotice("The public workout could not be removed. Check your Firestore security rules.")}
 }
+async function removePublicPostById(postId){
+ const post=communityPosts.find(item=>item.id===postId);if(!post||post.ownerId!==currentUser.uid)return;
+ if(!confirm(`Remove “${post.title||"this workout"}” from the public community? Your private training data will not be deleted.`))return;
+ try{await deleteDoc(doc(db,"publicWorkouts",postId));await Promise.all([loadOwnPublishedWorkouts(),loadCommunityFeed()]);render();studioRender();showToast("Public post removed.")}
+ catch(error){console.error(error);showNotice("The public post could not be removed. Check your Firestore security rules.")}
+}
 async function initializeSocialMvp(){
  $("savePublicProfileBtn").addEventListener("click",savePublicProfile);$("confirmPublishBtn").addEventListener("click",publishPendingWorkout);
  const feed=$("communityFeed");feed.dataset.filter="all";
  document.querySelectorAll(".community-filter").forEach(button=>button.addEventListener("click",()=>{document.querySelectorAll(".community-filter").forEach(item=>item.classList.toggle("active",item===button));feed.dataset.filter=button.dataset.communityFilter;renderCommunityFeed()}));
  $("communitySort").addEventListener("change",renderCommunityFeed);
+ feed.addEventListener("click",event=>{const button=event.target.closest(".community-remove-post");if(button)void removePublicPostById(button.dataset.postId)});
  await Promise.all([loadPublicProfile(),loadOwnPublishedWorkouts(),loadCommunityFeed(),loadCommunityProfiles()]);render();studioRender();
 }
 
