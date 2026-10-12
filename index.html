@@ -280,11 +280,11 @@ body.forge-focus .main>.footer{display:none!important}
 .focus-banner-mark{flex:none;width:58px;height:58px;display:grid;place-items:center;border-radius:18px;background:var(--view-accent-soft);border:1px solid var(--view-accent);font-size:31px;color:var(--view-accent);font-weight:850}
 .focus-banner-copy{flex:1;min-width:0;position:relative;z-index:1}.focus-breadcrumb{display:flex;gap:14px;align-items:center;flex-wrap:wrap;color:var(--view-accent);font-size:10px;font-weight:850;letter-spacing:.15em}.focus-now{color:#d3e1ef;letter-spacing:.09em;font-size:9px;border:1px solid var(--view-accent-soft);padding:4px 8px;border-radius:99px;background:#0715248c}.focus-pulse{display:inline-block;width:6px;height:6px;background:var(--view-accent);border-radius:50%;margin-right:4px}
 .focus-banner h1{font-size:clamp(24px,2.6vw,35px);margin:6px 0 5px;letter-spacing:-.04em;line-height:1.08}.focus-banner p{margin:0;color:#b5cee5;font-size:13px;max-width:750px;line-height:1.5}.focus-home-btn{border:1px solid #34343c;background:#101012;color:#e8f4ff;border-radius:11px;padding:10px 14px;font-weight:700;white-space:nowrap;position:relative;z-index:1;cursor:pointer}.focus-home-btn:hover{border-color:var(--view-accent);background:var(--view-accent-soft)}
-body.forge-focus .nav>a{position:relative;transition:background .18s,border-color .18s,transform .18s}
-body.forge-focus .nav>a.active{background:linear-gradient(100deg,var(--view-accent-deep),#101012);border-color:var(--view-accent);box-shadow:inset 3px 0 0 var(--view-accent),0 4px 22px var(--view-accent-soft);font-weight:800;color:#fff}
-body.forge-focus .nav>a.active:after{content:"●";color:var(--view-accent);font-size:9px;margin-left:auto}
-body.forge-focus .nav>a.active span{color:var(--view-accent)}
-body.forge-focus .nav>a:focus-visible{outline:2px solid var(--view-accent);outline-offset:2px}
+body.forge-focus .nav a{position:relative;transition:background .18s,border-color .18s,transform .18s}
+body.forge-focus .nav a.active{background:linear-gradient(100deg,var(--view-accent-deep),#101012);border-color:var(--view-accent);box-shadow:inset 3px 0 0 var(--view-accent),0 4px 22px var(--view-accent-soft);font-weight:800;color:#fff}
+body.forge-focus .nav a.active:after{content:"●";color:var(--view-accent);font-size:9px;margin-left:auto}
+body.forge-focus .nav a.active span{color:var(--view-accent)}
+body.forge-focus .nav a:focus-visible{outline:2px solid var(--view-accent);outline-offset:2px}
 body.forge-focus .topbar{margin-bottom:12px}
 body.forge-focus .crumbs{color:var(--view-accent);font-weight:800;font-size:12px}
 body.forge-focus .main>#workoutStudio,body.forge-focus .main>#reportCenter,body.forge-focus .main>#exerciseExplorer,body.forge-focus .main>#savedWorkouts,body.forge-focus .main>#exerciseBank{margin-top:0}
@@ -517,6 +517,30 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 .today-plan-kicker,.today-plan-status.is-due{color:#ff3355;border-color:#5c2430}
 .stat:before,.stat:nth-child(2):before,.stat:nth-child(3):before,.stat:nth-child(4):before{background:#2f7bff}
 .stat,.stat:nth-child(2),.stat:nth-child(3),.stat:nth-child(4){background:#101012;border-color:#2a2a32}
+.nav-group{margin:16px 8px 2px;color:#6e6e78;font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:800}
+.nav{gap:3px}
+.nav a{padding:9px 12px}
+body.forge-focus[data-view="dashboard"] .main{display:flex;flex-direction:column}
+body.forge-focus[data-view="dashboard"] .topbar{order:0}
+body.forge-focus[data-view="dashboard"] #todayPlan{order:1}
+body.forge-focus[data-view="dashboard"] .stats{order:2}
+body.forge-focus[data-view="dashboard"] .content-grid{order:3}
+body.forge-focus[data-view="dashboard"] #v14DashboardExtras{order:4}
+body.forge-focus[data-view="dashboard"] #focusBanner,body.forge-focus[data-view="dashboard"] #home{display:none!important}
+body.forge-focus[data-view]:not([data-view="dashboard"]) #todayPlan{display:none!important}
+#todayPlan{margin:0 0 16px;padding:20px 22px;border-radius:18px;border:1px solid #1d3f73;background:radial-gradient(circle at 90% -40%,#12305a66,transparent 46%),linear-gradient(135deg,#12151c,#070708)}
+#todayPlan h3{font-size:clamp(26px,3vw,34px);letter-spacing:-.045em;margin:0}
+.today-plan-kicker{color:#ff3355}
+body.forge-focus[data-view="dashboard"] #muscle-map,body.forge-focus[data-view="dashboard"] #trainingInsights{display:none!important}
+body.forge-focus[data-view="dashboard"] .dashboard-grid{grid-template-columns:minmax(0,1fr)!important}
+#studioLog{display:flex;flex-direction:column}
+#studioDayStep{order:1}
+#studioSetsStep{order:2}
+#studioEnergyStep{order:3}
+#studioPickStep{order:4}
+#workoutNotepadStep{order:5}
+#studioLog .ws-primary-action{order:6}
+@media(max-width:900px){.nav-group{display:none}}
 </style>
 </head>
 <body>
@@ -524,7 +548,29 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 <aside class="sidebar">
   <div class="brand"><div class="brand-icon" aria-hidden="true">╋</div><div><h1>FORGE</h1><small>Strength Tracker</small></div></div>
   <nav class="nav" aria-label="Main navigation">
-    <a class="active" href="#home"><span>⌂</span>Dashboard</a><a href="#community" id="navCommunity"><span>◎</span>Community</a><a href="#workoutStudio" id="navLogWorkout" data-studio-mode="log"><span>▦</span>Log Workout</a><a href="#workoutStudio" id="navDesignWorkout" data-studio-mode="design"><span>✎</span>Design Workout</a><a href="#exerciseBank"><span>▤</span>Exercise Bank</a><a href="#training" id="navAdvancedWeeks"><span>▦</span>All Weeks</a><a href="#exerciseExplorer" id="navExerciseExplorer"><span>⌕</span>Exercise History</a><a href="#history"><span>▥</span>Workout History</a><a href="#savedWorkouts" id="savedWorkoutsNavLink"><span>▣</span>Saved Workouts <small id="savedWorkoutNavCount" class="saved-nav-count">0</small></a><div id="savedWorkoutNavList" class="saved-nav-list" aria-label="Saved workouts"></div><a href="#dashboard"><span>▥</span>Strength Analytics</a><a href="#reportCenter" id="navProgressReports"><span>▣</span>Progress Reports</a><a href="#muscle-map"><span>♧</span>Muscle Heatmap</a><a href="#history"><span>♜</span>Personal Records</a><a href="#backup"><span>☁</span>Backup & Restore</a><a href="#settings"><span>⚙</span>Settings</a><a href="#about" id="navAbout"><span>◉</span>About</a><a href="#help" id="navHelp"><span>?</span>Help</a>
+    <p class="nav-group">Train</p>
+    <a class="active" href="#home"><span>⌂</span>Home</a>
+    <a href="#workoutStudio" id="navLogWorkout" data-studio-mode="log"><span>▦</span>Log</a>
+    <a href="#workoutStudio" id="navDesignWorkout" data-studio-mode="design"><span>✎</span>Design</a>
+    <a href="#workoutStudio" id="navProgram" data-studio-mode="program"><span>▣</span>Program</a>
+    <p class="nav-group">Review</p>
+    <a href="#dashboard"><span>▥</span>Progress</a>
+    <a href="#history"><span>▥</span>Workout History</a>
+    <a href="#exerciseExplorer" id="navExerciseExplorer"><span>⌕</span>Exercise History</a>
+    <a href="#history"><span>♜</span>Personal Records</a>
+    <a href="#muscle-map"><span>♧</span>Muscle Heatmap</a>
+    <a href="#reportCenter" id="navProgressReports"><span>▣</span>Progress Reports</a>
+    <p class="nav-group">Library</p>
+    <a href="#exerciseBank"><span>▤</span>Exercise Bank</a>
+    <a href="#savedWorkouts" id="savedWorkoutsNavLink"><span>▣</span>Saved Workouts <small id="savedWorkoutNavCount" class="saved-nav-count">0</small></a>
+    <div id="savedWorkoutNavList" class="saved-nav-list" aria-label="Saved workouts"></div>
+    <a href="#training" id="navAdvancedWeeks"><span>▦</span>All Weeks</a>
+    <p class="nav-group">More</p>
+    <a href="#community" id="navCommunity"><span>◎</span>Community</a>
+    <a href="#backup"><span>☁</span>Backup &amp; Restore</a>
+    <a href="#settings"><span>⚙</span>Settings</a>
+    <a href="#about" id="navAbout"><span>◉</span>About</a>
+    <a href="#help" id="navHelp"><span>?</span>Help</a>
   </nav>
   <div class="motto"><div class="mountain">⌁</div><strong>BETTER<br>THAN YESTERDAY</strong><p>“Progress isn't a destination,<br>it's a habit.”</p></div>
 </aside>
@@ -536,6 +582,15 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
     <div class="focus-banner-copy"><div class="focus-breadcrumb"><span>FORGE / <span id="focusGroup">OVERVIEW</span></span><span class="focus-now"><span class="focus-pulse"></span> YOU ARE HERE</span></div>
       <h1 id="focusTitle">Dashboard</h1><p id="focusDescription">Your training at a glance. Open a section on the left to focus on one task.</p></div>
     <button type="button" class="focus-home-btn" id="focusGoHome" aria-label="Return to dashboard">⌂ &nbsp; Dashboard</button>
+  </section>
+  <section class="panel today-plan" id="todayPlan" aria-label="Today's planned workout">
+    <div class="today-plan-copy">
+      <p class="today-plan-kicker" id="todayPlanKicker">Today</p>
+      <h3 id="todayPlanTitle">Today's workout</h3>
+      <p id="todayPlanDetail"></p>
+    </div>
+    <strong class="today-plan-status" id="todayPlanStatus">—</strong>
+    <button class="btn primary" type="button" id="todayPlanAction">Log workout</button>
   </section>
 
   <section id="community" class="community-page" aria-labelledby="communityTitle">
@@ -590,7 +645,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
       </div>
     </div>
     <div id="studioLog" class="workspace-content" role="tabpanel" aria-labelledby="studioLogTab">
-      <div class="ws-step"><div class="ws-step-title"><span class="ws-step-index">1</span><div><h3>Choose your training day</h3><p>Log Workout opens on today. Scroll for a nearby day, or use Today to come back.</p></div></div>
+      <div class="ws-step" id="studioDayStep"><div class="ws-step-title"><span class="ws-step-index">1</span><div><h3>Choose your training day</h3><p>Log Workout opens on today. Scroll for a nearby day, or use Today to come back.</p></div></div>
         <div class="log-calendar">
           <div class="log-calendar-head"><strong id="logCalendarLabel">Today</strong><div class="log-calendar-actions"><button class="btn small log-calendar-today" type="button" id="logCalendarToday">Today</button><button class="btn small" type="button" id="logCalendarPick" aria-label="Pick a date">▦</button><input id="logCalendarJump" class="log-calendar-jump" type="date" aria-label="Jump to a date" tabindex="-1"></div></div>
           <div id="logCalendarStrip" class="log-calendar-strip" role="listbox" aria-label="Training days"></div>
@@ -600,15 +655,15 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
         <div class="ws-footer-actions" style="margin-top:12px"><button class="btn small" type="button" id="studioNewWeek">＋ Next week</button><button class="btn small" type="button" id="studioNewDay">＋ New day</button><span class="ws-muted">Copies are available in Advanced week management.</span></div>
         <div class="ws-grid three" style="margin-top:16px"><div class="field"><label for="studioDayName">Session name (auto from date)</label><input id="studioDayName" placeholder="e.g. Monday or Chest Day" maxlength="40"><small class="ws-muted">Choosing a date updates weekday names. Custom session names are kept.</small></div><div class="field"><label for="studioDate">Training date</label><input id="studioDate" type="date"></div><div class="field"><label for="studioNotes">Session notes</label><input id="studioNotes" placeholder="Optional notes" maxlength="2000"></div></div>
       </div>
-      <div class="ws-step" id="studioEnergyStep"><div class="ws-step-title"><span class="ws-step-index">2</span><div><h3>Time the session</h3><p>Connect a heart-rate strap, then start when you begin training. Calories follow your pulse when the strap is connected.</p></div></div><div id="studioSessionEnergy"></div></div>
-      <div class="ws-step"><div class="ws-step-title"><span class="ws-step-index">3</span><div><h3>Choose exercises</h3><p>Load a saved routine or add exercises individually; neither choice requires retyping a workout.</p></div></div>
+      <div class="ws-step log-prep" id="studioEnergyStep"><div class="ws-step-title"><span class="ws-step-index">2</span><div><h3>Time the session</h3><p>Connect a heart-rate strap, then start when you begin training. Calories follow your pulse when the strap is connected.</p></div></div><div id="studioSessionEnergy"></div></div>
+      <div class="ws-step log-prep" id="studioPickStep"><div class="ws-step-title"><span class="ws-step-index">3</span><div><h3>Choose exercises</h3><p>Load a saved routine or add exercises individually; neither choice requires retyping a workout.</p></div></div>
         <div class="ws-row"><div class="field"><label for="studioLoadTemplate">Saved workouts</label><select id="studioLoadTemplate"></select></div><button class="btn primary" id="studioLoadBtn" type="button">↻ Load saved workout</button></div>
         <div class="ws-divider"></div><div class="ws-row"><div class="field"><label for="studioAddExercise">Add from exercise bank or type your own</label><input id="studioAddExercise" type="text" list="exerciseNameChoices" placeholder="Search or type an exercise" maxlength="100"></div><div class="field"><label for="studioAddExerciseCategory">Body part (custom exercises)</label><select id="studioAddExerciseCategory"><option value="">Choose body part</option><option>Chest</option><option>Back</option><option>Legs</option><option>Shoulders</option><option>Arms</option><option>Core &amp; Conditioning</option><option>Full Body</option></select></div><button class="btn green" id="studioAddExerciseBtn" type="button">＋ Add exercise</button></div>
       </div>
-      <div class="ws-step" id="workoutNotepadStep"><div class="ws-step-title"><span class="ws-step-index">✎</span><div><h3>Workout Notepad</h3><p>Paste or type a workout in simple shorthand, review how it was understood, then add it to the selected day.</p></div></div>
+      <div class="ws-step log-prep" id="workoutNotepadStep"><div class="ws-step-title"><span class="ws-step-index">✎</span><div><h3>Workout Notepad</h3><p>Paste or type a workout in simple shorthand, review how it was understood, then add it to the selected day.</p></div></div>
         <div class="notepad-layout"><div><label for="workoutNotepad" class="ws-card-heading">Freehand workout</label><textarea id="workoutNotepad" class="notepad-input" maxlength="12000" spellcheck="false" placeholder="# Push Day&#10;Date: 2026-10-11&#10;&#10;Bench Press&#10;135 x 10&#10;185 x 5 @8&#10;&#10;Incline Dumbbell Press: 50 x 10 x 3"></textarea><p class="ws-muted notepad-guide">Use one exercise per line, followed by weight × reps. Add “× sets” to repeat a set and “@8” for RPE. Use 0 or BW for bodyweight. A line beginning with # becomes the session name.</p><div class="notepad-actions"><button class="btn primary" id="parseWorkoutNotepad" type="button">Review workout</button><button class="btn small" id="clearWorkoutNotepad" type="button">Clear</button></div></div><div><div id="workoutNotepadPreview" class="notepad-preview" aria-live="polite"><div class="notepad-empty">Your parsed exercises and sets will appear here before anything is added.</div></div><div class="notepad-actions"><button class="btn green" id="importWorkoutNotepad" type="button" disabled>＋ Add reviewed workout</button></div></div></div>
       </div>
-      <div class="ws-step"><div class="ws-step-title"><span class="ws-step-index">4</span><div><h3>Record your working sets</h3><p>Enter weight, repetitions and RPE. New sets repeat your previous values. Changes save automatically.</p></div></div><div id="studioSessionExercises" class="ws-exercise-list"></div>
+      <div class="ws-step" id="studioSetsStep"><div class="ws-step-title"><span class="ws-step-index">4</span><div><h3>Record your working sets</h3><p>Enter weight, repetitions and RPE. New sets repeat your previous values. Changes save automatically.</p></div></div><div id="studioSessionExercises" class="ws-exercise-list"></div>
         <div class="forge-v18-subtotal session" role="status"><span>Workout session volume · all exercises</span><strong id="forgeStudioSessionTotal">0 lb·reps</strong></div>
         <div class="forge-v18-subtotal week"><span>Training week volume · all days</span><strong id="forgeStudioWeekTotal">0 lb·reps</strong></div>
       </div>
@@ -646,15 +701,6 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
   </section>
   <div class="content-grid">
     <div class="center-col">
-      <section class="panel today-plan" id="todayPlan" aria-label="Today's planned workout">
-        <div class="today-plan-copy">
-          <p class="today-plan-kicker" id="todayPlanKicker">Today</p>
-          <h3 id="todayPlanTitle">Today's workout</h3>
-          <p id="todayPlanDetail"></p>
-        </div>
-        <strong class="today-plan-status" id="todayPlanStatus">—</strong>
-        <button class="btn primary" type="button" id="todayPlanAction">Log workout</button>
-      </section>
       <div class="dashboard-grid">
         <section class="panel" id="dashboard"><div class="panel-head"><h3>▥ &nbsp;Strength Progress</h3><span class="fineprint">Estimated 1RM · Live</span></div><div class="chart-wrap"><canvas id="progressChart" aria-label="Estimated one rep max chart" role="img"></canvas><div id="chartPlaceholder" class="empty" style="position:absolute;inset:25px 0 0;pointer-events:none">Log an exercise, then select up to five lifts below to graph weekly strength trends.</div></div><div class="chart-note">Best estimated 1RM within each week, across all of its workout days. Choose up to five lifts below.</div><div class="chart-selector-count" id="chartSelectionCount">0 / 5 exercises selected</div><div id="chartExerciseSelector" class="chart-selector" aria-label="Choose up to five graph exercises"></div><div class="actions" style="margin-top:10px"><span class="live-chart-status" aria-label="Strength chart automatically updates">● Auto-updating</span><button class="btn small" id="dashboardExportCsvBtn" type="button">Export data</button></div></section>
         <section class="panel" id="muscle-map"><div class="panel-head"><h3>♧ &nbsp;Muscle Group Heatmap</h3><span class="fineprint">Front + back</span></div><p class="fineprint">Colors show changes in estimated strength for exercises associated with each group—not direct muscle growth or activation measurements.</p><div class="heat-layout">
@@ -3743,7 +3789,7 @@ function setFocusView(view,opts={}){
   const target=view==="analytics"?$("dashboard"):view==="heatmap"?$("muscle-map"):view==="settings"?$("settings"):$("personalRecords")?.closest(".panel");
   target?.classList.remove("is-collapsed");const btn=target?.querySelector(".panel-collapse-btn");if(btn){btn.textContent="− Minimize";btn.setAttribute("aria-expanded","true");}
  }
- document.querySelectorAll(".nav > a").forEach(a=>{const isActive=focusDestination(a)===view;a.classList.toggle("active",isActive);if(isActive)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});
+ document.querySelectorAll(".nav a").forEach(a=>{const isActive=focusDestination(a)===view;a.classList.toggle("active",isActive);if(isActive)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});
  $("focusGoHome").style.display=view==="dashboard"?"none":"";
  if(view==="analytics")setTimeout(()=>{try{chart?.resize();}catch(e){}scheduleAnalyticsUpdate()},80);
  if(opts.scroll!==false)window.scrollTo({top:0,behavior:"instant"});
@@ -3767,6 +3813,10 @@ function addStepToggles(){
  document.querySelectorAll("#workoutStudio .ws-step").forEach(step=>{
   const heading=step.querySelector(":scope > .ws-step-title");if(!heading)return;
   const b=document.createElement("button");b.type="button";b.className="ws-collapse-btn";b.textContent="− Minimize";b.setAttribute("aria-label","Minimize this workout step");b.setAttribute("aria-expanded","true");
+  const startFolded=step.classList.contains("log-prep");
+  if(startFolded)step.classList.add("ws-collapsed");
+  b.textContent=startFolded?"＋ Expand":"− Minimize";
+  b.setAttribute("aria-expanded",String(!startFolded));
   b.addEventListener("click",()=>{const folded=step.classList.toggle("ws-collapsed");b.textContent=folded?"＋ Expand":"− Minimize";b.setAttribute("aria-expanded",String(!folded))});
   heading.append(b);
  });
@@ -3786,9 +3836,9 @@ function initializeFocusNavigation(){
  $("focusGoHome").addEventListener("click",()=>setFocusView("dashboard"));
  for(const id of ["focusCollapseWeeks","focusExpandWeeks"]){$(id).addEventListener("click",()=>{const expanded=id==="focusExpandWeeks";state.weeks.forEach(w=>{w.expanded=expanded;w.days.forEach(d=>d.expanded=expanded)});render();saveData()})}
  const crumb=$ ("focusNowCrumb");if(!crumb){const s=document.createElement("span");s.id="focusNowCrumb";s.className="crumb-section";document.querySelector(".crumbs").replaceChildren(s)}
- document.querySelectorAll(".nav > a").forEach(link=>{
+ document.querySelectorAll(".nav a").forEach(link=>{
   const view=focusDestination(link);if(!view)return;
-  link.addEventListener("click",event=>{event.preventDefault();if(view==="design"||view==="log"){studioSelectMode(view,false,view==="log");return}setFocusView(view)});
+  link.addEventListener("click",event=>{event.preventDefault();if(view==="design"||view==="log"||view==="program"){studioSelectMode(view,false,view==="log");return}setFocusView(view)});
  });
  // Internal deep links should open the corresponding focused page rather than scroll to a hidden section.
  document.querySelector(".main").addEventListener("click",event=>{
