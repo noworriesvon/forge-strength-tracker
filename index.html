@@ -66,6 +66,22 @@
 .exercise-suggest{max-width:250px;min-width:100px}.day-empty{padding:18px;text-align:center;border:1px dashed #2a4c70;border-radius:10px;color:#087cff}
 @media(max-width:1100px){.library-bar{grid-template-columns:1fr}.day-meta{grid-template-columns:1fr 1fr}.day-meta>.field:last-child{grid-column:1/-1}}
 @media(max-width:650px){.week-head{padding:12px}.day-head{align-items:flex-start}.day-meta{grid-template-columns:1fr}.day-meta>.field:last-child{grid-column:auto}.bank-controls select{max-width:100%}.bank-chip{font-size:11px}.day-body{padding:8px}.day-tools select{max-width:100%}}
+.session-energy{display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px 16px;align-items:center;margin-bottom:14px;padding:14px;border:1px solid #2a4c70;border-radius:14px;background:#0b1d31}
+.session-energy-kicker{font-size:10px;letter-spacing:.08em;text-transform:uppercase;font-weight:800;color:#9ab5d5;margin-bottom:4px}
+.session-energy-clock{font-variant-numeric:tabular-nums;font-size:34px;font-weight:850;letter-spacing:-.04em;line-height:1;color:#eff6ff}
+.session-energy-clock.is-running{color:#68edc5}
+.session-energy-metrics{display:flex;gap:8px;flex-wrap:wrap}
+.session-energy-metric{flex:1;min-width:128px;padding:8px 10px;border-radius:10px;background:#050b16;border:1px solid #1b3a5b}
+.session-energy-metric small{display:block;color:#a7c0de;font-size:10px;letter-spacing:.04em;text-transform:uppercase;font-weight:700}
+.session-energy-metric strong{display:block;margin-top:2px;font-size:18px;font-variant-numeric:tabular-nums}
+.session-energy-actions{grid-column:1/-1;display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end}
+.session-energy-actions .field{width:min(160px,100%)}
+.session-energy-note{grid-column:1/-1;margin:0;color:#9ab5d5;font-size:11px;line-height:1.5}
+.session-energy-metric.is-live strong{color:#68edc5}
+.session-energy-metric .hr-pulse{display:inline-block;width:8px;height:8px;margin-right:6px;border-radius:50%;background:#2a4c70;vertical-align:middle}
+.session-energy-metric.is-live .hr-pulse{background:#68edc5;box-shadow:0 0 8px #68edc599;animation:hrpulse 1.1s ease-in-out infinite}
+@keyframes hrpulse{from{opacity:1}to{opacity:.35}}
+@media(max-width:700px){.session-energy{grid-template-columns:1fr}.session-energy-clock{font-size:28px}}
 
 /* Version 8: saved workouts sidebar, preview, and one-click recall */
 .saved-nav-count{margin-left:auto;display:inline-grid;place-items:center;min-width:23px;height:22px;border-radius:999px;background:#1b3a5b;border:1px solid #2a4c70;color:#a9eaff;font-size:11px;font-weight:800;padding:0 5px}
@@ -509,18 +525,19 @@ body.forge-focus[data-view="community"]{--view-accent:#087cff;--view-accent-soft
         <div class="ws-footer-actions" style="margin-top:12px"><button class="btn small" type="button" id="studioNewWeek">＋ Next week</button><button class="btn small" type="button" id="studioNewDay">＋ New day</button><span class="ws-muted">Copies are available in Advanced week management.</span></div>
         <div class="ws-grid three" style="margin-top:16px"><div class="field"><label for="studioDayName">Session name (auto from date)</label><input id="studioDayName" placeholder="e.g. Monday or Chest Day" maxlength="40"><small class="ws-muted">Choosing a date updates weekday names. Custom session names are kept.</small></div><div class="field"><label for="studioDate">Training date</label><input id="studioDate" type="date"></div><div class="field"><label for="studioNotes">Session notes</label><input id="studioNotes" placeholder="Optional notes" maxlength="2000"></div></div>
       </div>
-      <div class="ws-step"><div class="ws-step-title"><span class="ws-step-index">2</span><div><h3>Choose exercises</h3><p>Load a saved routine or add exercises individually; neither choice requires retyping a workout.</p></div></div>
+      <div class="ws-step" id="studioEnergyStep"><div class="ws-step-title"><span class="ws-step-index">2</span><div><h3>Time the session</h3><p>Connect a heart-rate strap, then start when you begin training. Calories follow your pulse when the strap is connected.</p></div></div><div id="studioSessionEnergy"></div></div>
+      <div class="ws-step"><div class="ws-step-title"><span class="ws-step-index">3</span><div><h3>Choose exercises</h3><p>Load a saved routine or add exercises individually; neither choice requires retyping a workout.</p></div></div>
         <div class="ws-row"><div class="field"><label for="studioLoadTemplate">Saved workouts</label><select id="studioLoadTemplate"></select></div><button class="btn primary" id="studioLoadBtn" type="button">↻ Load saved workout</button></div>
         <div class="ws-divider"></div><div class="ws-row"><div class="field"><label for="studioAddExercise">Add from exercise bank or type your own</label><input id="studioAddExercise" type="text" list="exerciseNameChoices" placeholder="Search or type an exercise" maxlength="100"></div><div class="field"><label for="studioAddExerciseCategory">Body part (custom exercises)</label><select id="studioAddExerciseCategory"><option value="">Choose body part</option><option>Chest</option><option>Back</option><option>Legs</option><option>Shoulders</option><option>Arms</option><option>Core &amp; Conditioning</option><option>Full Body</option></select></div><button class="btn green" id="studioAddExerciseBtn" type="button">＋ Add exercise</button></div>
       </div>
       <div class="ws-step" id="workoutNotepadStep"><div class="ws-step-title"><span class="ws-step-index">✎</span><div><h3>Workout Notepad</h3><p>Paste or type a workout in simple shorthand, review how it was understood, then add it to the selected day.</p></div></div>
         <div class="notepad-layout"><div><label for="workoutNotepad" class="ws-card-heading">Freehand workout</label><textarea id="workoutNotepad" class="notepad-input" maxlength="12000" spellcheck="false" placeholder="# Push Day&#10;Date: 2026-10-11&#10;&#10;Bench Press&#10;135 x 10&#10;185 x 5 @8&#10;&#10;Incline Dumbbell Press: 50 x 10 x 3"></textarea><p class="ws-muted notepad-guide">Use one exercise per line, followed by weight × reps. Add “× sets” to repeat a set and “@8” for RPE. Use 0 or BW for bodyweight. A line beginning with # becomes the session name.</p><div class="notepad-actions"><button class="btn primary" id="parseWorkoutNotepad" type="button">Review workout</button><button class="btn small" id="clearWorkoutNotepad" type="button">Clear</button></div></div><div><div id="workoutNotepadPreview" class="notepad-preview" aria-live="polite"><div class="notepad-empty">Your parsed exercises and sets will appear here before anything is added.</div></div><div class="notepad-actions"><button class="btn green" id="importWorkoutNotepad" type="button" disabled>＋ Add reviewed workout</button></div></div></div>
       </div>
-      <div class="ws-step"><div class="ws-step-title"><span class="ws-step-index">3</span><div><h3>Record your working sets</h3><p>Enter weight, repetitions and RPE. New sets repeat your previous values. Changes save automatically.</p></div></div><div id="studioSessionExercises" class="ws-exercise-list"></div>
+      <div class="ws-step"><div class="ws-step-title"><span class="ws-step-index">4</span><div><h3>Record your working sets</h3><p>Enter weight, repetitions and RPE. New sets repeat your previous values. Changes save automatically.</p></div></div><div id="studioSessionExercises" class="ws-exercise-list"></div>
         <div class="forge-v18-subtotal session" role="status"><span>Workout session volume · all exercises</span><strong id="forgeStudioSessionTotal">0 lb·reps</strong></div>
         <div class="forge-v18-subtotal week"><span>Training week volume · all days</span><strong id="forgeStudioWeekTotal">0 lb·reps</strong></div>
       </div>
-      <div class="ws-primary-action"><div><strong>✓ Your session saves automatically</strong><div class="ws-muted">Your log feeds weekly charts, history, and muscle trends.</div></div><div class="actions"><button id="studioPublish" class="btn" type="button">◎ Publish workout</button><button id="studioFinish" class="btn green" type="button">✓ Mark session complete</button></div></div>
+      <div class="ws-primary-action"><div><strong>✓ Your session saves automatically</strong><div class="ws-muted">Your log feeds weekly charts, history, and muscle trends.</div><div id="studioEnergySummary" class="ws-muted">Connect a heart-rate strap, start the timer, or enter minutes, to log calories.</div></div><div class="actions"><button id="studioPublish" class="btn" type="button">◎ Publish workout</button><button id="studioFinish" class="btn green" type="button">✓ Mark session complete</button></div></div>
     </div>
     <div id="studioDesign" class="workspace-content hidden" role="tabpanel" aria-labelledby="studioDesignTab">
       <div class="ws-step"><div class="ws-step-title"><span class="ws-step-index">1</span><div><h3>Name your workout</h3><p>This is a reusable routine, not a training session. It won't affect your charts until you log it.</p></div></div>
@@ -631,6 +648,7 @@ body.forge-focus[data-view="community"]{--view-accent:#087cff;--view-accent-soft
         <div class="field"><label for="compareMode">Comparison</label><select id="compareMode"><option value="first-last">First vs latest</option><option value="adjacent">Latest vs previous</option><option value="four">Latest 4 weeks</option></select></div>
         <div class="field"><label for="programName">Program name</label><input type="text" id="programName" maxlength="80" placeholder="Strength Block 1"></div>
       </div><p class="fineprint">Your name appears on the dashboard. Enter a known one-rep max for each exercise to calculate working-set intensity. Estimated 1RM is still calculated from logged sets.</p>
+      <p class="fineprint">Body weight, age, and Wilks category are used for session calories. A connected heart-rate strap logs calories from your pulse. Without a strap, FORGE estimates from vigorous weightlifting (6 METs) and your session time.</p>
       <div class="public-profile-editor"><div class="panel-head"><h3>◎ &nbsp;Public Community Profile</h3><span class="fineprint">Only these fields become public</span></div><div class="profile-grid"><div class="field"><label for="publicDisplayName">Public display name</label><input id="publicDisplayName" maxlength="50" placeholder="How others see you"></div><div class="field"><label for="publicHandle">Handle</label><input id="publicHandle" maxlength="24" placeholder="your_handle" autocomplete="off"></div><div class="field"><label for="publicTrainingStyle">Training style</label><input id="publicTrainingStyle" maxlength="40" placeholder="Powerlifting, bodybuilding…"></div><div class="field"><label for="publicAvatarUrl">Avatar image URL</label><input id="publicAvatarUrl" type="url" maxlength="500" placeholder="https://…"></div><div class="field public-profile-bio"><label for="publicBio">Short bio</label><textarea id="publicBio" rows="3" maxlength="180" placeholder="Tell the community what you are training for."></textarea></div></div><label class="public-profile-check"><input id="publicDiscoverable" type="checkbox" checked> Show my profile in community discovery</label><div class="actions"><button id="savePublicProfileBtn" class="btn green" type="button">Save public profile</button><span id="publicProfileStatus" class="fineprint" role="status"></span></div></div></section>
       <section class="panel"><div class="panel-head"><h3>🏆 &nbsp;Personal Records</h3><a href="#history" style="color:#58b5ff;text-decoration:none;font-size:11px">View all →</a></div><div id="personalRecords"><div class="empty">Records appear as you log lifts.</div></div></section>
     </aside>
@@ -1092,6 +1110,560 @@ async function loadWorkouts(){
 function normalizedStoredId(value,prefix){
  const id=String(value||"");return /^[a-zA-Z0-9_-]{1,120}$/.test(id)?id:uid(prefix);
 }
+const SESSION_MET=6;
+const SESSION_MAX_SEC=8*60*60;
+const HR_SERVICE="heart_rate";
+const HR_CHAR="heart_rate_measurement";
+const hrMonitor={device:null,characteristic:null,connected:false,connecting:false,wantDisconnect:false,bpm:null,deviceName:"",samples:[],dayId:null,kcal:0,lastAt:0};
+function sessionIso(value){
+ if(typeof value!=="string"||!value)return "";
+ const time=Date.parse(value);
+ return Number.isFinite(time)?new Date(time).toISOString():"";
+}
+function clearSessionHr(session){
+ if(!session)return;
+ session.calorieSource="";
+ session.hrAvg=null;
+ session.hrMax=null;
+ session.hrMin=null;
+ session.hrDevice="";
+}
+function normalizeSession(raw){
+ if(!raw||typeof raw!=="object")return null;
+ const startedAt=sessionIso(raw.startedAt);
+ let endedAt=sessionIso(raw.endedAt);
+ if(startedAt&&!endedAt)endedAt="";
+ let durationSec=number(raw.durationSec,1,SESSION_MAX_SEC);
+ if(durationSec===null&&startedAt&&endedAt)durationSec=Math.min(SESSION_MAX_SEC,Math.max(1,Math.round((Date.parse(endedAt)-Date.parse(startedAt))/1000)));
+ if(durationSec!=null)durationSec=Math.round(durationSec);
+ const durationSource=raw.durationSource==="manual"?"manual":startedAt||durationSec?"timer":"";
+ const calories=number(raw.calories,0,20000);
+ const weightKg=number(raw.weightKg,1,700);
+ const calorieSource=raw.calorieSource==="hr"?"hr":raw.calorieSource==="met"||calories!=null?"met":"";
+ const hrAvg=number(raw.hrAvg,30,240),hrMax=number(raw.hrMax,30,240),hrMin=number(raw.hrMin,30,240);
+ const hrDevice=cleanText(raw.hrDevice,80);
+ if(!startedAt&&!endedAt&&durationSec==null&&calories==null)return null;
+ return {startedAt,endedAt,durationSec,durationSource,calories:calories==null?null:Math.round(calories),weightKg:weightKg==null?null:Math.round(weightKg*10)/10,calorieSource,hrAvg,hrMax,hrMin,hrDevice};
+}
+function ensureSession(day){
+ if(!day.session)day.session={startedAt:"",endedAt:"",durationSec:null,durationSource:"",calories:null,weightKg:null,calorieSource:"",hrAvg:null,hrMax:null,hrMin:null,hrDevice:""};
+ return day.session;
+}
+function sessionIsRunning(day){return !!(day?.session?.startedAt&&!day.session.endedAt)}
+function sessionRawElapsedSec(day,now=Date.now()){
+ const session=day?.session;
+ if(!session?.startedAt||session.endedAt)return 0;
+ const start=Date.parse(session.startedAt);
+ return Number.isFinite(start)?Math.max(0,Math.round((now-start)/1000)):0;
+}
+function sessionElapsedSec(day,now=Date.now()){
+ const session=day?.session;
+ if(!session)return 0;
+ if(session.startedAt&&!session.endedAt)return Math.min(SESSION_MAX_SEC,sessionRawElapsedSec(day,now));
+ return Math.min(SESSION_MAX_SEC,session.durationSec||0);
+}
+function sessionBodyweightKg(week){
+ const raw=weekBodyweight(week)??number(state.profile.bw,1,1500);
+ if(raw==null)return null;
+ const kg=toLbs(raw)/2.2046226218;
+ return kg>0&&kg<=700?Math.round(kg*10)/10:null;
+}
+function estimateMetCalories(durationSec,weightKg){
+ if(!(durationSec>0)||!(weightKg>0))return null;
+ const kcal=(SESSION_MET*weightKg*3.5)/200*(durationSec/60);
+ return Number.isFinite(kcal)&&kcal>=0?Math.min(20000,Math.round(kcal)):null;
+}
+function sessionAge(){return number(state.profile.age,13,120)}
+function estimateHrKcalPerMin(bpm,weightKg){
+ const age=sessionAge();
+ if(!(bpm>=30&&bpm<=240)||!(weightKg>0)||age==null)return null;
+ const kj=state.profile.sex==="female"
+  ?(-20.4022+0.4472*bpm-0.1263*weightKg+0.074*age)
+  :(-55.0969+0.6309*bpm+0.1988*weightKg+0.2017*age);
+ const kcal=kj/4.184;
+ return Number.isFinite(kcal)?Math.max(0,kcal):null;
+}
+function liveHrCalories(day,week){
+ if(hrMonitor.dayId!==day.id||!hrMonitor.samples.length)return null;
+ let kcal=hrMonitor.kcal;
+ if(sessionIsRunning(day)&&hrMonitor.bpm&&hrMonitor.lastAt){
+  const dt=Math.min(Math.max(0,Date.now()-hrMonitor.lastAt),120000);
+  const perMin=estimateHrKcalPerMin(hrMonitor.bpm,sessionBodyweightKg(week));
+  if(perMin!=null&&dt>0)kcal+=perMin*(dt/60000);
+ }
+ return Math.min(20000,Math.max(0,Math.round(kcal)));
+}
+function sessionCaloriesNow(day,week){
+ if(!day)return null;
+ if(sessionIsRunning(day)){
+  const hr=liveHrCalories(day,week);
+  if(hr!=null)return hr;
+  return estimateMetCalories(sessionElapsedSec(day),sessionBodyweightKg(week));
+ }
+ if(day.session?.calories!=null)return day.session.calories;
+ const seconds=day.session?.durationSec||0;
+ return estimateMetCalories(seconds,sessionBodyweightKg(week));
+}
+function sessionUsesHeartRate(day){
+ if(sessionIsRunning(day))return hrMonitor.dayId===day.id&&hrMonitor.samples.length>0;
+ return day.session?.calorieSource==="hr";
+}
+function applySessionCalories(day,week){
+ const session=ensureSession(day);
+ const seconds=sessionIsRunning(day)?sessionElapsedSec(day):session.durationSec;
+ if(!(seconds>0)){if(session.calorieSource!=="hr")session.calories=null;return}
+ const kg=sessionBodyweightKg(week);
+ session.weightKg=kg;
+ if(session.calorieSource==="hr"&&session.calories!=null)return;
+ session.calorieSource="met";
+ session.calories=estimateMetCalories(seconds,kg);
+}
+function backfillSessionCalories(){
+ let changed=false;
+ state.weeks.forEach(week=>(week.days||[]).forEach(day=>{
+  const session=day.session;
+  if(!session||sessionIsRunning(day)||!(session.durationSec>0)||session.calories!=null)return;
+  applySessionCalories(day,week);
+  if(session.calories!=null)changed=true;
+ }));
+ return changed;
+}
+function findRunningSession(){
+ for(const week of state.weeks){
+  for(const day of week.days||[]){
+   if(sessionIsRunning(day))return {week,day};
+  }
+ }
+ return null;
+}
+function formatSessionClock(sec){
+ sec=Math.max(0,Math.floor(Number(sec)||0));
+ const hours=Math.floor(sec/3600),minutes=Math.floor((sec%3600)/60),seconds=sec%60;
+ const pad=n=>String(n).padStart(2,"0");
+ return hours?`${hours}:${pad(minutes)}:${pad(seconds)}`:`${pad(minutes)}:${pad(seconds)}`;
+}
+function formatSessionCalories(kcal){
+ if(kcal==null)return "—";
+ if(kcal<=0)return "Under 1 kcal";
+ return `${kcal.toLocaleString()} kcal`;
+}
+function sessionFacts(day,week){
+ if(!day)return null;
+ if(sessionIsRunning(day)){
+  const seconds=sessionElapsedSec(day);
+  const hr=hrMonitor.connected&&hrMonitor.bpm!=null?`${hrMonitor.bpm} bpm`:day.session?.hrAvg?`avg ${day.session.hrAvg} bpm`:"";
+  return {running:true,seconds,calories:sessionCaloriesNow(day,week),hr,fromHr:sessionUsesHeartRate(day)};
+ }
+ const seconds=day.session?.durationSec||0;
+ if(!(seconds>0))return null;
+ const hr=day.session?.hrAvg?`avg ${day.session.hrAvg} bpm`:"";
+ return {running:false,seconds,calories:day.session?.calories??null,hr,fromHr:day.session?.calorieSource==="hr"};
+}
+function formatSessionFacts(facts){
+ if(!facts)return "";
+ const time=facts.running?formatSessionClock(facts.seconds):`${Math.max(1,Math.round(facts.seconds/60))} min`;
+ const calories=facts.calories==null?"add body weight for calories":facts.calories<=0?"under 1 kcal":`${facts.fromHr?"":"~"}${facts.calories.toLocaleString()} kcal`;
+ return `${time} · ${calories}${facts.hr?` · ${facts.hr}`:""}`;
+}
+function sessionSummary(day,week){
+ const facts=sessionFacts(day,week);
+ return facts?` · ${formatSessionFacts(facts)}`:"";
+}
+function sessionWeightText(day,week){
+ const kg=sessionIsRunning(day)||!(day.session?.weightKg>0)?sessionBodyweightKg(week):day.session.weightKg;
+ if(!(kg>0))return "Add in Profile";
+ const shown=state.profile.unit==="kg"?kg:kg*2.2046226218;
+ return `${Number(shown.toFixed(1))} ${state.profile.unit}`;
+}
+function stopSession(day,week){
+ const session=ensureSession(day);
+ if(!sessionIsRunning(day))return;
+ session.durationSec=sessionElapsedSec(day);
+ session.endedAt=new Date().toISOString();
+ session.durationSource="timer";
+ if(!hrCommitSession(day,week))applySessionCalories(day,week);
+}
+function startSession(day){
+ const open=findRunningSession();
+ if(open&&open.day!==day){showToast(`Finish the timer on ${open.day.name||"the other day"} before starting another.`);return false}
+ const session=ensureSession(day);
+ if(!sessionIsRunning(day)&&session.durationSource==="manual"&&session.durationSec){
+  if(!confirm("Start the timer? This replaces the minutes you typed for this day."))return false;
+  session.durationSec=null;session.calories=null;session.weightKg=null;clearSessionHr(session);
+ }
+ const resuming=!sessionIsRunning(day)&&session.endedAt&&session.durationSec&&session.durationSource==="timer";
+ if(resuming){
+  session.startedAt=new Date(Date.now()-session.durationSec*1000).toISOString();
+  session.endedAt="";
+  hrBeginSession(day,true);
+  return true;
+ }
+ if(!sessionIsRunning(day)){
+  session.startedAt=new Date().toISOString();
+  session.endedAt="";
+  session.durationSec=null;
+  session.durationSource="timer";
+  session.calories=null;
+  session.weightKg=null;
+  clearSessionHr(session);
+  hrBeginSession(day,false);
+ }
+ return true;
+}
+function clearSession(day){
+ if(hrMonitor.dayId===day.id){hrMonitor.samples=[];hrMonitor.kcal=0;hrMonitor.lastAt=0;hrMonitor.dayId=null}
+ delete day.session;
+}
+function updateStudioEnergySummary(){
+ const el=$("studioEnergySummary");
+ if(!el)return;
+ const {week,day}=studioSelected();
+ const facts=day?sessionFacts(day,week):null;
+ el.textContent=facts?`This session · ${formatSessionFacts(facts)}`:"Connect a heart-rate strap, start the timer, or enter minutes, to log calories.";
+}
+function renderSessionEnergy(host,week,day){
+ if(!host)return;
+ host.replaceChildren();
+ if(!week||!day){
+  const empty=document.createElement("p");
+  empty.className="session-energy-note";
+  empty.textContent="Choose a training day to time the session.";
+  host.append(empty);
+  updateStudioEnergySummary();
+  return;
+ }
+ host.append(sessionEnergyPanel(week,day));
+ updateStudioEnergySummary();
+}
+function sessionHrDisplay(day){
+ if(hrMonitor.connected)return hrMonitor.bpm!=null?`${hrMonitor.bpm} bpm`:"Waiting…";
+ if(day.session?.hrAvg)return `${day.session.hrAvg} avg`;
+ return "Not connected";
+}
+function sessionEnergyNoteText(week,day){
+ if(!bluetoothHrSupported())return "Heart-rate straps work in Chrome or Edge on this computer (https or localhost). iPhone Safari cannot connect them. Without a strap, calories still estimate from time and body weight.";
+ const missing=[];
+ if(!sessionBodyweightKg(week))missing.push("body weight");
+ if(sessionAge()==null)missing.push("age");
+ if(hrMonitor.connected){
+  if(missing.length)return `Strap connected${hrMonitor.deviceName?` · ${hrMonitor.deviceName}`:""}. Add ${missing.join(" and ")} in Profile so pulse calories can be calculated. The timer still saves on its own.`;
+  return `Strap connected${hrMonitor.deviceName?` · ${hrMonitor.deviceName}`:""}. Start the session and calories follow your pulse. Timer stops at 8 hours.`;
+ }
+ if(day.session?.calorieSource==="hr"&&day.session.hrAvg)return `Calories for this day came from your heart-rate strap${day.session.hrDevice?` (${day.session.hrDevice})`:""}. Average ${day.session.hrAvg} bpm${day.session.hrMax?`, max ${day.session.hrMax} bpm`:""}.`;
+ if(missing.length)return `Enter ${missing.join(" and ")} in Profile & Settings to turn this time into a calorie estimate. Connect a Bluetooth heart-rate strap for a pulse-based number.`;
+ return "Connect a Bluetooth heart-rate strap (Polar, Wahoo, Garmin, and other BLE straps) to log calories from your pulse. Fitness watches often do not share heart rate with a web page. Without a strap, FORGE estimates from vigorous weightlifting (6 METs) using your body weight and session time. Timer stops at 8 hours.";
+}
+function sessionFinishToast(day){
+ const kcal=day.session?.calories;
+ if(day.session?.calorieSource==="hr"&&kcal!=null)return `Session saved from your heart rate. ${kcal.toLocaleString()} kcal · avg ${day.session.hrAvg} bpm.`;
+ if(kcal!=null)return `Session time saved. About ${kcal.toLocaleString()} kcal.`;
+ if(hrMonitor.samples.length&&sessionAge()==null)return "Session time and heart rate saved. Add age in Profile to turn pulse into calories.";
+ return "Session time saved. Add body weight in Profile to estimate calories.";
+}
+function sessionEnergyPanel(week,day){
+ const running=sessionIsRunning(day);
+ const finished=!!(day.session?.durationSec)&&!running;
+ const fromHr=sessionUsesHeartRate(day);
+ const panel=document.createElement("div");
+ panel.className="session-energy";
+ const clockWrap=document.createElement("div");
+ const kicker=document.createElement("div");
+ kicker.className="session-energy-kicker";
+ kicker.textContent=running?"Timer running":finished?"Session time saved":"Timer off";
+ const clock=document.createElement("div");
+ clock.className="session-energy-clock"+(running?" is-running":"");
+ clock.dataset.sessionClock=day.id;
+ clock.textContent=formatSessionClock(sessionElapsedSec(day));
+ clock.setAttribute("aria-label","Session time");
+ clockWrap.append(kicker,clock);
+ const metrics=document.createElement("div");
+ metrics.className="session-energy-metrics";
+ const calorieBox=document.createElement("div");
+ calorieBox.className="session-energy-metric";
+ const calorieLabel=document.createElement("small");
+ calorieLabel.dataset.sessionCalorieLabel=day.id;
+ calorieLabel.textContent=fromHr?"Heart-rate calories":"Estimated calories";
+ const calorieValue=document.createElement("strong");
+ calorieValue.dataset.sessionCalories=day.id;
+ calorieValue.textContent=formatSessionCalories(finished||running?sessionCaloriesNow(day,week):null);
+ calorieBox.append(calorieLabel,calorieValue);
+ const hrBox=document.createElement("div");
+ hrBox.className="session-energy-metric"+(hrMonitor.connected?" is-live":"");
+ hrBox.dataset.sessionHrBox=day.id;
+ const hrLabel=document.createElement("small");
+ hrLabel.textContent=hrMonitor.connected?"Heart rate":day.session?.hrAvg?"Average heart rate":"Heart rate";
+ const hrValue=document.createElement("strong");
+ hrValue.dataset.sessionHr=day.id;
+ const pulse=document.createElement("span");
+ pulse.className="hr-pulse";
+ pulse.setAttribute("aria-hidden","true");
+ const hrText=document.createElement("span");
+ hrText.dataset.sessionHrText=day.id;
+ hrText.textContent=sessionHrDisplay(day);
+ hrValue.append(pulse,hrText);
+ hrBox.append(hrLabel,hrValue);
+ const weightBox=document.createElement("div");
+ weightBox.className="session-energy-metric";
+ const weightLabel=document.createElement("small");
+ weightLabel.textContent="Body weight used";
+ const weightValue=document.createElement("strong");
+ weightValue.textContent=sessionWeightText(day,week);
+ weightBox.append(weightLabel,weightValue);
+ metrics.append(calorieBox,hrBox,weightBox);
+ const actions=document.createElement("div");
+ actions.className="session-energy-actions";
+ const primary=button(running?"Finish timer":finished&&day.session?.durationSource==="timer"?"Resume timer":"Start session",running?"green":"primary",()=>{
+  if(running){
+   stopSession(day,week);
+   render();saveData(true);
+   showToast(sessionFinishToast(day));
+   return;
+  }
+  if(!startSession(day))return;
+  render();saveData(true);
+  showToast(hrMonitor.connected?(day.session?.durationSec?"Timer resumed with heart rate.":"Timer started. Calories follow your pulse."):(day.session?.endedAt===""&&day.session?.durationSec?"Timer resumed.":"Session timer started."));
+ });
+ actions.append(primary);
+ actions.append(button(hrConnectLabel(),hrMonitor.connected?"small green":"small",()=>{void toggleHeartRate()}));
+ if(running||finished)actions.append(button("Clear time","small danger",()=>{
+  if(!confirm(`Clear the saved time for ${day.name||"this day"}?`))return;
+  clearSession(day);render();saveData(true);showToast("Session time cleared.");
+ }));
+ const minuteField=document.createElement("div");
+ minuteField.className="field";
+ const minuteLabel=document.createElement("label");
+ minuteLabel.textContent="Minutes instead";
+ const minutes=document.createElement("input");
+ minutes.type="number";minutes.min="1";minutes.max="480";minutes.step="1";minutes.inputMode="numeric";
+ minutes.placeholder="e.g. 60";
+ minutes.setAttribute("aria-label",`Minutes for ${day.name||"this day"}`);
+ minutes.disabled=running;
+ if(!running&&day.session?.durationSec)minutes.value=String(Math.max(1,Math.round(day.session.durationSec/60)));
+ minutes.addEventListener("change",()=>{
+  if(minutes.value==="")return;
+  const entered=number(minutes.value,1,480);
+  if(entered==null){showToast("Enter minutes from 1 to 480.");return}
+  const session=ensureSession(day);
+  session.startedAt="";session.endedAt="";
+  session.durationSec=Math.round(entered*60);
+  session.durationSource="manual";
+  clearSessionHr(session);
+  applySessionCalories(day,week);
+  if(hrMonitor.dayId===day.id){hrMonitor.samples=[];hrMonitor.kcal=0;hrMonitor.lastAt=0;hrMonitor.dayId=null}
+  render();saveData(true);
+  showToast(session.calories==null?"Time saved. Add body weight in Profile to estimate calories.":`About ${session.calories.toLocaleString()} kcal for this session.`);
+ });
+ minuteField.append(minuteLabel,minutes);
+ actions.append(minuteField);
+ const note=document.createElement("p");
+ note.className="session-energy-note";
+ note.textContent=sessionEnergyNoteText(week,day);
+ panel.append(clockWrap,metrics,actions,note);
+ return panel;
+}
+let sessionClockTimer=null;
+let sessionClockPainting=false;
+function paintLiveHr(){
+ const live=hrMonitor.connected;
+ document.querySelectorAll("[data-session-hr-box]").forEach(el=>el.classList.toggle("is-live",live&&hrMonitor.bpm!=null));
+ if(live){
+  const text=hrMonitor.bpm!=null?`${hrMonitor.bpm} bpm`:"Waiting…";
+  document.querySelectorAll("[data-session-hr-text]").forEach(el=>{el.textContent=text});
+ }
+ const open=findRunningSession();
+ if(!open)return;
+ const calories=sessionCaloriesNow(open.day,open.week);
+ const fromHr=sessionUsesHeartRate(open.day);
+ document.querySelectorAll("[data-session-calories]").forEach(el=>{if(el.dataset.sessionCalories===open.day.id)el.textContent=formatSessionCalories(calories)});
+ document.querySelectorAll("[data-session-calorie-label]").forEach(el=>{if(el.dataset.sessionCalorieLabel===open.day.id)el.textContent=fromHr?"Heart-rate calories":"Estimated calories"});
+}
+function paintRunningSessions(){
+ if(sessionClockPainting)return;
+ let stopped=false;
+ state.weeks.forEach(week=>(week.days||[]).forEach(day=>{
+  if(!sessionIsRunning(day))return;
+  if(sessionRawElapsedSec(day)>=SESSION_MAX_SEC){stopSession(day,week);stopped=true;return}
+  const seconds=sessionElapsedSec(day);
+  const calories=formatSessionCalories(sessionCaloriesNow(day,week));
+  document.querySelectorAll("[data-session-clock]").forEach(el=>{if(el.dataset.sessionClock===day.id)el.textContent=formatSessionClock(seconds)});
+  document.querySelectorAll("[data-session-calories]").forEach(el=>{if(el.dataset.sessionCalories===day.id)el.textContent=calories});
+  document.querySelectorAll("[data-session-calorie-label]").forEach(el=>{if(el.dataset.sessionCalorieLabel===day.id)el.textContent=sessionUsesHeartRate(day)?"Heart-rate calories":"Estimated calories"});
+ }));
+ paintLiveHr();
+ updateStudioEnergySummary();
+ if(stopped){
+  sessionClockPainting=true;
+  render();saveData(true);
+  sessionClockPainting=false;
+  showToast("The session timer stops at 8 hours.");
+ }
+}
+function ensureSessionClock(){if(!sessionClockTimer)sessionClockTimer=setInterval(paintRunningSessions,1000)}
+function bluetoothHrSupported(){return !!(window.isSecureContext&&navigator.bluetooth)}
+function hrConnectLabel(){return hrMonitor.connecting?"Connecting…":hrMonitor.connected?"Disconnect strap":"Connect heart-rate strap"}
+function parseHeartRateMeasurement(dataView){
+ if(!dataView||dataView.byteLength<2)return null;
+ const flags=dataView.getUint8(0);
+ if(((flags>>1)&3)===2)return null;
+ const bpm=flags&1?dataView.getUint16(1,true):dataView.getUint8(1);
+ return number(bpm,30,240);
+}
+function flushHrInterval(day,week,now=Date.now()){
+ if(hrMonitor.dayId!==day.id||!hrMonitor.lastAt||!hrMonitor.bpm)return;
+ const dt=Math.min(Math.max(0,now-hrMonitor.lastAt),120000);
+ const perMin=estimateHrKcalPerMin(hrMonitor.bpm,sessionBodyweightKg(week));
+ if(perMin!=null&&dt>0)hrMonitor.kcal+=perMin*(dt/60000);
+ hrMonitor.lastAt=now;
+}
+function ingestHrBpm(bpm){
+ hrMonitor.bpm=bpm;
+ const open=findRunningSession();
+ const now=Date.now();
+ if(open){
+  if(hrMonitor.dayId&&hrMonitor.dayId!==open.day.id){hrMonitor.samples=[];hrMonitor.kcal=0;hrMonitor.lastAt=0}
+  hrMonitor.dayId=open.day.id;
+  if(!hrMonitor.lastAt){
+   const start=Date.parse(open.day.session.startedAt);
+   hrMonitor.lastAt=Number.isFinite(start)?start:now;
+  }
+  flushHrInterval(open.day,open.week,now);
+  hrMonitor.samples.push({t:now,bpm});
+  if(hrMonitor.samples.length>20000)hrMonitor.samples=hrMonitor.samples.slice(-15000);
+ }else hrMonitor.lastAt=now;
+ paintLiveHr();
+}
+function hrBeginSession(day,resuming){
+ if(!resuming||hrMonitor.dayId!==day.id){hrMonitor.samples=[];hrMonitor.kcal=0;hrMonitor.dayId=day.id}
+ const start=Date.parse(day.session?.startedAt);
+ hrMonitor.lastAt=resuming?Date.now():(Number.isFinite(start)?start:Date.now());
+ if(hrMonitor.connected&&hrMonitor.bpm)ingestHrBpm(hrMonitor.bpm);
+}
+function hrCommitSession(day,week){
+ if(hrMonitor.dayId!==day.id)return false;
+ flushHrInterval(day,week,Date.now());
+ if(!hrMonitor.samples.length)return false;
+ const session=ensureSession(day);
+ const bpms=hrMonitor.samples.map(sample=>sample.bpm);
+ session.hrAvg=Math.round(bpms.reduce((sum,value)=>sum+value,0)/bpms.length);
+ session.hrMax=Math.max(...bpms);
+ session.hrMin=Math.min(...bpms);
+ session.hrDevice=cleanText(hrMonitor.deviceName,80);
+ const kg=sessionBodyweightKg(week);
+ session.weightKg=kg;
+ if(estimateHrKcalPerMin(bpms[0],kg)==null)return false;
+ session.calories=Math.min(20000,Math.max(0,Math.round(hrMonitor.kcal)));
+ session.calorieSource="hr";
+ return true;
+}
+function onHrNotification(event){
+ const bpm=parseHeartRateMeasurement(event.target.value);
+ if(bpm!=null)ingestHrBpm(bpm);
+}
+function hrConnectErrorMessage(error){
+ if(error?.name==="SecurityError")return "Heart-rate connection needs Chrome or Edge on https or localhost.";
+ if(error?.name==="NotFoundError")return "";
+ if(error?.name==="NetworkError")return "Could not reach the strap. Wear it, wake it, and try Connect again.";
+ return "Could not connect the heart-rate strap. Use a Bluetooth chest or arm strap that shares Heart Rate.";
+}
+async function subscribeHeartRate(device){
+ hrMonitor.device=device;
+ hrMonitor.deviceName=cleanText(device.name||"Heart-rate strap",80);
+ device.removeEventListener("gattserverdisconnected",onHrDisconnected);
+ device.addEventListener("gattserverdisconnected",onHrDisconnected);
+ if(!device.gatt.connected)await device.gatt.connect();
+ const service=await device.gatt.getPrimaryService(HR_SERVICE);
+ const characteristic=await service.getCharacteristic(HR_CHAR);
+ characteristic.removeEventListener("characteristicvaluechanged",onHrNotification);
+ characteristic.addEventListener("characteristicvaluechanged",onHrNotification);
+ await characteristic.startNotifications();
+ hrMonitor.characteristic=characteristic;
+ hrMonitor.connected=true;
+}
+function onHrDisconnected(){
+ hrMonitor.connected=false;
+ hrMonitor.characteristic=null;
+ hrMonitor.bpm=null;
+ if(hrMonitor.wantDisconnect){hrMonitor.wantDisconnect=false;render();return}
+ showToast("Heart-rate strap lost. Reconnecting…");
+ render();
+ void reconnectHeartRate();
+}
+async function reconnectHeartRate(){
+ const device=hrMonitor.device;
+ if(!device?.gatt||hrMonitor.connecting)return;
+ hrMonitor.connecting=true;
+ try{
+  await subscribeHeartRate(device);
+  showToast(`Reconnected to ${hrMonitor.deviceName||"heart-rate strap"}.`);
+ }catch(error){
+  console.error(error);
+  hrMonitor.connected=false;
+  showToast("Could not reconnect the heart-rate strap. Tap Connect to pair again.");
+ }finally{
+  hrMonitor.connecting=false;
+  render();
+ }
+}
+async function connectHeartRate(){
+ if(!bluetoothHrSupported()){showToast("Heart-rate straps need Chrome or Edge on https or localhost. iPhone Safari cannot connect them.");return}
+ if(hrMonitor.connecting)return;
+ hrMonitor.connecting=true;
+ try{
+  const device=await navigator.bluetooth.requestDevice({
+   filters:[
+    {services:[HR_SERVICE]},
+    {namePrefix:"Polar"},
+    {namePrefix:"Wahoo"},
+    {namePrefix:"TICKR"},
+    {namePrefix:"Garmin"},
+    {namePrefix:"HRM"},
+    {namePrefix:"Coospo"},
+    {namePrefix:"Magene"}
+   ],
+   optionalServices:[HR_SERVICE]
+  });
+  try{
+   await subscribeHeartRate(device);
+  }catch(error){
+   console.error(error);
+   showToast("This device does not share heart rate. Use a Bluetooth chest or arm strap.");
+   return;
+  }
+  const open=findRunningSession();
+  if(open&&hrMonitor.bpm)ingestHrBpm(hrMonitor.bpm);
+  showToast(`Connected to ${hrMonitor.deviceName||"heart-rate strap"}. Start the session to log calories from your pulse.`);
+ }catch(error){
+  const message=hrConnectErrorMessage(error);
+  if(message){console.error(error);showToast(message)}
+ }finally{
+  hrMonitor.connecting=false;
+  render();
+ }
+}
+async function disconnectHeartRate(){
+ hrMonitor.wantDisconnect=true;
+ const characteristic=hrMonitor.characteristic;
+ if(characteristic){
+  try{characteristic.removeEventListener("characteristicvaluechanged",onHrNotification);await characteristic.stopNotifications()}catch(error){}
+ }
+ const device=hrMonitor.device;
+ if(device){
+  device.removeEventListener("gattserverdisconnected",onHrDisconnected);
+  try{if(device.gatt?.connected)device.gatt.disconnect()}catch(error){}
+ }
+ hrMonitor.characteristic=null;
+ hrMonitor.connected=false;
+ hrMonitor.bpm=null;
+ hrMonitor.device=null;
+ hrMonitor.deviceName="";
+ hrMonitor.connecting=false;
+ showToast("Heart-rate strap disconnected.");
+ render();
+}
+async function toggleHeartRate(){
+ if(hrMonitor.connected||hrMonitor.device?.gatt?.connected){await disconnectHeartRate();return}
+ await connectHeartRate();
+}
 function normalizeData(raw){
  if(!raw||typeof raw!=="object"||!Array.isArray(raw.weeks))throw new Error("Backup format is invalid.");
  const p=raw.profile||{};
@@ -1102,7 +1674,7 @@ function normalizeData(raw){
   const bwValue=oldBw&&typeof oldBw==="object"?number(oldBw.value,1,1500):null;
   const week={id:normalizedStoredId(w.id,"week"),name:cleanText(w.name,80)||`Week ${wi+1}`,expanded:w.expanded!==false,bodyweight:{value:bwValue??normalized.profile.bw,source:bwValue!==null&&["assumed","entered","carried"].includes(oldBw.source)?oldBw.source:"assumed"},days:[]};
   const oldDays=Array.isArray(w.days)?w.days:[{name:weekDayFromDate(w.date)||"Monday",date:w.date||"",notes:w.notes||"",exercises:w.exercises||[]}];
-  oldDays.slice(0,35).forEach((d,di)=>{const day={id:normalizedStoredId(d.id,"day"),name:cleanText(d.name,40)||`Day ${di+1}`,date:/^\d{4}-\d{2}-\d{2}$/.test(d.date||"")?d.date:"",notes:cleanText(d.notes,2000),expanded:d.expanded!==false,completed:!!d.completed,exercises:[]};(Array.isArray(d.exercises)?d.exercises:[]).slice(0,200).forEach(ex=>{const ne=normalizeExercise(ex);if(!ne.sets.length)ne.sets.push(newSet());day.exercises.push(ne)});week.days.push(day)});
+  oldDays.slice(0,35).forEach((d,di)=>{const day={id:normalizedStoredId(d.id,"day"),name:cleanText(d.name,40)||`Day ${di+1}`,date:/^\d{4}-\d{2}-\d{2}$/.test(d.date||"")?d.date:"",notes:cleanText(d.notes,2000),expanded:d.expanded!==false,completed:!!d.completed,exercises:[]};const session=normalizeSession(d.session);if(session)day.session=session;(Array.isArray(d.exercises)?d.exercises:[]).slice(0,200).forEach(ex=>{const ne=normalizeExercise(ex);if(!ne.sets.length)ne.sets.push(newSet());day.exercises.push(ne)});week.days.push(day)});
   if(!week.days.length)week.days.push(newDay("Monday"));normalized.weeks.push(week);
  });
  const rawCategories=raw.customExerciseCategories&&typeof raw.customExerciseCategories==="object"&&!Array.isArray(raw.customExerciseCategories)?raw.customExerciseCategories:{},bankKeys=new Set(EXERCISE_BANK.map(([name])=>normalizedName(name)));
@@ -1218,12 +1790,12 @@ function render(){
   const body=document.createElement("div");body.className="week-body";
   const label=makeInput("text",week.name,"Week label",{maxlength:80,placeholder:`Week ${wi+1}`});label.addEventListener("change",()=>{week.name=cleanText(label.value,80);title.textContent=week.name;saveData()});
   const labelBox=document.createElement("div");labelBox.style.maxWidth="270px";labelBox.style.marginBottom="10px";labelBox.append(field("Week label",label));body.append(labelBox);
-  const bwBar=document.createElement('div');bwBar.className='f19-week-weight';const bwLine=document.createElement('div');bwLine.className='f19-inline';const bwInput=makeInput('number',weekBodyweight(week)??'',`Bodyweight for ${weekName(week,wi)}`,{min:1,max:1500,step:'0.1'});const bwSource=document.createElement('span');bwSource.className='f19-tag '+(week.bodyweight?.source==='assumed'?'assumed':'entered');bwSource.textContent=weekBwLabel(week);bwInput.addEventListener('change',()=>{const n=number(bwInput.value,1,1500);if(n===null){showToast('Enter a valid weekly bodyweight.');return}week.bodyweight={value:n,source:'entered'};bwSource.textContent='Entered';bwSource.className='f19-tag entered';saveData()});bwLine.append(field(`Weekly bodyweight (${state.profile.unit})`,bwInput),bwSource);bwBar.append(bwLine);body.append(bwBar);
+  const bwBar=document.createElement('div');bwBar.className='f19-week-weight';const bwLine=document.createElement('div');bwLine.className='f19-inline';const bwInput=makeInput('number',weekBodyweight(week)??'',`Bodyweight for ${weekName(week,wi)}`,{min:1,max:1500,step:'0.1'});const bwSource=document.createElement('span');bwSource.className='f19-tag '+(week.bodyweight?.source==='assumed'?'assumed':'entered');bwSource.textContent=weekBwLabel(week);bwInput.addEventListener('change',()=>{const n=number(bwInput.value,1,1500);if(n===null){showToast('Enter a valid weekly bodyweight.');return}week.bodyweight={value:n,source:'entered'};bwSource.textContent='Entered';bwSource.className='f19-tag entered';if(backfillSessionCalories())render();saveData()});bwLine.append(field(`Weekly bodyweight (${state.profile.unit})`,bwInput),bwSource);bwBar.append(bwLine);body.append(bwBar);
   {const box=forgeVolLine('Total week volume · all logged workout days',forgeWeekVolume(week),'week');box.replaceChild(forgeVolumeNode('week',week),box.querySelector('strong'));body.append(box)}
   week.days.forEach((day,di)=>{
    const dayCard=document.createElement("section");dayCard.className="day-card";dayCard.dataset.dayId=day.id;
    const dayHead=document.createElement("div");dayHead.className="day-head";
-   const heading=button(`${day.expanded===false?"▸":"▾"} ${day.name||`Day ${di+1}`} · ${day.exercises.length} exercise${day.exercises.length===1?"":"s"}`,"small",()=>{day.expanded=day.expanded===false?true:false;render();saveData()});
+   const heading=button(`${day.expanded===false?"▸":"▾"} ${day.name||`Day ${di+1}`} · ${day.exercises.length} exercise${day.exercises.length===1?"":"s"}${sessionSummary(day,week)}`,"small",()=>{day.expanded=day.expanded===false?true:false;render();saveData()});
    const da=document.createElement("div");da.className="actions";
    da.append(button("＋ Exercise","small green",()=>{day.exercises.push(newExercise("",3));day.expanded=true;render();saveData()}),button("⧉ Copy day","small",()=>{const c=cloneDay(day,7);week.days.splice(di+1,0,c);render();saveData();showToast("Day copied. Edit the date and weights as needed.")}),button("Remove day","small danger",()=>{if(!confirm(`Delete ${day.name} and its exercises?`))return;week.days=week.days.filter(d=>d.id!==day.id);render();saveData()}));
    const isPublic=currentUser&&publishedWorkoutIds.has(sourceWorkoutKey(day)),shareButton=button(isPublic?"✓ Public · Unpublish":"◎ Publish","small share-workout-btn",()=>isPublic?unpublishWorkout(day):openPublishDialog(week,day));shareButton.classList.toggle("published",!!isPublic);if(!day.completed&&!isPublic){shareButton.disabled=true;shareButton.title="Mark this workout complete before publishing."}da.append(shareButton);
@@ -1235,6 +1807,7 @@ function render(){
     const date=makeInput("date",day.date,"Workout date");date.addEventListener("change",()=>{setWorkoutSessionDate(day,date.value);render();saveData();studioRender()});
     const notes=document.createElement("textarea");notes.value=day.notes||"";notes.rows=2;notes.maxLength=2000;notes.placeholder="Notes for this training day";notes.addEventListener("input",()=>{day.notes=notes.value.slice(0,2000);saveData()});
     meta.append(field("Day",weekday),field("Date",date),field("Notes · 🎙 dictation",voiceField(notes)));dayBody.append(meta);
+    dayBody.append(sessionEnergyPanel(week,day));
     {const box=forgeVolLine('Session volume · sum of every valid set',forgeSessionVolume(day),'session');box.replaceChild(forgeVolumeNode('day',week,day),box.querySelector('strong'));dayBody.append(box)}
     const tools=document.createElement("div");tools.className="day-tools";
     const quickPick=document.createElement("select");quickPick.setAttribute("aria-label","Pick exercise from bank");quickPick.append(new Option("Choose from exercise bank…",""));allExerciseNames().forEach(n=>quickPick.append(new Option(n,n)));
@@ -1460,11 +2033,12 @@ function restoreBackup(file){
   if(!file)return;const reader=new FileReader();reader.onload=()=>{try{const raw=JSON.parse(String(reader.result));const data=normalizeData(raw);if(!confirm(`Restore ${data.weeks.length} week(s)? This replaces the current tracker data. Export a backup first if you want to keep it.`))return;state.profile=data.profile;state.weeks=data.weeks;state.templates=data.templates;state.customExercises=data.customExercises;state.customExerciseCategories=data.customExerciseCategories;state.chartSelection=data.chartSelection;state.actualMaxHistory=data.actualMaxHistory;state.barbellCustom=data.barbellCustom;state.scoringFormula=data.scoringFormula;syncProfileToUI();render();saveData(true);calculateProgress();showToast("Backup restored.")}catch(e){showNotice("Could not restore this file: "+(e.message||"invalid JSON"));}finally{$("importFile").value=""}};reader.onerror=()=>showNotice("The selected backup file could not be read.");reader.readAsText(file);
 }
 function exportCsv(){
- const rows=[["Week", "Week name", "Day", "Date", "Exercise", "Set", "Weight ("+state.profile.unit+")", "Reps", "Set volume ("+state.profile.unit+"·reps)", "Exercise session volume", "Workout session volume", "Training week volume", "Estimated 1RM (lb)", "RPE"]];
+ const rows=[["Week", "Week name", "Day", "Date", "Exercise", "Set", "Weight ("+state.profile.unit+")", "Reps", "Set volume ("+state.profile.unit+"·reps)", "Exercise session volume", "Workout session volume", "Training week volume", "Estimated 1RM (lb)", "RPE", "Session minutes", "Estimated kcal", "Calorie source", "Avg HR", "Max HR"]];
  state.weeks.forEach((week,wi)=>(week.days||[]).forEach(day=>(day.exercises||[]).forEach(ex=>(ex.sets||[]).forEach((set,si)=>{
   const volume=forgeSetVolume(set);if(!(volume>0))return;
   const weight=Number(set.weight),reps=Number(set.reps);
-  rows.push([wi+1,weekName(week,wi),day.name,day.date,ex.name,si+1,weight,reps,volume.toFixed(1),forgeExerciseVolume(ex).toFixed(1),forgeSessionVolume(day).toFixed(1),forgeWeekVolume(week).toFixed(1),reps<=30?getE1RM(toLbs(weight),reps).toFixed(1):"",set.rpe??""])
+  const seconds=sessionIsRunning(day)?sessionElapsedSec(day):(day.session?.durationSec||0);
+  rows.push([wi+1,weekName(week,wi),day.name,day.date,ex.name,si+1,weight,reps,volume.toFixed(1),forgeExerciseVolume(ex).toFixed(1),forgeSessionVolume(day).toFixed(1),forgeWeekVolume(week).toFixed(1),reps<=30?getE1RM(toLbs(weight),reps).toFixed(1):"",set.rpe??"",seconds? (seconds/60).toFixed(1):"",day.session?.calories??"",day.session?.calorieSource||"",day.session?.hrAvg??"",day.session?.hrMax??""])
  }))));
  if(rows.length===1){showToast("No valid sets to export yet.");return}
  downloadBlob(new Blob(["\ufeff"+rows.map(r=>r.map(escapeCsv).join(",")).join("\r\n")],{type:"text/csv;charset=utf-8;"}),"forge-strength-history.csv");
@@ -1700,7 +2274,7 @@ function renderHistory(){
    const dayWrap=document.createElement('details');dayWrap.className='forge-v18-day';dayWrap.open=forgeHistoryOpenDays.has(day.id);
    dayWrap.addEventListener('toggle',()=>{if(dayWrap.open)forgeHistoryOpenDays.add(day.id);else forgeHistoryOpenDays.delete(day.id)});
    const daySum=document.createElement('summary');const dayLeft=document.createElement('div');dayLeft.className='forge-v18-day-title';const dayText=document.createElement('div');
-   dayText.append(document.createTextNode(day.name||'Workout day'));const dayDate=document.createElement('small');dayDate.className='forge-v18-history-info';dayDate.textContent=`${day.date||'No date'} · ${rows.length} sets${day.completed?' · Complete':''}`;dayText.append(dayDate);dayLeft.append(dayText);
+   dayText.append(document.createTextNode(day.name||'Workout day'));const dayDate=document.createElement('small');dayDate.className='forge-v18-history-info';dayDate.textContent=`${day.date||'No date'} · ${rows.length} sets${day.completed?' · Complete':''}${sessionSummary(day,item.week)}`;dayText.append(dayDate);dayLeft.append(dayText);
    const dayTotal=document.createElement('strong');dayTotal.className='forge-v18-history-total';dayTotal.textContent=forgeFmtVolume(volume);daySum.append(dayLeft,dayTotal);dayWrap.append(daySum);
    const tableWrap=document.createElement('div');tableWrap.className='table-wrap';const table=document.createElement('table');const header=document.createElement('thead');const tr=document.createElement('tr');
    ['Exercise','Set','Weight','Reps','Set volume','Est. 1RM','RPE','Record'].forEach(label=>{const th=document.createElement('th');th.textContent=label;tr.append(th)});header.append(tr);table.append(header);
@@ -1858,7 +2432,7 @@ function renderSidePanels(){
   if($("quickProgram"))$("quickProgram").textContent=state.profile.programName||"—";
   if($("quickWeeks"))$("quickWeeks").textContent=state.weeks.filter(week=>forgeWeekVolume(week)>0).length;
   if($("weekCountLabel"))$("weekCountLabel").textContent=`${state.weeks.length} training week${state.weeks.length===1?"":"s"}`;
-  const recent=$("recentWorkouts");if(recent){recent.replaceChildren();const items=state.weeks.flatMap((w,wi)=>w.days.map(d=>({w,wi,d}))).slice(-5).reverse();if(!items.length){const e=document.createElement("div");e.className="empty";e.textContent="Your workouts will appear here.";recent.append(e)}else items.forEach(({w,wi,d})=>{const row=document.createElement("div");row.className="record-row";const left=document.createElement("div");const title=document.createElement("strong");title.textContent=`${weekName(w,wi)} · ${d.name}`;const caption=document.createElement("small");caption.textContent=d.date||"Date not set";left.append(title,caption);const right=document.createElement("strong");const vol=d.exercises.reduce((sum,ex)=>sum+ex.sets.reduce((n,set)=>{const wt=number(set.weight,0,100000),reps=number(set.reps,0,1000);return n+(wt!==null&&reps!==null?wt*reps:0)},0),0);right.textContent=vol?forgeFmtVolume(vol):"Planned";right.title="Workout session volume · weight × reps";row.append(left,right);recent.append(row)})}
+  const recent=$("recentWorkouts");if(recent){recent.replaceChildren();const items=state.weeks.flatMap((w,wi)=>w.days.map(d=>({w,wi,d}))).slice(-5).reverse();if(!items.length){const e=document.createElement("div");e.className="empty";e.textContent="Your workouts will appear here.";recent.append(e)}else items.forEach(({w,wi,d})=>{const row=document.createElement("div");row.className="record-row";const left=document.createElement("div");const title=document.createElement("strong");title.textContent=`${weekName(w,wi)} · ${d.name}`;const caption=document.createElement("small");caption.textContent=`${d.date||"Date not set"}${sessionSummary(d,w)}`;left.append(title,caption);const right=document.createElement("strong");const vol=d.exercises.reduce((sum,ex)=>sum+ex.sets.reduce((n,set)=>{const wt=number(set.weight,0,100000),reps=number(set.reps,0,1000);return n+(wt!==null&&reps!==null?wt*reps:0)},0),0);right.textContent=vol?forgeFmtVolume(vol):"Planned";right.title="Workout session volume · weight × reps";row.append(left,right);recent.append(row)})}
   const prs=$("personalRecords");if(prs){prs.replaceChildren();const bests=new Map();allRecords().forEach(r=>{if(!bests.has(r.key)||r.e1rm>bests.get(r.key).e1rm)bests.set(r.key,r)});const list=[...bests.values()].sort((a,b)=>b.e1rm-a.e1rm).slice(0,5);if(!list.length){prs.innerHTML='<div class="empty">Records appear as you log lifts.</div>'}else list.forEach(r=>{const row=document.createElement("div");row.className="record-row";const left=document.createElement("div");const name=document.createElement("strong");name.textContent=r.name;const small=document.createElement("small");small.textContent="Estimated 1RM";left.append(name,small);const right=document.createElement("strong");right.textContent=`${fromLbs(r.e1rm).toFixed(1)} ${unit}`;row.append(left,right);prs.append(row)})}
 }
 
@@ -1948,7 +2522,7 @@ function studioRenderDraft(){
  const subtotal=forgeVolLine('Planned workout volume · not included in training history',studioDraft.exercises.reduce((n,ex)=>n+forgeExerciseVolume(ex),0));
  subtotal.replaceChild(forgeVolumeNode('draft'),subtotal.querySelector('strong'));host.append(subtotal);forgeRefreshVolumeUI();
 }
-function studioRender(){studioRenderSelects();studioRenderSession();studioRenderDraft()}
+function studioRender(){studioRenderSelects();const {week,day}=studioSelected();renderSessionEnergy($("studioSessionEnergy"),week,day);studioRenderSession();studioRenderDraft()}
 function studioCreateWeek(){const w=addWeek(false);const day=w.days[0];studioWeekId=w.id;studioDayId=day.id;studioRender();showToast(`${w.name} ready for a new session.`)}
 function studioCreateDay(){const {week}=studioSelected();if(!week){studioCreateWeek();return}const prev=week.days[week.days.length-1];const dt=prev?.date?shiftDate(prev.date,1):dayDate();const day=newDay(weekDayFromDate(dt),dt);week.days.push(day);week.expanded=true;studioWeekId=week.id;studioDayId=day.id;render();saveData();studioRender();showToast("New training day ready.")}
 function studioLoadTemplate(){const id=$("studioLoadTemplate").value;const template=state.templates.find(t=>t.id===id);const {week,day}=studioSelected();if(!template){showToast("Select a saved workout to load.");return}if(!week||!day){showToast("Choose a training week and day first.");return}
@@ -2062,7 +2636,7 @@ function studioInit(){
  $("parseWorkoutNotepad").addEventListener("click",reviewWorkoutNotepad);$("clearWorkoutNotepad").addEventListener("click",clearWorkoutNotepad);$("importWorkoutNotepad").addEventListener("click",importWorkoutNotepad);
  $("workoutNotepad").addEventListener("input",()=>{if(!workoutNotepadDraft)return;workoutNotepadDraft=null;renderWorkoutNotepadPreview()});
  $("studioPublish").addEventListener("click",()=>{const {week,day}=studioSelected();if(!week||!day)return;publishedWorkoutIds.has(sourceWorkoutKey(day))?unpublishWorkout(day):openPublishDialog(week,day)});
- $("studioFinish").addEventListener("click",()=>{const {day}=studioSelected();if(!day)return;if(!day.exercises.length){showToast("Add exercises before completing a workout.");return}if(!day.completed&&!day.exercises.some(ex=>ex.sets.some(s=>Number(s.weight)>0&&Number(s.reps)>0))){showToast("Enter a working weight and reps before marking the session complete.");return}day.completed=!day.completed;render();saveData();studioRender();showToast(day.completed?"Workout marked complete. Great work!":"Session reopened for edits.")});
+ $("studioFinish").addEventListener("click",()=>{const {week,day}=studioSelected();if(!day)return;if(!day.exercises.length){showToast("Add exercises before completing a workout.");return}if(!day.completed&&!day.exercises.some(ex=>ex.sets.some(s=>Number(s.weight)>0&&Number(s.reps)>0))){showToast("Enter a working weight and reps before marking the session complete.");return}if(!day.completed&&sessionIsRunning(day))stopSession(day,week);day.completed=!day.completed;render();saveData();studioRender();const kcal=day.session?.calories;showToast(day.completed?(day.session?.calorieSource==="hr"&&kcal!=null?`Workout marked complete. ${kcal.toLocaleString()} kcal from heart rate.`:(kcal!=null?`Workout marked complete. About ${kcal.toLocaleString()} kcal.`:"Workout marked complete. Great work!")):"Session reopened for edits.")});
  $("studioTemplateName").addEventListener("input",()=>{studioDraft.name=cleanText($("studioTemplateName").value,80);studioSaveDraft()});
  $("studioEditTemplate").addEventListener("change",()=>{if(studioDraft.exercises.length&&!confirm("Switch designs? Your current unfinished draft will be replaced (saved workouts stay unchanged).")){studioRenderDraft();return}studioEditTemplate($("studioEditTemplate").value)});
  $("studioDesignAddBtn").addEventListener("click",()=>{const rawName=cleanText($("studioDesignExercise").value,100),name=categorizedExerciseName(rawName,$("studioDesignExerciseCategory").value);if(!rawName){showToast("Choose or type an exercise.");return}if(!name){showToast("Choose a body part for this custom exercise.");return}studioDraft.exercises.push(newExercise(name,3));$("studioDesignExercise").value="";$("studioDesignExerciseCategory").value="";studioSaveDraft();saveData();studioRenderDraft()});
@@ -2620,7 +3194,8 @@ async function init(){
   }catch(e){console.warn("Could not preserve old RIR storage snapshot",e)}}
   if(saved){try{const normalized=normalizeData(saved);state.profile=normalized.profile;state.weeks=normalized.weeks;state.templates=normalized.templates;state.customExercises=normalized.customExercises;state.customExerciseCategories=normalized.customExerciseCategories;state.chartSelection=normalized.chartSelection;state.actualMaxHistory=normalized.actualMaxHistory;state.barbellCustom=normalized.barbellCustom;state.scoringFormula=normalized.scoringFormula;if(!state.weeks.length)state.weeks.push(newWeek("Week 1"));}catch(e){showNotice("Saved data was invalid; starting a new log. If you have a backup, restore it.");state.weeks=[newWeek("Week 1")]}}
   else state.weeks=[newWeek("Week 1")];
-  syncProfileToUI();render();initializeF19();studioInit();renderSidePanels();setupReportCenter();initExerciseExplorer();initializeTrainingInsights();void initializeSocialMvp();$("v15CalendarYear").addEventListener("change",forgeConsistency);forgeRenderV14();forgeInitCollapsers();if(saved && (Number(saved.version||2)<6||migratedLocalData))saveData(true);if(migratedLocalData)showToast("Local workout data is being migrated to your private Firestore account.");
+  const filledSessionCalories=backfillSessionCalories();
+  syncProfileToUI();render();initializeF19();studioInit();renderSidePanels();setupReportCenter();initExerciseExplorer();initializeTrainingInsights();void initializeSocialMvp();$("v15CalendarYear").addEventListener("change",forgeConsistency);forgeRenderV14();forgeInitCollapsers();ensureSessionClock();if(saved && (Number(saved.version||2)<6||migratedLocalData||filledSessionCalories))saveData(true);if(migratedLocalData)showToast("Local workout data is being migrated to your private Firestore account.");
   $("addWeekBtn").addEventListener("click",()=>addWeek(false));$("addWeekTopBtn").addEventListener("click",()=>studioSelectMode("log",true));$("copyPreviousWeekBtn").addEventListener("click",()=>addWeek(true));
  $("bankTargetWeek").addEventListener("change",renderBankTargets);$("bankSearch").addEventListener("input",renderExerciseBank);$("bankCategory").addEventListener("change",renderExerciseBank);
  $("bankAddBtn").addEventListener("click",()=>{if(!selectedBankExercise){showToast("Select an exercise from the bank first.");return}bankAdd(selectedBankExercise)});
@@ -2639,7 +3214,7 @@ async function init(){
         $("bw").value=state.profile.bw;
       }
     }
-    syncProfileFromUI();render();renderSidePanels();saveData()
+    syncProfileFromUI();backfillSessionCalories();render();renderSidePanels();saveData()
   }));
   $("exportJsonBtn").addEventListener("click",exportBackup);$("importJsonBtn").addEventListener("click",()=>$("importFile").click());$("importFile").addEventListener("change",e=>restoreBackup(e.target.files?.[0]));
   $("exportCsvBtn").addEventListener("click",exportCsv);$("dashboardExportCsvBtn")?.addEventListener("click",exportCsv);$("quickExportBtn")?.addEventListener("click",exportCsv);$("quickBackupBtn")?.addEventListener("click",exportBackup);$("quickRestoreBtn")?.addEventListener("click",()=>$ ("importFile").click());$("quickLogBtn")?.addEventListener("click",()=>studioSelectMode("log",true));$("copyWeekBtn")?.addEventListener("click",()=>{
