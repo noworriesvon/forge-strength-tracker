@@ -82,6 +82,23 @@
 .session-energy-metric.is-live .hr-pulse{background:#68edc5;box-shadow:0 0 8px #68edc599;animation:hrpulse 1.1s ease-in-out infinite}
 @keyframes hrpulse{from{opacity:1}to{opacity:.35}}
 @media(max-width:700px){.session-energy{grid-template-columns:1fr}.session-energy-clock{font-size:28px}}
+.log-calendar{margin:0 0 16px}
+.log-calendar-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
+.log-calendar-head strong{font-size:22px;letter-spacing:-.03em;font-weight:800}
+.log-calendar-actions{display:flex;gap:8px;align-items:center;position:relative}
+.log-calendar-jump{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+.log-calendar-today{background:transparent;border:0;color:#087cff;font-weight:800;padding:6px 8px}
+.log-calendar-today:hover{filter:none;transform:none;background:#0b1d31}
+.log-calendar-strip{position:relative;display:flex;gap:8px;overflow-x:auto;padding:2px 2px 8px;scrollbar-width:none}
+.log-calendar-strip::-webkit-scrollbar{display:none}
+.log-day{flex:none;width:62px;border:1px solid #2a4c70;background:#050b16;color:#d5e5fb;border-radius:14px;padding:9px 4px 8px;text-align:center}
+.log-day strong{display:block;font-size:20px;letter-spacing:-.04em;line-height:1;font-weight:800}
+.log-day small{display:block;margin-top:3px;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:#9ab5d5;font-weight:750}
+.log-day-dot{display:block;width:5px;height:5px;margin:6px auto 0;border-radius:50%;background:transparent}
+.log-day.is-selected{border-color:#087cff;background:#10243c;box-shadow:inset 0 0 0 1px #087cff}
+.log-day.is-selected strong,.log-day.is-selected small{color:#eff6ff}
+.log-day.has-session .log-day-dot{background:#00d3b0}
+.log-day.is-running .log-day-dot{background:#68edc5;box-shadow:0 0 8px #68edc599}
 
 /* Version 8: saved workouts sidebar, preview, and one-click recall */
 .saved-nav-count{margin-left:auto;display:inline-grid;place-items:center;min-width:23px;height:22px;border-radius:999px;background:#1b3a5b;border:1px solid #2a4c70;color:#a9eaff;font-size:11px;font-weight:800;padding:0 5px}
@@ -520,7 +537,11 @@ body.forge-focus[data-view="community"]{--view-accent:#087cff;--view-accent-soft
       </div>
     </div>
     <div id="studioLog" class="workspace-content" role="tabpanel" aria-labelledby="studioLogTab">
-      <div class="ws-step"><div class="ws-step-title"><span class="ws-step-index">1</span><div><h3>Choose your training week and day</h3><p>Pick the session you're training today; create a new day or week without copying anything.</p></div></div>
+      <div class="ws-step"><div class="ws-step-title"><span class="ws-step-index">1</span><div><h3>Choose your training day</h3><p>Log Workout opens on today. Scroll for a nearby day, or use Today to come back.</p></div></div>
+        <div class="log-calendar">
+          <div class="log-calendar-head"><strong id="logCalendarLabel">Today</strong><div class="log-calendar-actions"><button class="btn small log-calendar-today" type="button" id="logCalendarToday">Today</button><button class="btn small" type="button" id="logCalendarPick" aria-label="Pick a date">▦</button><input id="logCalendarJump" class="log-calendar-jump" type="date" aria-label="Jump to a date" tabindex="-1"></div></div>
+          <div id="logCalendarStrip" class="log-calendar-strip" role="listbox" aria-label="Training days"></div>
+        </div>
         <div class="ws-grid"><div class="field"><label for="studioWeek">Training week</label><select id="studioWeek"></select></div><div class="field"><label for="studioDay">Workout day</label><select id="studioDay"></select></div></div>
         <div class="ws-footer-actions" style="margin-top:12px"><button class="btn small" type="button" id="studioNewWeek">＋ Next week</button><button class="btn small" type="button" id="studioNewDay">＋ New day</button><span class="ws-muted">Copies are available in Advanced week management.</span></div>
         <div class="ws-grid three" style="margin-top:16px"><div class="field"><label for="studioDayName">Session name (auto from date)</label><input id="studioDayName" placeholder="e.g. Monday or Chest Day" maxlength="40"><small class="ws-muted">Choosing a date updates weekday names. Custom session names are kept.</small></div><div class="field"><label for="studioDate">Training date</label><input id="studioDate" type="date"></div><div class="field"><label for="studioNotes">Session notes</label><input id="studioNotes" placeholder="Optional notes" maxlength="2000"></div></div>
@@ -2226,7 +2247,7 @@ function renderExerciseExplorer(){
 function initExerciseExplorer(){
  $('explorerSearch').addEventListener('input',()=>{explorerSelectedKey=null;renderExerciseExplorer()});
  $('explorerOrder').addEventListener('change',renderExerciseExplorer);
- $('explorerGoLog').addEventListener('click',()=>studioSelectMode('log'));
+ $('explorerGoLog').addEventListener('click',()=>studioSelectMode('log',false,true));
  $('navExerciseExplorer').addEventListener('click',renderExerciseExplorer);
  renderExerciseExplorer();
 }
@@ -2438,18 +2459,137 @@ function renderSidePanels(){
 
 /* Version 9: separate routine design from recorded sessions. */
 let studioMode="log";
-let studioWeekId=null,studioDayId=null,editingTemplateId=null;
+let studioWeekId=null,studioDayId=null,studioPlaceholderDayId=null,editingTemplateId=null;
 let studioDraft={name:"",exercises:[]};
 let workoutNotepadDraft=null;
 const draftKey="forgeStrengthTracker.designDraft.v1";
 function studioSaveDraft(){try{localStorage.setItem(draftKey,JSON.stringify({name:studioDraft.name,exercises:studioDraft.exercises,editingTemplateId,editingTemplateName:state.templates.find(t=>t.id===editingTemplateId)?.name||null}))}catch(e){console.warn("Draft could not be saved",e)}}
 function studioRestoreDraft(){try{const raw=JSON.parse(localStorage.getItem(draftKey)||"null");if(raw&&Array.isArray(raw.exercises)){studioDraft.name=cleanText(raw.name,80);studioDraft.exercises=raw.exercises.slice(0,80).map(ex=>({id:uid("ex"),name:cleanText(ex.name,100),sets:(Array.isArray(ex.sets)?ex.sets:[]).slice(0,20).map(set=>newSet(set.weight??"",set.reps??10,normalizedRpe(set)))}));editingTemplateId=state.templates.some(t=>t.id===raw.editingTemplateId)?raw.editingTemplateId:state.templates.find(t=>raw.editingTemplateName&&normalizedName(t.name)===normalizedName(raw.editingTemplateName))?.id||null}}catch(e){console.warn("Could not restore draft",e)}}
-function studioSelectMode(mode,scroll=false){
+function studioSelectMode(mode,scroll=false,focusToday=false){
  studioMode=mode==="design"?"design":"log";
  $("studioLog").classList.toggle("hidden",studioMode!=="log");$("studioDesign").classList.toggle("hidden",studioMode!=="design");
  for(const [key,id] of [["log","studioLogTab"],["design","studioDesignTab"]]){$(id).classList.toggle("active",studioMode===key);$(id).setAttribute("aria-selected",String(studioMode===key))}
  if(focusReady)setFocusView(studioMode==="design"?"design":"log");
  else if(scroll)$("workoutStudio").scrollIntoView({behavior:"smooth",block:"start"});
+ if(studioMode==="log"&&focusToday)studioOpenToday();
+}
+function calendarOrdinal(day){const teen=day%100;if(teen>=11&&teen<=13)return "th";return {1:"st",2:"nd",3:"rd"}[day%10]||"th"}
+function formatCalendarHeading(iso){
+ const date=new Date(`${iso}T12:00:00`);
+ if(!Number.isFinite(date.getTime()))return "Today";
+ const day=date.getDate();
+ return `${date.toLocaleDateString(undefined,{month:"long"})} ${day}${calendarOrdinal(day)}`;
+}
+function studioDayBlank(day){
+ if(!day||day.completed||day.session)return false;
+ if(cleanText(day.notes||"",2000))return false;
+ if((day.exercises||[]).length)return false;
+ return isAutoDayName(day.name);
+}
+function sessionsOnDate(iso){
+ const matches=[];
+ state.weeks.forEach(week=>(week.days||[]).forEach(day=>{if(day.date===iso)matches.push({week,day})}));
+ return matches;
+}
+function pickSession(matches){
+ return matches.find(item=>sessionIsRunning(item.day))||matches.find(item=>!item.day.completed)||matches[matches.length-1]||null;
+}
+function discardPlaceholder(exceptId){
+ if(!studioPlaceholderDayId||studioPlaceholderDayId===exceptId)return false;
+ let removed=false;
+ state.weeks.forEach(week=>{
+  const day=week.days.find(item=>item.id===studioPlaceholderDayId);
+  if(!day||!studioDayBlank(day))return;
+  week.days=week.days.filter(item=>item.id!==day.id);
+  removed=true;
+ });
+ studioPlaceholderDayId=null;
+ return removed;
+}
+function studioFocusDate(iso){
+ if(!/^\d{4}-\d{2}-\d{2}$/.test(iso||""))return false;
+ const existing=pickSession(sessionsOnDate(iso));
+ if(existing){
+  const removed=discardPlaceholder(existing.day.id);
+  studioWeekId=existing.week.id;studioDayId=existing.day.id;
+  if(removed){render();saveData()}
+  return false;
+ }
+ let week=null,day=null;
+ if(studioPlaceholderDayId){
+  for(const candidate of state.weeks){
+   day=candidate.days.find(item=>item.id===studioPlaceholderDayId);
+   if(day){week=candidate;break}
+  }
+ }
+ if(week&&day&&studioDayBlank(day)){
+  setWorkoutSessionDate(day,iso);
+  studioWeekId=week.id;studioDayId=day.id;
+  saveData();
+  return false;
+ }
+ week=state.weeks[state.weeks.length-1];
+ if(!week){
+  week=newWeek(nextWeekLabel());
+  state.weeks.push(week);
+  day=week.days[0];
+  setWorkoutSessionDate(day,iso);
+ }else{
+  day=newDay(weekDayFromDate(iso),iso);
+  week.days.push(day);
+  week.expanded=true;
+ }
+ studioPlaceholderDayId=day.id;
+ studioWeekId=week.id;studioDayId=day.id;
+ render();saveData();
+ return true;
+}
+let logCalendarForceStick=false;
+function studioOpenToday(){
+ logCalendarForceStick=true;
+ const created=studioFocusDate(dayDate());
+ studioRender();
+ if(created)showToast("Today's session is ready.");
+}
+function renderLogCalendar(){
+ const strip=$("logCalendarStrip"),label=$("logCalendarLabel");
+ if(!strip||!label)return;
+ const {day}=studioSelected();
+ const selected=/^\d{4}-\d{2}-\d{2}$/.test(day?.date||"")?day.date:dayDate();
+ const today=dayDate();
+ label.textContent=formatCalendarHeading(selected);
+ const dates=[];
+ for(let i=-21;i<=13;i++)dates.push(shiftDate(today,i));
+ if(!dates.includes(selected)){for(let i=-3;i<=3;i++){const extra=shiftDate(selected,i);if(!dates.includes(extra))dates.push(extra)}dates.sort()}
+ const logged=new Set();
+ state.weeks.forEach(week=>(week.days||[]).forEach(item=>{
+  if(item.date&&(sessionIsRunning(item)||item.completed||item.session||(item.exercises||[]).length))logged.add(item.date);
+ }));
+ const weekday=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+ strip.replaceChildren();
+ dates.forEach(iso=>{
+  const date=new Date(`${iso}T12:00:00`);
+  const button=document.createElement("button");
+  button.type="button";
+  button.className="log-day"+(iso===selected?" is-selected":"")+(logged.has(iso)?" has-session":"")+(sessionsOnDate(iso).some(item=>sessionIsRunning(item.day))?" is-running":"");
+  button.setAttribute("role","option");
+  button.setAttribute("aria-selected",String(iso===selected));
+  button.setAttribute("aria-label",`${weekDayFromDate(iso)} ${formatCalendarHeading(iso)}${iso===today?", today":""}${logged.has(iso)?", workout logged":""}`);
+  const number=document.createElement("strong");
+  number.textContent=String(date.getDate());
+  const name=document.createElement("small");
+  name.textContent=weekday[date.getDay()];
+  const dot=document.createElement("span");
+  dot.className="log-day-dot";
+  button.append(number,name,dot);
+  button.addEventListener("click",()=>{logCalendarForceStick=true;const created=studioFocusDate(iso);studioRender();if(created)showToast(`${weekDayFromDate(iso)} is ready to log.`)});
+  strip.append(button);
+ });
+ logCalendarForceStick=false;
+ const chosen=strip.querySelector(".is-selected");
+ const stick=()=>{if(!chosen||!strip.clientWidth)return;const left=chosen.getBoundingClientRect().left-strip.getBoundingClientRect().left+strip.scrollLeft;strip.scrollLeft=Math.max(0,Math.round(left))};
+ stick();
+ requestAnimationFrame(stick);
 }
 function studioSelected(){const week=state.weeks.find(w=>w.id===studioWeekId)||state.weeks[state.weeks.length-1];const day=week?.days.find(d=>d.id===studioDayId)||week?.days[week.days.length-1];return {week,day}}
 function studioChooseDay(weekId,dayId){studioWeekId=weekId;studioDayId=dayId;studioRender()}
@@ -2522,7 +2662,7 @@ function studioRenderDraft(){
  const subtotal=forgeVolLine('Planned workout volume · not included in training history',studioDraft.exercises.reduce((n,ex)=>n+forgeExerciseVolume(ex),0));
  subtotal.replaceChild(forgeVolumeNode('draft'),subtotal.querySelector('strong'));host.append(subtotal);forgeRefreshVolumeUI();
 }
-function studioRender(){studioRenderSelects();const {week,day}=studioSelected();renderSessionEnergy($("studioSessionEnergy"),week,day);studioRenderSession();studioRenderDraft()}
+function studioRender(){studioRenderSelects();const {week,day}=studioSelected();renderLogCalendar();renderSessionEnergy($("studioSessionEnergy"),week,day);studioRenderSession();studioRenderDraft()}
 function studioCreateWeek(){const w=addWeek(false);const day=w.days[0];studioWeekId=w.id;studioDayId=day.id;studioRender();showToast(`${w.name} ready for a new session.`)}
 function studioCreateDay(){const {week}=studioSelected();if(!week){studioCreateWeek();return}const prev=week.days[week.days.length-1];const dt=prev?.date?shiftDate(prev.date,1):dayDate();const day=newDay(weekDayFromDate(dt),dt);week.days.push(day);week.expanded=true;studioWeekId=week.id;studioDayId=day.id;render();saveData();studioRender();showToast("New training day ready.")}
 function studioLoadTemplate(){const id=$("studioLoadTemplate").value;const template=state.templates.find(t=>t.id===id);const {week,day}=studioSelected();if(!template){showToast("Select a saved workout to load.");return}if(!week||!day){showToast("Choose a training week and day first.");return}
@@ -2618,7 +2758,10 @@ function importWorkoutNotepad(){
 }
 function studioInit(){
  studioRestoreDraft();
- $("studioLogTab").addEventListener("click",()=>studioSelectMode("log"));$("studioDesignTab").addEventListener("click",()=>studioSelectMode("design"));
+ $("studioLogTab").addEventListener("click",()=>studioSelectMode("log",false,true));$("studioDesignTab").addEventListener("click",()=>studioSelectMode("design"));
+ $("logCalendarToday").addEventListener("click",()=>studioOpenToday());
+ $("logCalendarPick").addEventListener("click",()=>{const input=$("logCalendarJump");input.value=studioSelected().day?.date||dayDate();if(typeof input.showPicker==="function")input.showPicker();else input.focus()});
+ $("logCalendarJump").addEventListener("change",()=>{if(!$("logCalendarJump").value)return;logCalendarForceStick=true;const created=studioFocusDate($("logCalendarJump").value);studioRender();if(created)showToast(`${weekDayFromDate($("logCalendarJump").value)} is ready to log.`)});
  $("studioWeek").addEventListener("change",()=>{studioWeekId=$("studioWeek").value;studioDayId=null;studioRender()});
  $("studioDay").addEventListener("change",()=>{studioDayId=$("studioDay").value;studioRender()});
  $("studioNewWeek").addEventListener("click",studioCreateWeek);$("studioNewDay").addEventListener("click",studioCreateDay);
@@ -2643,7 +2786,7 @@ function studioInit(){
  $("studioDesignExercise").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();$("studioDesignAddBtn").click()}});
  $("studioSaveTemplate").addEventListener("click",studioSaveTemplate);
  $("studioClearDraft").addEventListener("click",()=>{if(studioDraft.exercises.length&&!confirm("Clear this unsaved workout design? Your saved library won't be changed."))return;studioEditTemplate(null)});
- document.querySelectorAll("[data-studio-mode]").forEach(a=>a.addEventListener("click",()=>studioSelectMode(a.dataset.studioMode)));
+ document.querySelectorAll("[data-studio-mode]").forEach(a=>a.addEventListener("click",()=>studioSelectMode(a.dataset.studioMode,false,a.dataset.studioMode==="log")));
  $("navAdvancedWeeks")?.addEventListener("click",()=>{$("training").open=true});$("training").addEventListener("toggle",()=>{if($("training").open)render()});
  studioRender();studioSelectMode("log");
 }
@@ -2903,18 +3046,18 @@ function initializeFocusNavigation(){
  const crumb=$ ("focusNowCrumb");if(!crumb){const s=document.createElement("span");s.id="focusNowCrumb";s.className="crumb-section";document.querySelector(".crumbs").replaceChildren(s)}
  document.querySelectorAll(".nav > a").forEach(link=>{
   const view=focusDestination(link);if(!view)return;
-  link.addEventListener("click",event=>{event.preventDefault();if(view==="design"||view==="log"){studioSelectMode(view);return}setFocusView(view)});
+  link.addEventListener("click",event=>{event.preventDefault();if(view==="design"||view==="log"){studioSelectMode(view,false,view==="log");return}setFocusView(view)});
  });
  // Internal deep links should open the corresponding focused page rather than scroll to a hidden section.
  document.querySelector(".main").addEventListener("click",event=>{
   const link=event.target.closest('a[href^="#"]');if(!link||link.closest('.nav'))return;
   const hash=link.getAttribute('href').slice(1);const view=focusIDs[hash];if(!view)return;
-  event.preventDefault();if(hash==="workoutStudio"){studioSelectMode('log');return}
+  event.preventDefault();if(hash==="workoutStudio"){studioSelectMode('log',false,true);return}
   setFocusView(view);
  });
  focusReady=true;
  const starting=focusIDs[decodeURIComponent(location.hash.replace(/^#/,""))]||"dashboard";
- if(starting==="log"||starting==="design")studioSelectMode(starting);
+ if(starting==="log"||starting==="design")studioSelectMode(starting,false,starting==="log");
  setFocusView(starting,{scroll:false});
 }
 
@@ -3196,7 +3339,7 @@ async function init(){
   else state.weeks=[newWeek("Week 1")];
   const filledSessionCalories=backfillSessionCalories();
   syncProfileToUI();render();initializeF19();studioInit();renderSidePanels();setupReportCenter();initExerciseExplorer();initializeTrainingInsights();void initializeSocialMvp();$("v15CalendarYear").addEventListener("change",forgeConsistency);forgeRenderV14();forgeInitCollapsers();ensureSessionClock();if(saved && (Number(saved.version||2)<6||migratedLocalData||filledSessionCalories))saveData(true);if(migratedLocalData)showToast("Local workout data is being migrated to your private Firestore account.");
-  $("addWeekBtn").addEventListener("click",()=>addWeek(false));$("addWeekTopBtn").addEventListener("click",()=>studioSelectMode("log",true));$("copyPreviousWeekBtn").addEventListener("click",()=>addWeek(true));
+  $("addWeekBtn").addEventListener("click",()=>addWeek(false));$("addWeekTopBtn").addEventListener("click",()=>studioSelectMode("log",true,true));$("copyPreviousWeekBtn").addEventListener("click",()=>addWeek(true));
  $("bankTargetWeek").addEventListener("change",renderBankTargets);$("bankSearch").addEventListener("input",renderExerciseBank);$("bankCategory").addEventListener("change",renderExerciseBank);
  $("bankAddBtn").addEventListener("click",()=>{if(!selectedBankExercise){showToast("Select an exercise from the bank first.");return}bankAdd(selectedBankExercise)});
  $("createCustomExerciseBtn").addEventListener("click",()=>{const rawName=cleanText($("customExerciseInput").value,100),name=categorizedExerciseName(rawName,$("customExerciseCategory").value);if(!rawName){showToast("Enter an exercise name.");return}if(!name){showToast("Choose a body part for this custom exercise.");return}selectedBankExercise=name;$("customExerciseInput").value="";$("customExerciseCategory").value="";renderExerciseBank();renderExerciseSuggestions();saveData();showToast(`${name} saved under ${exerciseCategory(name)}.`)});
@@ -3217,7 +3360,7 @@ async function init(){
     syncProfileFromUI();backfillSessionCalories();render();renderSidePanels();saveData()
   }));
   $("exportJsonBtn").addEventListener("click",exportBackup);$("importJsonBtn").addEventListener("click",()=>$("importFile").click());$("importFile").addEventListener("change",e=>restoreBackup(e.target.files?.[0]));
-  $("exportCsvBtn").addEventListener("click",exportCsv);$("dashboardExportCsvBtn")?.addEventListener("click",exportCsv);$("quickExportBtn")?.addEventListener("click",exportCsv);$("quickBackupBtn")?.addEventListener("click",exportBackup);$("quickRestoreBtn")?.addEventListener("click",()=>$ ("importFile").click());$("quickLogBtn")?.addEventListener("click",()=>studioSelectMode("log",true));$("copyWeekBtn")?.addEventListener("click",()=>{
+  $("exportCsvBtn").addEventListener("click",exportCsv);$("dashboardExportCsvBtn")?.addEventListener("click",exportCsv);$("quickExportBtn")?.addEventListener("click",exportCsv);$("quickBackupBtn")?.addEventListener("click",exportBackup);$("quickRestoreBtn")?.addEventListener("click",()=>$ ("importFile").click());$("quickLogBtn")?.addEventListener("click",()=>studioSelectMode("log",true,true));$("copyWeekBtn")?.addEventListener("click",()=>{
     const last=state.weeks[state.weeks.length-1];
     if(last)duplicateWeek(last.id);else addWeek(false);
   });$("historySearch").addEventListener("input",renderHistory);$("historyFilter").addEventListener("change",renderHistory);
