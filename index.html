@@ -1701,6 +1701,20 @@ async function toggleHeartRate(){
 }
 const EXPERIENCE_LEVELS=["beginner","intermediate","advanced","expert"];
 const PROGRAM_WEEKDAYS=["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
+const PROGRAM_GOALS={strength:{label:"Strength",detail:"6 reps and under",min:1,max:6,fallback:5},muscle:{label:"Build muscle",detail:"8–12 reps",min:8,max:12,fallback:10},endurance:{label:"Endurance",detail:"12–20 reps",min:12,max:20,fallback:15}};
+function programGoal(value){return value==="stronger"||!PROGRAM_GOALS[value]?"strength":value}
+function goalRange(goal){return PROGRAM_GOALS[programGoal(goal)]}
+function clampGoalReps(goal,reps){const range=goalRange(goal),n=number(reps,1,100);if(n==null)return range.fallback;return Math.min(range.max,Math.max(range.min,n))}
+function applyProgramGoal(program,goal){
+ const next=programGoal(goal),range=goalRange(next);
+ let adjusted=false;
+ program.goal=next;
+ (program.days||[]).forEach(day=>(day.exercises||[]).forEach(ex=>(ex.sets||[]).forEach(set=>{
+  if(set.reps!==""&&set.reps!=null&&set.reps!==clampGoalReps(next,set.reps)){set.reps=clampGoalReps(next,set.reps);adjusted=true}
+  if(set.test&&set.targetReps!=null&&set.targetReps!==clampGoalReps(next,set.targetReps)){set.targetReps=clampGoalReps(next,set.targetReps);adjusted=true}
+ })));
+ return adjusted?range:null;
+}
 function experienceSuggestion(level,unit){
  const kg=unit==="kg";
  if(level==="intermediate")return {mode:"amrap",increment:kg?2.5:5};
@@ -1753,7 +1767,9 @@ function normalizePrograms(raw){
    days.push({id:normalizedStoredId(day.id,"split"),name:cleanText(day.name,40)||weekday,weekday,exercises});
   });
   const suggestion=experienceSuggestion("", "lb");
-  programs.push({id:normalizedStoredId(item.id,"program"),name,goal:"stronger",weeks:number(item.weeks,4,16)??8,startDate:/^\d{4}-\d{2}-\d{2}$/.test(item.startDate||"")?item.startDate:"",status,mode:item.mode==="amrap"?"amrap":item.mode==="linear"?"linear":suggestion.mode,increment:number(item.increment,0.5,50)??suggestion.increment,days});
+  const goal=programGoal(item.goal);
+  days.forEach(day=>day.exercises.forEach(ex=>ex.sets.forEach(set=>{if(set.reps!==""&&set.reps!=null)set.reps=clampGoalReps(goal,set.reps);if(set.targetReps!=null)set.targetReps=clampGoalReps(goal,set.targetReps)})));
+  programs.push({id:normalizedStoredId(item.id,"program"),name,goal,weeks:number(item.weeks,4,16)??8,startDate:/^\d{4}-\d{2}-\d{2}$/.test(item.startDate||"")?item.startDate:"",status,mode:item.mode==="amrap"?"amrap":item.mode==="linear"?"linear":suggestion.mode,increment:number(item.increment,0.5,50)??suggestion.increment,days});
  });
  return programs;
 }
@@ -2556,7 +2572,7 @@ function createProgramDraft(){
  const existing=editableProgram();
  if(existing)return existing;
  const suggestion=experienceSuggestion(state.profile.experience,state.profile.unit||"lb");
- const program={id:uid("program"),name:cleanText(state.profile.programName,80)||"Strength Block",goal:"stronger",weeks:8,startDate:dayDate(),status:"draft",mode:suggestion.mode,increment:suggestion.increment,days:[]};
+ const program={id:uid("program"),name:cleanText(state.profile.programName,80)||"Training Block",goal:"strength",weeks:8,startDate:dayDate(),status:"draft",mode:suggestion.mode,increment:suggestion.increment,days:[]};
  state.programs.push(program);
  saveData();
  return program;
@@ -2620,13 +2636,14 @@ function renderLogPlanOffer(){
  title.textContent=`Week ${plan.week} · ${plan.split.name||plan.split.weekday}`;
  const detail=document.createElement("p");
  const jump=`${plan.program.increment} ${state.profile.unit}`;
- detail.textContent=plan.week<=1?"Get stronger. Week 1 uses the starting weights from your program.":plan.program.mode==="linear"?`Get stronger. Each working set is ${jump} heavier than the week before.`:`Get stronger. Weight goes up by ${jump} only if last week's test set hit its target.`;
+ const goalName=goalRange(plan.program.goal).label,repText=goalRange(plan.program.goal).detail;
+ detail.textContent=plan.week<=1?`${goalName}. Week 1 uses your starting weights. Keep sets at ${repText}.`:plan.program.mode==="linear"?`${goalName}. Each working set is ${jump} heavier than the week before. Keep sets at ${repText}.`:`${goalName}. Weight goes up by ${jump} only if last week's test set hit its target. Keep sets at ${repText}.`;
  copy.append(title,detail);
  box.append(copy,button("Use this workout","primary",()=>usePlannedWorkout(day,plan)));
  host.append(box);
 }
 function programStructureKey(program){
- return [program.id,program.status,program.mode,program.weeks,program.increment,program.days.map(day=>`${day.id}:${day.exercises.map(ex=>ex.sets.length).join(".")}`).join("|")].join("~");
+ return [program.id,program.status,program.mode,program.goal,program.weeks,program.increment,program.days.map(day=>`${day.id}:${day.exercises.map(ex=>ex.sets.length).join(".")}`).join("|")].join("~");
 }
 function renderProgramBuilder(force=false){
  const host=$("studioProgramBody");
@@ -2646,15 +2663,15 @@ function renderProgramBuilder(force=false){
   index.textContent="1";
   const copy=document.createElement("div");
   const title=document.createElement("h3");
-  title.textContent=state.programs.some(item=>item.status==="complete")?"Start the next block":"Design a strength block";
+  title.textContent=state.programs.some(item=>item.status==="complete")?"Start the next block":"Design a training block";
   const text=document.createElement("p");
-  text.textContent=state.programs.some(item=>item.status==="complete")?"The last block is finished. Build the next one when you are ready.":"Choose how many weeks you will train, then assign a workout to the days you want.";
+  text.textContent=state.programs.some(item=>item.status==="complete")?"The last block is finished. Build the next one when you are ready.":"Pick a goal, choose how many weeks you will train, then assign a workout to the days you want.";
   copy.append(title,text);
   heading.append(index,copy);
   const note=document.createElement("p");
   note.className="program-note";
   note.textContent=experienceAdvice(state.profile.experience);
-  step.append(heading,note,button(state.programs.some(item=>item.status==="complete")?"Start another block":"Build a strength block","primary",()=>{createProgramDraft();renderProgramBuilder(true)}));
+  step.append(heading,note,button(state.programs.some(item=>item.status==="complete")?"Start another block":"Build a training block","primary",()=>{createProgramDraft();renderProgramBuilder(true)}));
   host.append(step);
   return;
  }
@@ -2668,19 +2685,20 @@ function renderProgramBuilder(force=false){
  setupIndex.textContent="1";
  const setupCopy=document.createElement("div");
  const setupHeading=document.createElement("h3");
- setupHeading.textContent=program.status==="active"?"Your strength block is running":"Set the block";
+ setupHeading.textContent=program.status==="active"?"Your training block is running":"Set the block";
  const setupText=document.createElement("p");
- setupText.textContent="Get stronger over the weeks you choose. Experience suggests the progression. You can change it.";
+ setupText.textContent="Choose the goal, then the weeks you will train. Experience suggests how the weight should move. You can change it.";
  setupCopy.append(setupHeading,setupText);
  setupTitle.append(setupIndex,setupCopy);
  const grid=document.createElement("div");
  grid.className="ws-grid";
  const name=makeInput("text",program.name,"Program name",{maxlength:80});
- name.addEventListener("change",()=>{program.name=cleanText(name.value,80)||"Strength Block";name.value=program.name;saveData()});
+ name.addEventListener("change",()=>{program.name=cleanText(name.value,80)||"Training Block";name.value=program.name;saveData()});
  const goal=document.createElement("select");
  goal.setAttribute("aria-label","Training goal");
- goal.append(new Option("Get stronger","stronger"));
- goal.value="stronger";
+ Object.entries(PROGRAM_GOALS).forEach(([value,item])=>goal.append(new Option(`${item.label} · ${item.detail}`,value)));
+ goal.value=programGoal(program.goal);
+ goal.addEventListener("change",()=>{const adjusted=applyProgramGoal(program,goal.value);saveData();renderProgramBuilder(true);if(adjusted)showToast(`${adjusted.label} uses ${adjusted.detail}. Reps outside that range were adjusted.`)});
  const weeks=makeInput("number",program.weeks,"Block length in weeks",{min:4,max:16,step:1});
  weeks.addEventListener("change",()=>{const value=number(weeks.value,4,16);if(value==null){showToast("Use 4 to 16 weeks.");weeks.value=String(program.weeks);return}program.weeks=value;saveData();renderProgramBuilder(true)});
  const start=makeInput("date",program.startDate,"Block start date");
@@ -2713,7 +2731,7 @@ function renderProgramBuilder(force=false){
  const daysHeading=document.createElement("h3");
  daysHeading.textContent="Assign the split";
  const daysText=document.createElement("p");
- daysText.textContent="Each day gets one weekday. Add the exercises and the starting weights for week 1.";
+ daysText.textContent=`Each day gets one weekday. Add the exercises and the starting weights for week 1. This goal uses ${goalRange(program.goal).detail}.`;
  daysCopy.append(daysHeading,daysText);
  daysTitle.append(daysIndex,daysCopy);
  daysStep.append(daysTitle);
@@ -2764,7 +2782,7 @@ function programDayCard(program,split){
   const template=state.templates.find(item=>item.id===saved.value);
   if(!template){showToast("Choose a saved workout first.");return}
   if(split.exercises.length&&!confirm(`Replace the exercises on ${split.name||split.weekday}?`))return;
-  split.exercises=template.exercises.map(exercise=>({id:uid("ex"),name:exercise.name,sets:(exercise.sets||[]).map(set=>({id:uid("set"),weight:set.weight,reps:set.reps,rpe:set.rpe||"",test:false,targetReps:null}))}));
+  split.exercises=template.exercises.map(exercise=>({id:uid("ex"),name:exercise.name,sets:(exercise.sets||[]).map(set=>({id:uid("set"),weight:set.weight,reps:clampGoalReps(program.goal,set.reps),rpe:set.rpe||"",test:false,targetReps:null}))}));
   if(!split.name)split.name=template.name;
   saveData();renderProgramBuilder(true);
  }));
@@ -2779,7 +2797,7 @@ function programDayCard(program,split){
   const raw=cleanText(exerciseName.value,100),name=categorizedExerciseName(raw,category.value);
   if(!raw){showToast("Enter an exercise name.");return}
   if(!name){showToast("Choose a body part for this custom exercise.");return}
-  split.exercises.push({id:uid("ex"),name,sets:[{id:uid("set"),weight:"",reps:5,rpe:"",test:false,targetReps:null}]});
+  split.exercises.push({id:uid("ex"),name,sets:[{id:uid("set"),weight:"",reps:goalRange(program.goal).fallback,rpe:"",test:false,targetReps:null}]});
   saveData();renderProgramBuilder(true);
  }));
  card.append(head,loadRow,addRow);
@@ -2803,8 +2821,9 @@ function programExerciseCard(program,split,exercise){
   label.textContent=String(index+1);
   const weight=makeInput("number",set.weight,`Set ${index+1} weight`,{min:0,max:100000,step:"any"});
   weight.addEventListener("change",()=>{const value=weight.value===""?"":number(weight.value,0,100000);if(weight.value!==""&&value==null){showToast("Enter a valid weight.");weight.value=set.weight;return}set.weight=value??"";saveData()});
-  const reps=makeInput("number",set.reps,`Set ${index+1} reps`,{min:0,max:1000,step:1});
-  reps.addEventListener("change",()=>{const value=reps.value===""?"":number(reps.value,0,1000);if(reps.value!==""&&value==null){showToast("Enter valid reps.");reps.value=set.reps;return}set.reps=value??"";saveData()});
+  const range=goalRange(program.goal);
+  const reps=makeInput("number",set.reps,`Set ${index+1} reps`,{min:range.min,max:range.max,step:1});
+  reps.addEventListener("change",()=>{const value=number(reps.value,range.min,range.max);if(value==null){showToast(`${range.label} uses ${range.detail}.`);reps.value=set.reps;return}set.reps=value;saveData()});
   const remove=button("×","small",()=>{if(exercise.sets.length<=1){showToast("An exercise needs at least one set.");return}exercise.sets=exercise.sets.filter(item=>item.id!==set.id);saveData();renderProgramBuilder(true)});
   remove.setAttribute("aria-label",`Remove set ${index+1}`);
   row.append(label,weight,reps,remove);
@@ -2815,18 +2834,18 @@ function programExerciseCard(program,split,exercise){
    const check=document.createElement("input");
    check.type="checkbox";
    check.checked=!!set.test;
-   check.addEventListener("change",()=>{exercise.sets.forEach(item=>{item.test=item.id===set.id&&check.checked;if(!item.test)item.targetReps=null});if(set.test&&set.targetReps==null)set.targetReps=number(set.reps,1,100)||5;saveData();renderProgramBuilder(true)});
+   check.addEventListener("change",()=>{exercise.sets.forEach(item=>{item.test=item.id===set.id&&check.checked;if(!item.test)item.targetReps=null});if(set.test&&set.targetReps==null)set.targetReps=clampGoalReps(program.goal,set.reps);saveData();renderProgramBuilder(true)});
    test.append(check,document.createTextNode(" Test set"));
    if(set.test){
-    const target=makeInput("number",set.targetReps??"","Reps to beat",{min:1,max:100,step:1});
+    const target=makeInput("number",set.targetReps??"","Reps to beat",{min:range.min,max:range.max,step:1});
     target.style.maxWidth="90px";
-    target.addEventListener("change",()=>{const value=number(target.value,1,100);if(value==null){showToast("Enter a target from 1 to 100 reps.");target.value=set.targetReps??"";return}set.targetReps=value;saveData()});
+    target.addEventListener("change",()=>{const value=number(target.value,range.min,range.max);if(value==null){showToast(`${range.label} uses ${range.detail}.`);target.value=set.targetReps??"";return}set.targetReps=value;saveData()});
     test.append(document.createTextNode(" Reps to beat "),target);
    }
    card.append(test);
   }
  });
- card.append(button("＋ Set","small",()=>{const last=exercise.sets[exercise.sets.length-1];exercise.sets.push({id:uid("set"),weight:last?.weight??"",reps:last?.reps??5,rpe:"",test:false,targetReps:null});saveData();renderProgramBuilder(true)}));
+ card.append(button("＋ Set","small",()=>{const last=exercise.sets[exercise.sets.length-1];exercise.sets.push({id:uid("set"),weight:last?.weight??"",reps:clampGoalReps(program.goal,last?.reps),rpe:"",test:false,targetReps:null});saveData();renderProgramBuilder(true)}));
  return card;
 }
 function startProgram(program){
