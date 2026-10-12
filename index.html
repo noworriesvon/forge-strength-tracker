@@ -80,6 +80,19 @@
 .session-energy-metric.is-live strong{color:#68edc5}
 .session-energy-metric .hr-pulse{display:inline-block;width:8px;height:8px;margin-right:6px;border-radius:50%;background:#2a4c70;vertical-align:middle}
 .session-energy-metric.is-live .hr-pulse{background:#68edc5;box-shadow:0 0 8px #68edc599;animation:hrpulse 1.1s ease-in-out infinite}
+.session-hr-chart{grid-column:1/-1;display:grid;gap:6px}
+.session-hr-plot{position:relative;height:148px}
+.session-hr-plot canvas{cursor:pointer}
+.session-hr-chart p{margin:0;color:#9ab5d5;font-size:11px;line-height:1.5}
+.session-hr-recovery{display:grid;gap:8px;padding:10px;border:1px solid #1b3a5b;border-radius:10px;background:#050b16}
+.session-hr-recovery[hidden]{display:none}
+.session-hr-recovery strong{font-size:16px;letter-spacing:-.02em}
+.session-hr-recovery p{margin:0;color:#9ab5d5;font-size:13px;line-height:1.4}
+.session-hr-marks{display:flex;flex-wrap:wrap;gap:8px 12px;margin:0;padding:0;list-style:none}
+.session-hr-marks li{min-width:64px}
+.session-hr-marks time,.session-hr-marks span{display:block;color:#9ab5d5;font-size:10px;font-weight:700;letter-spacing:.04em}
+.session-hr-marks b{display:block;margin-top:2px;font-variant-numeric:tabular-nums;font-size:16px}
+.session-hr-marks .is-minute b,.session-hr-marks .is-minute span{color:#68edc5}
 @keyframes hrpulse{from{opacity:1}to{opacity:.35}}
 @media(max-width:700px){.session-energy{grid-template-columns:1fr}.session-energy-clock{font-size:28px}}
 .log-calendar{margin:0 0 16px}
@@ -1149,7 +1162,9 @@ const SESSION_MET=6;
 const SESSION_MAX_SEC=8*60*60;
 const HR_SERVICE="heart_rate";
 const HR_CHAR="heart_rate_measurement";
-const hrMonitor={device:null,characteristic:null,connected:false,connecting:false,wantDisconnect:false,bpm:null,deviceName:"",samples:[],dayId:null,kcal:0,lastAt:0};
+const HR_BUCKET_MS=5000;
+const hrCharts=[];
+const hrMonitor={device:null,characteristic:null,connected:false,connecting:false,wantDisconnect:false,bpm:null,deviceName:"",samples:[],bucket:[],bucketAt:0,rawCount:0,rawSum:0,rawMax:null,rawMin:null,dayId:null,kcal:0,lastAt:0,recoveryAt:null,recoveryRoles:new Map()};
 function sessionIso(value){
  if(typeof value!=="string"||!value)return "";
  const time=Date.parse(value);
@@ -1219,7 +1234,7 @@ function estimateHrKcalPerMin(bpm,weightKg){
  return Number.isFinite(kcal)?Math.max(0,kcal):null;
 }
 function liveHrCalories(day,week){
- if(hrMonitor.dayId!==day.id||!hrMonitor.samples.length)return null;
+ if(hrMonitor.dayId!==day.id||!hrMonitor.rawCount)return null;
  let kcal=hrMonitor.kcal;
  if(sessionIsRunning(day)&&hrMonitor.bpm&&hrMonitor.lastAt){
   const dt=Math.min(Math.max(0,Date.now()-hrMonitor.lastAt),120000);
@@ -1240,7 +1255,7 @@ function sessionCaloriesNow(day,week){
  return estimateMetCalories(seconds,sessionBodyweightKg(week));
 }
 function sessionUsesHeartRate(day){
- if(sessionIsRunning(day))return hrMonitor.dayId===day.id&&hrMonitor.samples.length>0;
+ if(sessionIsRunning(day))return hrMonitor.dayId===day.id&&hrMonitor.rawCount>0;
  return day.session?.calorieSource==="hr";
 }
 function applySessionCalories(day,week){
@@ -1346,7 +1361,7 @@ function startSession(day){
  return true;
 }
 function clearSession(day){
- if(hrMonitor.dayId===day.id){hrMonitor.samples=[];hrMonitor.kcal=0;hrMonitor.lastAt=0;hrMonitor.dayId=null}
+ if(hrMonitor.dayId===day.id)resetHrTrace();
  delete day.session;
 }
 function updateStudioEnergySummary(){
@@ -1358,6 +1373,7 @@ function updateStudioEnergySummary(){
 }
 function renderSessionEnergy(host,week,day){
  if(!host)return;
+ destroyHrChartsIn(host);
  host.replaceChildren();
  if(!week||!day){
   const empty=document.createElement("p");
@@ -1369,6 +1385,8 @@ function renderSessionEnergy(host,week,day){
  }
  host.append(sessionEnergyPanel(week,day));
  updateStudioEnergySummary();
+ paintHrChart();
+ paintHrRecovery();
 }
 function sessionHrDisplay(day){
  if(hrMonitor.connected)return hrMonitor.bpm!=null?`${hrMonitor.bpm} bpm`:"Waiting…";
@@ -1382,7 +1400,7 @@ function sessionEnergyNoteText(week,day){
  if(sessionAge()==null)missing.push("age");
  if(hrMonitor.connected){
   if(missing.length)return `Strap connected${hrMonitor.deviceName?` · ${hrMonitor.deviceName}`:""}. Add ${missing.join(" and ")} in Profile so pulse calories can be calculated. The timer still saves on its own.`;
-  return `Strap connected${hrMonitor.deviceName?` · ${hrMonitor.deviceName}`:""}. Start the session and calories follow your pulse. Timer stops at 8 hours.`;
+  return `Strap connected${hrMonitor.deviceName?` · ${hrMonitor.deviceName}`:""}. Start the session and calories follow your pulse. The chart draws one averaged point every 5 seconds. Timer stops at 8 hours.`;
  }
  if(day.session?.calorieSource==="hr"&&day.session.hrAvg)return `Calories for this day came from your heart-rate strap${day.session.hrDevice?` (${day.session.hrDevice})`:""}. Average ${day.session.hrAvg} bpm${day.session.hrMax?`, max ${day.session.hrMax} bpm`:""}.`;
  if(missing.length)return `Enter ${missing.join(" and ")} in Profile & Settings to turn this time into a calorie estimate. Connect a Bluetooth heart-rate strap for a pulse-based number.`;
@@ -1392,7 +1410,7 @@ function sessionFinishToast(day){
  const kcal=day.session?.calories;
  if(day.session?.calorieSource==="hr"&&kcal!=null)return `Session saved from your heart rate. ${kcal.toLocaleString()} kcal · avg ${day.session.hrAvg} bpm.`;
  if(kcal!=null)return `Session time saved. About ${kcal.toLocaleString()} kcal.`;
- if(hrMonitor.samples.length&&sessionAge()==null)return "Session time and heart rate saved. Add age in Profile to turn pulse into calories.";
+ if(hrMonitor.rawCount&&sessionAge()==null)return "Session time and heart rate saved. Add age in Profile to turn pulse into calories.";
  return "Session time saved. Add body weight in Profile to estimate calories.";
 }
 function sessionEnergyPanel(week,day){
@@ -1445,6 +1463,26 @@ function sessionEnergyPanel(week,day){
  weightValue.textContent=sessionWeightText(day,week);
  weightBox.append(weightLabel,weightValue);
  metrics.append(calorieBox,hrBox,weightBox);
+ let chartWrap=null;
+ if(day.id===hrMonitor.dayId&&(hrMonitor.samples.length||(sessionIsRunning(day)&&(hrMonitor.connected||hrMonitor.rawCount)))){
+  chartWrap=document.createElement("div");
+  chartWrap.className="session-hr-chart";
+  const plot=document.createElement("div");
+  plot.className="session-hr-plot";
+  const canvas=document.createElement("canvas");
+  canvas.dataset.hrChart=day.id;
+  canvas.setAttribute("role","img");
+  canvas.setAttribute("aria-label","Heart rate chart, one averaged point every 5 seconds");
+  plot.append(canvas);
+  const recovery=document.createElement("div");
+  recovery.className="session-hr-recovery";
+  recovery.dataset.hrRecovery=day.id;
+  recovery.hidden=true;
+  recovery.setAttribute("aria-live","polite");
+  const caption=document.createElement("p");
+  caption.textContent=hrMonitor.samples.length?"Click a point to see the next minute, every 20 seconds. Each point is a 5-second average. The number above is the live beat.":"The strap sends every beat. The first chart point appears after 5 seconds.";
+  chartWrap.append(plot,recovery,caption);
+ }
  const actions=document.createElement("div");
  actions.className="session-energy-actions";
  const primary=button(running?"Finish timer":finished&&day.session?.durationSource==="timer"?"Resume timer":"Start session",running?"green":"primary",()=>{
@@ -1484,7 +1522,7 @@ function sessionEnergyPanel(week,day){
   session.durationSource="manual";
   clearSessionHr(session);
   applySessionCalories(day,week);
-  if(hrMonitor.dayId===day.id){hrMonitor.samples=[];hrMonitor.kcal=0;hrMonitor.lastAt=0;hrMonitor.dayId=null}
+  if(hrMonitor.dayId===day.id)resetHrTrace();
   render();saveData(true);
   showToast(session.calories==null?"Time saved. Add body weight in Profile to estimate calories.":`About ${session.calories.toLocaleString()} kcal for this session.`);
  });
@@ -1493,7 +1531,9 @@ function sessionEnergyPanel(week,day){
  const note=document.createElement("p");
  note.className="session-energy-note";
  note.textContent=sessionEnergyNoteText(week,day);
- panel.append(clockWrap,metrics,actions,note);
+ panel.append(clockWrap,metrics);
+ if(chartWrap)panel.append(chartWrap);
+ panel.append(actions,note);
  return panel;
 }
 let sessionClockTimer=null;
@@ -1550,25 +1590,216 @@ function flushHrInterval(day,week,now=Date.now()){
  if(perMin!=null&&dt>0)hrMonitor.kcal+=perMin*(dt/60000);
  hrMonitor.lastAt=now;
 }
+function resetHrTrace(){
+ hrMonitor.samples=[];
+ hrMonitor.bucket=[];
+ hrMonitor.bucketAt=0;
+ hrMonitor.rawCount=0;
+ hrMonitor.rawSum=0;
+ hrMonitor.rawMax=null;
+ hrMonitor.rawMin=null;
+ hrMonitor.kcal=0;
+ hrMonitor.lastAt=0;
+ hrMonitor.dayId=null;
+ hrMonitor.recoveryAt=null;
+ hrMonitor.recoveryRoles=new Map();
+}
+function destroyHrChartsIn(root){
+ if(!root)return;
+ for(let i=hrCharts.length-1;i>=0;i--){
+  if(root.contains(hrCharts[i].canvas)){hrCharts[i].destroy();hrCharts.splice(i,1)}
+ }
+}
+function pruneHrCharts(){
+ for(let i=hrCharts.length-1;i>=0;i--){
+  if(!hrCharts[i].canvas?.isConnected){hrCharts[i].destroy();hrCharts.splice(i,1)}
+ }
+}
+function hrSampleContext(){
+ if(!hrMonitor.dayId)return null;
+ for(const week of state.weeks){
+  const day=(week.days||[]).find(item=>item.id===hrMonitor.dayId);
+  if(day)return {week,day};
+ }
+ return null;
+}
+function hrChartPoints(){
+ return hrMonitor.samples.map(sample=>({x:sample.t,bpm:sample.bpm}));
+}
+function hrSampleElapsed(now){
+ const located=hrSampleContext();
+ const start=Date.parse(located?.day?.session?.startedAt||"");
+ if(!Number.isFinite(start))return 0;
+ return Math.min(SESSION_MAX_SEC,Math.max(0,Math.round((now-start)/1000)));
+}
+function hrSampleNear(target,minT,tolerance){
+ let best=null,bestDist=Infinity;
+ hrMonitor.samples.forEach(sample=>{
+  if(sample.t<minT)return;
+  const dist=Math.abs(sample.t-target);
+  if(dist<bestDist){best=sample;bestDist=dist}
+ });
+ return best&&bestDist<=tolerance?best:null;
+}
+function refreshHrRecovery(){
+ const roles=new Map();
+ hrMonitor.recoveryRoles=roles;
+ if(hrMonitor.recoveryAt==null){hrMonitor.recoveryView=null;return}
+ const start=hrSampleNear(hrMonitor.recoveryAt,0,3);
+ if(!start){hrMonitor.recoveryAt=null;hrMonitor.recoveryView=null;return}
+ const steps=[0,20,40,60].map(step=>{
+  const sample=step===0?start:hrSampleNear(start.t+step,start.t,8);
+  return {step,sample,drop:sample?start.bpm-sample.bpm:null};
+ });
+ hrMonitor.recoveryView={start,steps};
+ steps.forEach(step=>{
+  if(!step.sample)return;
+  roles.set(step.sample.t,step.step===0?"start":step.step===60?"minute":"mark");
+ });
+}
+function hrPointRole(elapsed){return hrMonitor.recoveryRoles?.get(elapsed)||""}
+function hrPointRadius(context){
+ const count=context.dataset?.data?.length||0;
+ const role=hrPointRole(context.raw?.x);
+ if(role==="start"||role==="minute")return 6;
+ if(role==="mark")return 5;
+ return count>40?0:3;
+}
+function hrPointColor(context){
+ const role=hrPointRole(context.raw?.x);
+ if(role==="start"||role==="minute")return "#087cff";
+ if(role==="mark")return "#eff6ff";
+ return "#68edc5";
+}
+function selectHrRecovery(elapsed){
+ hrMonitor.recoveryAt=hrMonitor.recoveryAt===elapsed?null:elapsed;
+ queueMicrotask(()=>{paintHrRecovery();paintHrChart()});
+}
+function paintHrRecovery(){
+ refreshHrRecovery();
+ document.querySelectorAll("[data-hr-recovery]").forEach(host=>{
+  if(host.dataset.hrRecovery!==hrMonitor.dayId)return;
+  host.replaceChildren();
+  const view=hrMonitor.recoveryView;
+  if(!view){host.hidden=true;return}
+  host.hidden=false;
+  const minute=view.steps.find(step=>step.step===60);
+  const headline=document.createElement("strong");
+  if(!minute?.sample)headline.textContent="The rest of this minute is not on the chart yet.";
+  else if(minute.drop>0)headline.textContent=`Down ${minute.drop} bpm in this minute`;
+  else if(minute.drop<0)headline.textContent=`Up ${Math.abs(minute.drop)} bpm in this minute`;
+  else headline.textContent="Same bpm after one minute";
+  const detail=document.createElement("p");
+  detail.textContent=minute?.sample?`${view.start.bpm} at this point, ${minute.sample.bpm} one minute later.`:`${view.start.bpm} at this point.`;
+  const list=document.createElement("ol");
+  list.className="session-hr-marks";
+  view.steps.forEach(step=>{
+   const item=document.createElement("li");
+   if(step.step===60)item.className="is-minute";
+   const time=document.createElement("time");
+   time.dateTime=`PT${step.step}S`;
+   time.textContent=step.step===60?"1:00":`0:${String(step.step).padStart(2,"0")}`;
+   const bpm=document.createElement("b");
+   bpm.textContent=step.sample?String(step.sample.bpm):"—";
+   const change=document.createElement("span");
+   if(step.step===0)change.textContent="selected";
+   else if(step.drop==null)change.textContent="—";
+   else if(step.drop>0)change.textContent=`−${step.drop}`;
+   else if(step.drop<0)change.textContent=`+${Math.abs(step.drop)}`;
+   else change.textContent="0";
+   item.append(time,bpm,change);
+   list.append(item);
+  });
+  host.append(headline,detail,list);
+ });
+}
+function hrChartConfig(data,yMin,yMax){
+ return {type:"line",data:{datasets:[{label:"Heart rate",data,borderColor:"#68edc5",backgroundColor:"#68edc522",fill:true,pointRadius:hrPointRadius,pointHoverRadius:hrPointRadius,pointBackgroundColor:hrPointColor,pointBorderColor:hrPointColor,borderWidth:2,tension:.25}]},options:{animation:false,responsive:true,maintainAspectRatio:false,interaction:{mode:"nearest",intersect:false},onClick(event,_elements,chart){const hits=chart.getElementsAtEventForMode(event,"nearest",{intersect:false},true);const point=hits.length?chart.data.datasets[0].data[hits[0].index]:null;if(point)selectHrRecovery(point.x)},plugins:{legend:{display:false},tooltip:{callbacks:{title:items=>formatSessionClock(items[0]?.parsed?.x||0),label:item=>`${Math.round(item.parsed.y)} bpm`}}},scales:{x:{type:"linear",ticks:{color:"#9aabc5",maxTicksLimit:6,callback:value=>formatSessionClock(value)},grid:{color:"#1b3a5b"}},y:{min:yMin,max:yMax,ticks:{color:"#9aabc5",maxTicksLimit:5},grid:{color:"#1b3a5b"},title:{display:true,text:"bpm",color:"#9aabc5"}}}}};
+}
+function paintHrChart(){
+ try{paintHrChartNow()}catch(error){console.error(error)}
+}
+function paintHrChartNow(){
+ pruneHrCharts();
+ refreshHrRecovery();
+ if(typeof Chart==="undefined"||!hrMonitor.dayId)return;
+ const points=hrChartPoints();
+ const ys=points.map(point=>point.bpm);
+ let yMin=ys.length?Math.min(...ys)-8:50;
+ let yMax=ys.length?Math.max(...ys)+8:180;
+ yMin=Math.max(30,yMin);
+ yMax=Math.min(240,yMax);
+ if(yMax<=yMin)yMax=yMin+10;
+ document.querySelectorAll("canvas[data-hr-chart]").forEach(canvas=>{
+  if(canvas.dataset.hrChart!==hrMonitor.dayId)return;
+  const data=points.map(point=>({x:point.x,y:point.bpm}));
+  let chart=hrCharts.find(item=>item.canvas===canvas);
+  if(!chart){
+   chart=new Chart(canvas,hrChartConfig(data,yMin,yMax));
+   hrCharts.push(chart);
+   return;
+  }
+  chart.data.datasets[0].data=data;
+  chart.options.scales.y.min=yMin;
+  chart.options.scales.y.max=yMax;
+  chart.update("none");
+ });
+ paintHrRecovery();
+}
+function ensureHrChartMounted(){
+ if(!hrMonitor.dayId||document.querySelector(`canvas[data-hr-chart="${hrMonitor.dayId}"]`))return;
+ const located=hrSampleContext();
+ if(!located)return;
+ const {week,day}=located;
+ const studioHost=$("studioSessionEnergy");
+ if(studioHost&&studioSelected().day?.id===day.id&&!studioHost.contains(document.activeElement))renderSessionEnergy(studioHost,week,day);
+ const energy=document.querySelector(`.day-card[data-day-id="${typeof CSS!=="undefined"&&CSS.escape?CSS.escape(day.id):day.id}"] .session-energy`);
+ if(energy&&!energy.querySelector("canvas[data-hr-chart]")&&!energy.contains(document.activeElement)){
+  destroyHrChartsIn(energy);
+  energy.replaceWith(sessionEnergyPanel(week,day));
+  paintHrChart();
+ }
+}
+function commitHrBucket(){
+ if(!hrMonitor.bucket.length)return;
+ const avg=Math.round(hrMonitor.bucket.reduce((sum,value)=>sum+value,0)/hrMonitor.bucket.length);
+ hrMonitor.samples.push({t:hrSampleElapsed(hrMonitor.bucketAt||Date.now()),bpm:avg});
+ if(hrMonitor.samples.length>6000)hrMonitor.samples.splice(0,hrMonitor.samples.length-6000);
+ hrMonitor.bucket=[];
+ hrMonitor.bucketAt=0;
+ if(document.querySelector(`canvas[data-hr-chart="${hrMonitor.dayId}"]`))paintHrChart();
+ else ensureHrChartMounted();
+}
+function queueHrSample(bpm,now){
+ hrMonitor.rawCount+=1;
+ hrMonitor.rawSum+=bpm;
+ hrMonitor.rawMax=hrMonitor.rawMax==null?bpm:Math.max(hrMonitor.rawMax,bpm);
+ hrMonitor.rawMin=hrMonitor.rawMin==null?bpm:Math.min(hrMonitor.rawMin,bpm);
+ if(hrMonitor.bucket.length&&now-hrMonitor.bucketAt>=HR_BUCKET_MS)commitHrBucket();
+ if(!hrMonitor.bucket.length)hrMonitor.bucketAt=now;
+ hrMonitor.bucket.push(bpm);
+}
 function ingestHrBpm(bpm){
  hrMonitor.bpm=bpm;
  const open=findRunningSession();
  const now=Date.now();
  if(open){
-  if(hrMonitor.dayId&&hrMonitor.dayId!==open.day.id){hrMonitor.samples=[];hrMonitor.kcal=0;hrMonitor.lastAt=0}
+  if(hrMonitor.dayId&&hrMonitor.dayId!==open.day.id)resetHrTrace();
   hrMonitor.dayId=open.day.id;
   if(!hrMonitor.lastAt){
    const start=Date.parse(open.day.session.startedAt);
    hrMonitor.lastAt=Number.isFinite(start)?start:now;
   }
   flushHrInterval(open.day,open.week,now);
-  hrMonitor.samples.push({t:now,bpm});
-  if(hrMonitor.samples.length>20000)hrMonitor.samples=hrMonitor.samples.slice(-15000);
+  queueHrSample(bpm,now);
  }else hrMonitor.lastAt=now;
  paintLiveHr();
 }
 function hrBeginSession(day,resuming){
- if(!resuming||hrMonitor.dayId!==day.id){hrMonitor.samples=[];hrMonitor.kcal=0;hrMonitor.dayId=day.id}
+ if(!resuming||hrMonitor.dayId!==day.id){
+  resetHrTrace();
+  hrMonitor.dayId=day.id;
+ }
  const start=Date.parse(day.session?.startedAt);
  hrMonitor.lastAt=resuming?Date.now():(Number.isFinite(start)?start:Date.now());
  if(hrMonitor.connected&&hrMonitor.bpm)ingestHrBpm(hrMonitor.bpm);
@@ -1576,16 +1807,16 @@ function hrBeginSession(day,resuming){
 function hrCommitSession(day,week){
  if(hrMonitor.dayId!==day.id)return false;
  flushHrInterval(day,week,Date.now());
- if(!hrMonitor.samples.length)return false;
+ if(hrMonitor.bucket.length)commitHrBucket();
+ if(!hrMonitor.rawCount)return false;
  const session=ensureSession(day);
- const bpms=hrMonitor.samples.map(sample=>sample.bpm);
- session.hrAvg=Math.round(bpms.reduce((sum,value)=>sum+value,0)/bpms.length);
- session.hrMax=Math.max(...bpms);
- session.hrMin=Math.min(...bpms);
+ session.hrAvg=Math.round(hrMonitor.rawSum/hrMonitor.rawCount);
+ session.hrMax=hrMonitor.rawMax;
+ session.hrMin=hrMonitor.rawMin;
  session.hrDevice=cleanText(hrMonitor.deviceName,80);
  const kg=sessionBodyweightKg(week);
  session.weightKg=kg;
- if(estimateHrKcalPerMin(bpms[0],kg)==null)return false;
+ if(estimateHrKcalPerMin(session.hrAvg,kg)==null)return false;
  session.calories=Math.min(20000,Math.max(0,Math.round(hrMonitor.kcal)));
  session.calorieSource="hr";
  return true;
@@ -1885,6 +2116,7 @@ function forgeVolumeNode(kind,week,day,ex,set){
 
 function render(){
  isRendering=true;
+ destroyHrChartsIn($("weeks"));
  const host=$("weeks");host.replaceChildren();
  if(!state.weeks.length){const el=document.createElement("div");el.className="empty";el.textContent="Start with New week, then add training days and exercises.";host.append(el)}
  state.weeks.forEach((week,wi)=>{
